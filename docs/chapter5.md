@@ -491,5 +491,5 @@ The database for storing our book data is now up and running. Skipping ahead, I'
 
 **Previous**: [Improved Project Structure Using Routers](./chapter4.md)
 
-**Next**: [Next Chapter](./chapter5.md)
+**Next**: [Finishing Up the CRUD](./chapter5.md)
 

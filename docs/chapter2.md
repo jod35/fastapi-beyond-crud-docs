@@ -1,6 +1,17 @@
 # FastAPI Beyond CRUD (Chapter Two)
 
 ## Creating a Simple Web Server
+- 
+
+Contents of this chapter are
+- [Introduction](#introduction)
+- [Creating a FastAPI instance](#creating-a-fastapi-instance)
+- [Creating the first API endpoint](#creating-an-api-endpoint)
+- [Running a FastAPI server](#running-a-fastapi-application)
+- [Choosing a web API client](#choosing-an-api-client)
+
+## Introduction
+In this chapter, we are going to create a simple web server on whicn our application shall run using FastAPI.
 
 At this stage, our directory structure is as follows:
 ```
@@ -19,11 +30,10 @@ async def read_root():
     return {"message": "Hello World!"}
 ```
 
-### Understanding the Code
 
 In this code snippet, we perform the following actions:
 
-1. **Importing FastAPI Class:**
+## **Creating a FastAPI instance:**
    We import the `FastAPI` class from the `fastapi` library. This class serves as the primary entry point for all FastAPI applications. We then create an instance of our FastAPI application named `app`.
 
     ```python
@@ -32,7 +42,7 @@ In this code snippet, we perform the following actions:
     app = FastAPI()
     ```
 
-2. **Creating an API Endpoint:**
+## **Creating an API Endpoint:**
    We define our first API endpoint by creating a function named `read_root`. This function, when accessed, will return a JSON message containing "Hello World!".
 
     ```python
@@ -43,7 +53,7 @@ In this code snippet, we perform the following actions:
 
    The `@app.get('/')` decorator associates the `read_root` function with the HTTP GET method for the root path (`/`). This means that whenever the `/` route is accessed, the defined message will be returned.
 
-3. **Running the FastAPI Application:**
+## **Running the FastAPI Application:**
    To run our FastAPI application, we use Uvicorn. Open a terminal and execute the following command within the virtual environment:
 
     ```bash
@@ -56,6 +66,7 @@ Running the server will expose the application to the following address, `http:/
 
 By following these steps, you have successfully set up a simple FastAPI application with an endpoint that responds with a greeting. Additionally, you've learned how to run the application using Uvicorn, facilitating the development process with automatic code reloading. 
 
+## Choosing an API Client
 Depending on your choice, you may want to test your application with an Api Client, I will begin with [Insomnia](https://insomina.rest) which is a simple open source application for testing and development APIs.
 
 In insomnia, we shall create our simple request collection and we shall now see our response of `Hello World`.

@@ -6,7 +6,8 @@ Contents of this chapter are
 - [Creating a new book](#creating-a-new-book)
 - [Retrieving a book by its uid](#retrieve-a-book-by-its-uid)
 - [Update a book](#update-a-book)
-- 
+- [Delete a book](#delete-a-book)
+- [Dependency Injection](#dependency-injection)
 
 
 ## Creating a service class
@@ -206,7 +207,6 @@ To delete a book from the database, we follow a similar approach as when retriev
 
         await self.session.commit()
 ```
-
 
 Let update our routes to ensure they use our newly created book database to Create, Read, Update and Delete our book database record. The source code for `src/books/service.py` should look like this at this point.
 
@@ -413,3 +413,9 @@ Once the `session` is established, we proceed to instantiate the `BookService` c
     books = await BookService(session).get_all_books()
 ```
 We instantiate the `BookService` function to invoke its `get_all_books()` method, supplying the session as a dependency to the route handler that includes the above code.
+
+
+
+**Previous**: [Databaes with SQLModel](./chapter5.md)
+
+**Next**: [Finishing Up the CRUD](./chapter6.md)

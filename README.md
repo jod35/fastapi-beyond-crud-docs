@@ -41,3 +41,6 @@ pip install -r requirements.txt
 ```
 python run.py
 ```
+
+## Documentation
+All documentation for this project shall be found [here](https://jod35jon.github.io/fastapi-website/chapter2.html).
