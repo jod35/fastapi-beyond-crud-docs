@@ -22,6 +22,7 @@ So far, our project structure is quite simple:
 Additionally, our `main.py` file looks like this:
 
 ```python
+# inside main.py
 from fastapi import FastAPI, Query
 from schemas import BookSchema, BookUpdateSchema
 
@@ -83,7 +84,7 @@ async def delete_book(book_id: int):
 ```
 ## Restructuring the project
 
-The problem here is that if we add more code to this file, our code will become messy and hard to maintain. To address this, we need to create a more organized project structure. To start, let's create a new folder called `src`, which will contain an `__init__.py` file to make it a Python package:
+The problem here is that if we add more code to this file, our code will become messy and hard to maintain beacuse all our code will be in one file `main.py`. To address this, we need to create a more organized project structure. To start, let's create a new folder called `src`, which will contain an `__init__.py` file to make it a Python package:
 
 ```console
 ├── env/
@@ -100,7 +101,7 @@ Now, create a folder named `books` inside the `src` directory. Inside this folde
 ├── env/
 ├── main.py
 ├── requirements.txt
-└── schemas.py
+├── schemas.py
 └── src/
     └── __init__.py
     └── books/
@@ -113,7 +114,7 @@ Now, create a folder named `books` inside the `src` directory. Inside this folde
 First, let's move our `books` list from `main.py` to `book_data.py` inside the `books` directory.
 
 ```python
-# Inside book_data.py
+# Inside src/books/book_data.py
 
 books = [
     {
@@ -132,7 +133,7 @@ books = [
 Next, let's also move our `schemas.py` to the `books` directory.
 
 ```python
-# Inside schemas.py
+# Inside src/books/schemas.py
 
 from pydantic import BaseModel
 from datetime import datetime
@@ -207,7 +208,7 @@ async def delete_book(book_id: int):
     return {"message": "Book not found"}
 ```
 ## Introduction to FastAPI routers 
-What has been accomplished is the division of our project into modules using routers. FastAPI routers allow easy modularization of our API by grouping related endpoints together. Routers function similarly to FastAPI instances (similar to what we have in `main.py`). As our project expands, we will introduce additional endpoints, and all of them will be organized into modules grouping related functionalities.
+What has been accomplished is the division of our project into modules using routers. FastAPI routers allow easy modularization of our API by grouping related API routes together. Routers function similarly to FastAPI instances (similar to what we have in `main.py`). As our project expands, we will introduce additional API routes, and all of them will be organized into modules grouping related functionalities.
 
 Let's enhance our `main.py` file to adopt this modular structure:
 
@@ -244,9 +245,44 @@ Furthermore, we added the following arguments to the include_router method:
 
 - `tags`: The list of tags associated with the endpoints that fall within a given router.
 
+Let us now now move all the source code in our `main.py` module to `src/__init__.py`. (delete your `main.py`)
+
+```python
+# inside src/__init__.py
+from fastapi import FastAPI
+from src.books.routes import book_router
+
+version = 'v1'
+
+app = FastAPI(
+    title='Bookly',
+    description='A RESTful API for a book review service',
+    version=version,
+)
+
+app.include_router(prefix=f"/api/{version}/books", tags=['books'])
+```
+Having moved our code, we shall now have this folder structure.
+```console
+├── requirements.txt
+├── run.py
+└── src
+    ├── books
+    │   ├── book_data.py
+    │   ├── __init__.py
+    │   ├── models.py
+    │   ├── routes.py
+    │   ├── schemas.py
+    │   ├── book_data.py
+    └── __init__.py
+```
+
+Once more, let's start our server using `fastapi dev src/`. Pay attention to the fact that this time we're specifying`src/`. This is because we've designated it as a package by including `__init__.py`. Additionally, our FastAPI instance named `app` is created there. Consequently, FastAPI will utilize it to operate our application.
+
 ### Note:
 
 The current organization of our API is as follows:
+
 | Endpoint	| Method |	Description |
 |-----------|--------|--------------|
 | /api/v1/books |	GET  | Read all books |

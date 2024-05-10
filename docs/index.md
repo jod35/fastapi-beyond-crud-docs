@@ -47,17 +47,24 @@ At this point, your directory structure should look like this:
 
 Now, install the essential dependencies within the virtual environment. We need `fastapi` as our web framework and `uvicorn` as the web server for running the FastAPI application.
 
-```bash
-(env) pip install fastapi uvicorn
+```console
+(env) pip install fastapi
 ```
 
 ### 4. Freeze Dependencies
 
 Freeze the installed dependencies into a `requirements.txt` file to track the exact versions for reproducibility.
 
-```bash
+```console
 (env) pip freeze > requirements.txt
 ```
+
+5. Let us confirm our fastapi installation by running the following command.
+```python
+(env) fastapi --version
+FastAPI CLI version: 0.0.2
+```
+This command shall show us the version of FastAPI CLI the FastAPI commandline interface. The `fastapi` command shall help us run and manage our app as we shall see in the coming chapters.
 
 By following these steps, you have successfully set up a virtual environment, installed FastAPI and Uvicorn, and frozen the dependencies for future reference. This structured approach ensures a clean and manageable development environment for our FastAPI project.
 
