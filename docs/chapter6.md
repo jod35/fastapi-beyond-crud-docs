@@ -414,8 +414,11 @@ Once the `session` is established, we proceed to instantiate the `BookService` c
 ```
 We instantiate the `BookService` function to invoke its `get_all_books()` method, supplying the session as a dependency to the route handler that includes the above code.
 
+### Conclusion
+
+In this chapter, we expanded our application to incorporate CRUD operations on our book data by leveraging our persistent PostgreSQL database. We explored how to utilize SQLModel to accomplish this task efficiently.
 
 
 **Previous**: [Databaes with SQLModel](./chapter5.md)
 
-**Next**: [Finishing Up the CRUD](./chapter6.md)
+**Next**: [Finishing Up the CRUD](./chapter7.md)
