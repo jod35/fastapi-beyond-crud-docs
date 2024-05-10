@@ -120,6 +120,9 @@ In insomnia, we shall create our simple request collection and we shall now see 
 
 And just like that, you have created your FastAPI application, run it and even made your HTTP request using an HTTP client.
 
+## Conclusion
+In this chapter, we've built a straightforward web server using FastAPI. We've also delved into the process of creating API routes and running our server using the FastAPI Command Line Interface. Next up, we'll construct a simple REST API to execute CRUD operations on an in-memory database.
+
 **Next** [Creating a simple CRUD API](./chapter3.md)
 
 **Previous** [Installation and Configuration](./index.md)

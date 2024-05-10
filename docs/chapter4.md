@@ -279,6 +279,30 @@ Having moved our code, we shall now have this folder structure.
 
 Once more, let's start our server using `fastapi dev src/`. Pay attention to the fact that this time we're specifying`src/`. This is because we've designated it as a package by including `__init__.py`. Additionally, our FastAPI instance named `app` is created there. Consequently, FastAPI will utilize it to operate our application.
 
+Runnning our application will the following terminal output.
+```console
+INFO     Using path src                                                                                                                                     
+INFO     Resolved absolute path /home/jod35/Documents/fastapi-beyond-CRUD/src                                                                               
+INFO     Searching for package file structure from directories with __init__.py files                                                                       
+INFO     Importing from /home/jod35/Documents/fastapi-beyond-CRUD                                                                                           
+                                                                                                                                                            
+ ╭─ Python package file structure ─╮                                                                                                                        
+ │                                 │                                                                                                                        
+ │  📁 src                         │                                                                                                                        
+ │  └── 🐍 __init__.py             │                                                                                                                        
+ │                                 │                                                                                                                        
+ ╰─────────────────────────────────╯                                                                                                                        
+                                                                                                                                                            
+INFO     Importing module src                                                                                                                               
+INFO     Found importable FastAPI app                                                                                                                       
+                                                                                                                                                            
+ ╭─ Importable FastAPI app ─╮                                                                                                                               
+ │                          │                                                                                                                               
+ │  from src import app     │                                                                                                                               
+ │                          │                                                                                                                               
+ ╰──────────────────────────╯                                                                                                                               
+```
+
 ### Note:
 
 The current organization of our API is as follows:
@@ -291,6 +315,9 @@ The current organization of our API is as follows:
 | /api/v1/books/{book_id} |	PATCH |	Update a book by ID |
 | /api/v1/books/{book_id} |	DELETE |	Delete a book by ID |
 
+
+## Conclusion
+This chapter has focused on creating a folder structure that we can use even when our project gets bigger. In the nest chapter, we shall focus on database and look at how we can persist our data and use Python to manage a relational database.
 
 **Previous** [Improved Project Structure Using Routers](./chapter4.md)
 
