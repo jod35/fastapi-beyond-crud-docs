@@ -9,11 +9,12 @@ Contents of this chapter are
 - [Choosing a web API client](#choosing-an-api-client)
 
 ## Introduction
-In this chapter, we are going to create a simple web server on whicn our application shall run using FastAPI.
+Now that we have FastAPI installed, we are going to create a simple web server on whicn our application shall run using FastAPI.
 
-At this stage, our directory structure is as follows:
+At this stage, our directory only contains our virtual `environment` and `requirements.txt` as shown below as follows:
 ```
 └── env
+└── requirements.txt
 ```
 
 Let's create a file named `main.py` and populate it with the following code:
@@ -32,7 +33,13 @@ async def read_root():
 In this code snippet, we perform the following actions:
 
 ## **Creating a FastAPI instance:**
-   We import the `FastAPI` class from the `fastapi` library. This class serves as the primary entry point for all FastAPI applications. We then create an instance of our FastAPI application named `app`.
+We have imported the `FastAPI` class from the `fastapi` package. This class serves as the primary entry point for all FastAPI applications. Through it we can get access to various FastAPI features such as *routes* , *middleware*, exception handlers* and *path operations*.
+
+
+We then create an instance of the `FastAPI` class named `app`.
+
+      The main FastAPI instance can be called anything as long as it is a valid Python name. 
+
 
 ```python
 from fastapi import FastAPI
@@ -40,8 +47,8 @@ from fastapi import FastAPI
 app = FastAPI()
 ```
 
-## **Creating an API Endpoint:**
-   We define our first API endpoint by creating a function named `read_root`. This function, when accessed, will return a JSON message containing "Hello World!".
+## **Creating an API Route:**
+   We define our first API route by creating a function named `read_root`. This function, when accessed, will return a JSON message containing "Hello World!".
 
 ```python
 @app.get('/')
@@ -49,7 +56,9 @@ async def read_root():
     return {"message": "Hello World!"}
 ```
 
-   The `@app.get('/')` decorator associates the `read_root` function with the HTTP GET method for the root path (`/`). This means that whenever the `/` route is accessed, the defined message will be returned.
+The `@app` decorator associates the function with the HTTP GET method  via the `get` function. We then provide the path (route) of the root path (`/`). This means that whenever the `/` route is accessed, the defined message will be returned.
+
+All HTTP methods such as `post`,`put`,`head`,`patch`, `delete`, `trace` and `options` are all available on the `@app` decorator.
 
 ## **Running the FastAPI Application:**
    To run our FastAPI application, we shall use the `fastapi`command we introduced in the previous chapter. Open a terminal and execute the following command within the virtual environment:
@@ -119,6 +128,32 @@ In insomnia, we shall create our simple request collection and we shall now see 
 
 
 And just like that, you have created your FastAPI application, run it and even made your HTTP request using an HTTP client.
+
+## Managing Requests and Responses
+There are very many ways that clients can pass request data to a FastAPI API route. These include:
+- Path Parameters
+- Query Parameters
+- Headers e.t.c.
+
+Through such ways, we can obtain data from incoming requests to our APIs.
+
+
+### Parameter type declarations
+All parameters in a FastAPI request are requiresd to have a type declaration via *type hints*. Primitive Python types such (`None`,`int`,`str`,`bool`,`float`), container types such as (`dict`,`tuples`,`dict`,`set`) and some other complex types are all supported. 
+
+Additionally FastAPI also allows all types present within Python's `typing` module.
+
+### Path Parameters
+All request data supplied in the endpoint URL of a FastAPI API is acquired through a path parameter, thus rendering URLs dynamic. FastAPI adopts curly braces (`{}`) to denote path parameters when defining a URL. Once enclosed within the braces, FastAPI requires that they be provided as parameters to the route handler functions we establish for those paths.
+
+```python
+#inside main.py
+@app.get('/greet/{username}')
+async def greet(username):
+   return {"message":f"Hello {username}"}
+```
+
+
 
 ## Conclusion
 In this chapter, we've built a straightforward web server using FastAPI. We've also delved into the process of creating API routes and running our server using the FastAPI Command Line Interface. Next up, we'll construct a simple REST API to execute CRUD operations on an in-memory database.
