@@ -287,6 +287,9 @@ We shall get the same output but this time we shall be told that the required fi
 Let us now provide valid data.
 
 
+
+![successful request with valid user data](./imgs/img21.png)
+
 ## Conclusion
 In this chapter, we've built a straightforward web server using FastAPI. We've also delved into the process of creating API routes and running our server using the FastAPI Command Line Interface. Next up, we'll construct a simple REST API to execute CRUD operations on an in-memory database.
 
