@@ -185,6 +185,36 @@ async def search_for_user(username:str):
 
 In this example, we've set up a route for searching users within a simple list. Notice that there are no path parameters specified in the route's URL. Instead, we're passing the `username` directly to our route handler, `search_for_user`. In FastAPI, any parameter passed to a route handler, like `search_for_user`, and is not provided in the path as a path param is treated as a query parameter. Therefore, to access this route, we need to use `/search?username=sample_name`, where `username` is the key and `sample_name` is the value.
 
+Let us save and test the example above. Saecrning for a user who exists returns the needed response.
+
+![Searching for a user who doesnot exist](./imgs/img15.png)
+
+And searching for a user who does not exist returns the following response. 
+![Searching a user who does not exist](./imgs/img16.png)
+
+### Optional Parameters
+There may also be cases when the API route can operate as needed even in the presence of a path or query param. In this case, we can make the parameters optional when annotating their types in the route handler functions. Forexample, our first example can be modified to the following:
+```python
+from typing import Optional
+
+@app.get('/greet/')
+async def greet(username:Optional[str]="User"):
+   return {"message":f"Hello {username}"}
+
+```
+
+
+This time, we've made the `username` path parameter optional. We achieved this by removing it from the route definition. Additionally, we updated the type annotation for the `username` parameter in the `greet` route handler function to make it an optional string, with a default value of "User". To accomplish this, we're using the `Optional` type from Python's `typing` module.
+```python
+username:Optional[str]
+```
+
+When we save the example, we shall test it and get the following response.
+![greeting a user with a username as a query param](./imgs/img17.png)
+
+Note that this time if we do not provide the `username`, we shall get the default username of "User".
+![greeting with the default value of the username](./imgs/img18.png)
+
 
 ## Conclusion
 In this chapter, we've built a straightforward web server using FastAPI. We've also delved into the process of creating API routes and running our server using the FastAPI Command Line Interface. Next up, we'll construct a simple REST API to execute CRUD operations on an in-memory database.
