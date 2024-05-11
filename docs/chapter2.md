@@ -216,6 +216,77 @@ Note that this time if we do not provide the `username`, we shall get the defaul
 ![greeting with the default value of the username](./imgs/img18.png)
 
 
+## Request Body
+Frequently, clients need to send data to the server for tasks like creating or updating resources through methods like POST, PATCH, PUT, DELETE, or for various other operations. FastAPI simplifies this process by enabling you to define a Pydantic model to establish the structure of the data being sent. Furthermore, it aids in validating data types using type hints. Let's delve into a straightforward example to illustrate this concept.
+
+```python
+# inside main.py
+from pydantic import BaseModel
+
+# the User model
+class UserSchema(BaseModel):
+   username:str
+   email:str
+   
+
+@app.post("/create_user")
+async def create_user(user_data:UserSchema):
+   new_user = {
+      "username" : user_data.username,
+      "email": user_data.email
+   }
+
+   users.append(new_user)
+
+   return {"message":"User Created successfully","user":new_user}
+
+```
+
+What we have done in the above example is to create a Pydantic model by inheriting Pydantic's `BaseModel` class. On this class we have defined attributes `username` and `email` and also annotated them with the `str` type. 
+```python
+class UserSchema(BaseModel):
+   username:str
+   email:str
+   
+```
+
+Next, we created our API route which is to handle a `POST` request on the `/create_user`. The route handler for this route takes in a parameter for the `user_data` as we get it from the client. Note that this is annotated to the type of the Pydantic model `UserSchema`. 
+```python
+create_user(user_data:UserSchema)
+```
+
+Basing on this data, we create a `new_user` dictionary and add it to our `users` list.
+```python
+   new_user = {
+      "username" : user_data.username,
+      "email": user_data.email
+   }
+
+   users.append(new_user)
+
+```
+
+
+We finally return a response with the newly created `user` dictionary. 
+
+```python
+
+   return {"message":"User Created successfully","user":new_user}
+```
+
+Let us test this out. When we make the request without providing the request body, we shall get the following response.
+![making request without request body](./imgs/img19.png)
+
+Note that we shall get the 422 `Unprocessible Entity` status code because FastAPI has failed to get the data from the request body. we have not provided it.
+
+When we provide the body without the required fields, we shall then get the following output.
+![request with missing fields in post data](./imgs/img20.png)
+
+We shall get the same output but this time we shall be told that the required fields for the data are missing.
+
+Let us now provide valid data.
+
+
 ## Conclusion
 In this chapter, we've built a straightforward web server using FastAPI. We've also delved into the process of creating API routes and running our server using the FastAPI Command Line Interface. Next up, we'll construct a simple REST API to execute CRUD operations on an in-memory database.
 
