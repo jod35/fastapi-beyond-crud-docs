@@ -323,7 +323,7 @@ async def initdb():
 
 ## Lifespan events in FastAPI
 
-In FastAPI, we are free to define logic we may want to run before the application starts getting requests and also when the application stops receiving them. THis is very important in scenarios where the cost of running such logic may be expensive and may cause a poor user experience. Such include database connections, loading AI models and so on. For our purpose, we are going to connect to the database before the application starts. If this doesn't make sense, let us begin by looking at a small example. 
+In FastAPI, we have the flexibility to specify operations to execute prior to the application receiving requests, as well as when it concludes receiving them. This capability is crucial in situations where executing such operations may be resource-intensive and potentially degrade user experience. Examples of such operations include establishing database connections and loading AI models. For our demonstration, we'll focus on establishing a database connection before the application starts. If this concept isn't clear, let's start by examining a brief example.
 
 In the `__init__.py` file at the root of the `src` directory, let us modify the code as shown below.
 
