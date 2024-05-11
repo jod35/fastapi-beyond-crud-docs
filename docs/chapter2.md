@@ -141,7 +141,8 @@ Through such ways, we can obtain data from incoming requests to our APIs.
 ### Parameter type declarations
 All parameters in a FastAPI request are requiresd to have a type declaration via *type hints*. Primitive Python types such (`None`,`int`,`str`,`bool`,`float`), container types such as (`dict`,`tuples`,`dict`,`set`) and some other complex types are all supported. 
 
-Additionally FastAPI also allows all types present within Python's `typing` module.
+Additionally FastAPI also allows all types present within Python's `typing` module. 
+These data types represent common conventions in Python and are utilized for variable type annotations. They facilitate type checking and model validation during compilation. Examples include `Optional`, `List`, `Dict`, `Set`, `Union`, `Tuple`, `FrozenSet`, `Iterable`, and `Deque`.
 
 ### Path Parameters
 All request data supplied in the endpoint URL of a FastAPI API is acquired through a path parameter, thus rendering URLs dynamic. FastAPI adopts curly braces (`{}`) to denote path parameters when defining a URL. Once enclosed within the braces, FastAPI requires that they be provided as parameters to the route handler functions we establish for those paths.
@@ -149,10 +150,40 @@ All request data supplied in the endpoint URL of a FastAPI API is acquired throu
 ```python
 #inside main.py
 @app.get('/greet/{username}')
-async def greet(username):
+async def greet(username:str):
    return {"message":f"Hello {username}"}
 ```
 
+In this example the `greet()` route handler function will require `username` which is annotated with `str` indicating that the username shall be a string. Sending a greetings to the user "jona" shall return the response shown below.
+
+![Greetings a User with a username](./imgs/img14.png)
+
+Just in we make a request to the route without the param, 
+![Greeting without a username specified](./imgs/img142.png)
+
+### Query Parameters
+These are key-value pairs provided at the end of a URL, indicated by a question mark (`?`). Just like path parameters, they also take in request data. Whenever we want to provide multiple query parameters, we use the ampersand (`&`) sign.
+
+```python
+# inside main.py
+
+user_list = [
+   "Jerry",
+   "Joey",
+   "Phil"
+] 
+
+@app.get('/search')
+async def search_for_user(username:str):
+   for user in user_list:
+    if username in user_list :
+        return {"message":f"details for user {username}"}
+
+    else:
+        return {"message":"User Not Found"}
+```
+
+In this example, we've set up a route for searching users within a simple list. Notice that there are no path parameters specified in the route's URL. Instead, we're passing the `username` directly to our route handler, `search_for_user`. In FastAPI, any parameter passed to a route handler, like `search_for_user`, and is not provided in the path as a path param is treated as a query parameter. Therefore, to access this route, we need to use `/search?username=sample_name`, where `username` is the key and `sample_name` is the value.
 
 
 ## Conclusion
