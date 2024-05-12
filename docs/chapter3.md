@@ -1,13 +1,4 @@
-# FastAPI Beyond CRUD (Chapter Three)
-
-Contents of the chapter
-- [What is CRUD?](#what-is-crud)
-- [Using HTTP GET to read all books](#reading-all-books-http-get-request)
-- [Using HTTP GET to retrieve a single Book](#read-one-book-http-get-request)
-- [Using HTTP POST to create a book](#adding-a-new-book-using-http-post)
-- [Using HTTP PATCH to update a book](#update-a-book-http-patch-request)
-- [Using HTTP DELETE to delete a book](#delete-a-book-http-delete-request)
-
+# Building a CRUD REST API 
 
 ## What is CRUD?
 
@@ -68,7 +59,7 @@ The provided table describes various API endpoints, their associated HTTP method
 
 Now that we have a plan of our simple API, we can now build our simple CRUD API by adding the following code to `main.py`. We shall begin by creating a very simple list of books that we will use as our database.
 
-```python
+```py
 # in memory database of the books
 books = [
     {

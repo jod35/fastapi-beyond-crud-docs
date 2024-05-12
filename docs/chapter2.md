@@ -1,12 +1,4 @@
-# FastAPI Beyond CRUD (Chapter Two)
-
-## Creating a Simple Web Server
-Contents of this chapter are
-- [Introduction](#introduction)
-- [Creating a FastAPI instance](#creating-a-fastapi-instance)
-- [Creating the first API endpoint](#creating-an-api-endpoint)
-- [Running a FastAPI server](#running-a-fastapi-application)
-- [Choosing a web API client](#choosing-an-api-client)
+# Creating a Simple Web Server
 
 ## Introduction
 Now that we have FastAPI installed, we are going to create a simple web server on whicn our application shall run using FastAPI.

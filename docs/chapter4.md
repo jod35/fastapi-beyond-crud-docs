@@ -1,12 +1,4 @@
-# FastAPI Beyond CRUD (Chapter Four)
-
-## Improved Project Structure Using Routers
-Contents of this chapter are
-- [Current folder structure](#current-folder-structure)
-- [Current code structure](#currrent-code-structure)
-- [Restructuring the folder structure](#restructuring-the-project)
-- [Introduction to FastAPI Routers](#introduction-to-fastapi-routers)
-
+# Large Project Structure Using Routers
 
 ### Current folder structure
 So far, our project structure is quite simple:

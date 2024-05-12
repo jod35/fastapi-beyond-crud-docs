@@ -1,13 +1,5 @@
-# FastAPI Beyond CRUD (Chapter Four)
-
 # Finishing Up the CRUD
-Contents of this chapter are
-- [Creating a service class](#creating-a-service-class)
-- [Creating a new book](#creating-a-new-book)
-- [Retrieving a book by its uid](#retrieve-a-book-by-its-uid)
-- [Update a book](#update-a-book)
-- [Delete a book](#delete-a-book)
-- [Dependency Injection](#dependency-injection)
+
 
 
 ## Creating a service class

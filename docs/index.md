@@ -1,13 +1,14 @@
 # FastAPI Beyond CRUD
-This is course material for my course on the [FastAPI](https://fastapi.tiangolo.com) Framework. FastAPI has risen to become one of the most popular frameworks for building server-side web applications using the Python language.
+
+This course material is tailored for my [FastAPI](http://fastapi.tiangolo.com) Framework course. FastAPI has quickly emerged as one of Python's leading frameworks for crafting server-side web applications. I'm excited to present this comprehensive course, dedicated to mastering API development with FastAPI. I trust you'll find immense value in it as we delve into the complexities of building robust APIs.
 
 ## About Me:
 <img src="./imgs/me.png" alt="my photo" width="150">
 
-My name is Ssali Jonathan. I am a software engineer based in Uganda. For about 3 years, I have been building a Youtube channel where I educate people about programming mainly using the Python language. I have worked on freelance, and fulltime roles. I have a passion for educating others and sharing knowledge.
+My name is Ssali Jonathan. I am a software engineer based in Uganda. For about 3 years, I have been building a [Youtube channel](https://youtube.com/@SsaliJonathan) where I educate people about programming mainly using the Python language. I have worked on freelance, and fulltime roles. I have a passion for educating others and sharing knowledge.
 
 ## Please donate to the project
-I have made this course available for free on my Youtube channel and on this website. If you can support me to create more projects like this, please consider donating to my work using the following channels.
+I have made this course available for free on my [Youtube channel](https://youtube.com/@SsaliJonathan) and on this website. If you can support me to create more projects like this, please consider donating to my work using the following channels.
 
 [Buy me a coffee](https://buymeacoffee.com/jod35)
 

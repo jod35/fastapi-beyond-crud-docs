@@ -1,6 +1,4 @@
-# Fast API Beyond CRUD (Chapter One)
-
-## Installation and Configuration
+# Installation and Project SetUp
 
 In chapter, we install FastAPI, starting with a minimal setup.
 

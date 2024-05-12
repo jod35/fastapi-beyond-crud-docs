@@ -1,0 +1,17 @@
+site_name: FastAPI Beyond CRUD
+site_url: https://jod35jon.github.io/fastapi-website/chapter3.html
+repo_url: https://github.com/jod35jon/fastapi-website
+
+theme:
+  name: material
+  palette:
+    primary: orange
+
+  font:
+    text: Roboto
+
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences

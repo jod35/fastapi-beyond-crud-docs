@@ -1,15 +1,4 @@
-# FastAPI Beyond CRUD (Chapter Five)
-
-## Databases with SQLModel
-Contents of this chapter are
-- [Choosing a database for FastAPI](#current-folder-structure)
-- [Explaining Object-Relational Mappers (ORMs)](#explaining-an-object-relational-mapper-orm)
-- [Creating a Database (PostgreSQL)](#creating-a-database)
-- [Settings Management With Pydantic](#settings-management-with-pydantic)
-- [Creating database models with SQLModel](#creating-database-models-with-sqlmodel)
-- [Connecting to databases](#connecting-to-databases)
-- [Lifespan events in FastAPI](#lifespan-events-in-fastapi)
-- [Creating database tables](#creating-database-tables)
+# Databases with SQLModel
 
 In the preceding chapter, we developed a functional CRUD API that operated on a simple in-memory database, represented by a Python list. However, in real-world applications, it's essential to use a persistent database to store all necessary data.
 
