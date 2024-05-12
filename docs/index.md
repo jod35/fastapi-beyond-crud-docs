@@ -3,7 +3,7 @@ This is course material for my course on the [FastAPI](https://fastapi.tiangolo.
 
 ## About Me:
 <center>
-![Ny photo]()
+<img src="./imgs/me.png" alt="my photo" width="150">
 </center>
 My name is Ssali Jonathan. I am a software engineer based in Uganda. For about 3 years, I have been building a Youtube channel where I educate people about programming mainly using the Python language. I have worked on freelance, and fulltime roles. I have a passion for educating others and sharing knowledge.
 
