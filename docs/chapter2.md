@@ -11,7 +11,7 @@ Contents of this chapter are
 ## Introduction
 Now that we have FastAPI installed, we are going to create a simple web server on whicn our application shall run using FastAPI.
 
-At this stage, our directory only contains our virtual `environment` and `requirements.txt` as shown below as follows:
+At this stage, our directory only contains our virtual environment `env` and `requirements.txt` as shown below as follows:
 ```
 └── env
 └── requirements.txt
