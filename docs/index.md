@@ -1,75 +1,22 @@
-# Fast API Beyond CRUD (Chapter One)
+# FastAPI Beyond CRUD
+This is course material for my course on the [FastAPI](https://fastapi.tiangolo.com) Framework. FastAPI has risen to become one of the most popular frameworks for building server-side web applications using the Python language.
 
-## Installation and Configuration
+## About Me:
+<center>
+![Ny photo]()
+</center>
+My name is Ssali Jonathan. I am a software engineer based in Uganda. For about 3 years, I have been building a Youtube channel where I educate people about programming mainly using the Python language. I have worked on freelance, and fulltime roles. I have a passion for educating others and sharing knowledge.
 
-In chapter, we install FastAPI, starting with a minimal setup.
+## Please donate to the project
+I have made this course available for free on my Youtube channel and on this website. If you can support me to create more projects like this, please consider donating to my work using the following channels.
 
-### 1. Virtual Environment Creation
+[Buy me a coffee](https://buymeacoffee.com/jod35)
 
-Begin by creating a virtual environment using the built-in Python module `venv`. If you already have Python installed, you might not need to install it separately. However, on Linux, installation may be necessary based on your distribution. In your cmmandline or terminal, type the following command.
+[Become a Patreon](https://patreon.com/jod35)   
 
-```bash
-python3 -m venv env
-```
+## Follow me on the following platforms
+- [Twitter](https://twitter.com/jod35_)
+- [Github](https://github.com/jod35)
+- [Youtube](https://youtube.com/@SsaliJonathan)
 
-This command generates a virtual environment in the specified folder (in our example, `env`). This folder is an isolated Python environment which shall separate the dependencies of our project from the system wide Python installation.
-
-
-Activate the virtual environment using the following commands:
-
-On Linux or macOS:
-```bash
-source env/bin/activate
-```
-
-On Windows:
-```bash
-env/Scripts/activate
-```
-
-Once activated, your command line will indicate the active virtual environment:
-
-On Linux or macOS:
-```bash
-(env) yourusername@yourmachine$
-```
-
-On Windows:
-```bash
-(env) C:\users\YourUsername>
-```
-
-### 2. Directory Structure
-At this point, your directory structure should look like this:
-
-```
-└── env
-```
-
-### 3. Installing FastAPI
-
-Now, install FastAPI within the virtual environment. We shall install `fastapi` with the command. 
-
-```console
-(env) pip install fastapi
-```
-
-### 4. Freeze Dependencies
-
-Freeze the installed dependencies into a `requirements.txt` file to track the exact versions of our dependencies so that we can easily reproduce it in the future.
-
-```console
-(env) pip freeze > requirements.txt
-```
-
-5. Let us confirm our fastapi installation by running the following command.
-```python
-(env) fastapi --version
-FastAPI CLI version: 0.0.2
-```
-This command shall show us the version of FastAPI CLI the FastAPI commandline interface. The `fastapi` command shall help us run and manage our app as we shall see in the coming chapters.
-
-## Conclusion
-By following these steps, you have successfully set up a virtual environment, and installed FastAPI, frozen the dependencies for future reproducing of the project and you have verified your installastion using the `fastapi` CLI command. This structured approach ensures a clean and manageable development environment for our FastAPI project. Next, we shall create a simple web server and create our first API routes.
-
-**Next** [Creating a Simple Web Server](./chapter2.md)
+**Next** [Project SetUp and Installation](./chapter1.md)
