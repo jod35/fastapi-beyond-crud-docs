@@ -319,9 +319,11 @@ Common request headers include:
 - `Connection`: This header controls whether the network connection stays open after the current transaction finishes. 
 
 
-To access such headers, FastAPI provides us with the `Header` function giving us the ability to get the values of these headers using the exact names but in a snake-case syntax forexample, `User-Agent` is `user_agent`, `Accept-Encoding` is `accept-encoding` and so on. Let us take a look at a small code example.
+To access such headers, FastAPI provides us with the `Header` function giving us the ability to get the values of these headers using the exact names but in a snake-case syntax forexample, `User-Agent` is `user_agent`, `Accept-Encoding` is `accept_encoding` and so on. Let us take a look at a small code example.
 
 ```python
+# inside main.py
+@app.get('/get_headers')
 async def get_all_request_headers(
     user_agent: Optional[str] = Header(None),
     accept_encoding: Optional[str] = Header(None),
@@ -340,7 +342,22 @@ async def get_all_request_headers(
 
     return request_headers
 ```
+We've started by importing the `Header` function from FastAPI into our route handler. Each header has been added and designated as an optional string. A default value has been assigned by invoking the `Header` function with `None` as a parameter. 
+Using the `None` argument allows the Header() function to declare the variable optionally, which aligns with best practices.
 
+```python
+    user_agent: Optional[str] = Header(None)
+```
+
+we have then created a request_headers dictionary with the names of the headers as keys and the values as what we get by calling the `Header` function.
+
+Making a request to the `/get_headers` route shall return the following response depending on how you have made the request. For my case,
+![Response returning headers](./imgs/img23.png)
+
+
+## Conclusion
+
+In this chapter, we utilized FastAPI to construct a basic web server and delved into different methods of communicating and inputting data. We introduced concepts such as path and query parameters, along with request headers. Moving forward, the next chapter will focus on developing a straightforward CRUD API for managing book resources utilizing an in-memory database.
 
 **Next** [Creating a simple CRUD API](./chapter3.md)
 
