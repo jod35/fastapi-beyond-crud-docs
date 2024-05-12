@@ -303,12 +303,43 @@ There can indeed be scenarios that necessitate the use of all the features we've
 
 During a request-response transaction, the client not only sends parameters to the server but also provides information about the context of the request's origin. This contextual information is crucial as it enables the server to customize the type of response it returns to the client.
 
-## Conclusion
-In this chapter, we've built a straightforward web server using FastAPI. We've also delved into the process of creating API routes and running our server using the FastAPI Command Line Interface. Next up, we'll construct a simple REST API to execute CRUD operations on an in-memory database.
-
 Common request headers include:
 - `User-Agent`: This string allows network protocol peers to identify the application responsible for the request, the operating system it's running on, or the version of the software being used.
 
+- `Host`: This specifies the domain name of the server, and (optionally) the TCP port number on which the server is listening.
+
+- `Accept`: Informs the server about the types of data that can be sent back.
+
+- `Accept-Language`: This header informs the server about the preferred human language for the response.
+
+- `Accept-Encoding`: The encoding algorithm, usually a compression algorithm, that can be used on the resource sent back.
+
+- `Referer`: This specifies the address of the previous web page from which a link to the currently requested page was followed.
+
+- `Connection`: This header controls whether the network connection stays open after the current transaction finishes. 
+
+
+To access such headers, FastAPI provides us with the `Header` function giving us the ability to get the values of these headers using the exact names but in a snake-case syntax forexample, `User-Agent` is `user_agent`, `Accept-Encoding` is `accept-encoding` and so on. Let us take a look at a small code example.
+
+```python
+async def get_all_request_headers(
+    user_agent: Optional[str] = Header(None),
+    accept_encoding: Optional[str] = Header(None),
+    referer: Optional[str] = Header(None),
+    connection: Optional[str] = Header(None),
+    accept_language: Optional[str] = Header(None),
+    host: Optional[str] = Header(None),
+):
+    request_headers = {}
+    request_headers["User-Agent"] = user_agent
+    request_headers["Accept-Encoding"] = accept_encoding
+    request_headers["Referer"] = referer
+    request_headers["Accept-Language"] = accept_language
+    request_headers["Connection"] = connection
+    request_headers["Host"] = host
+
+    return request_headers
+```
 
 
 **Next** [Creating a simple CRUD API](./chapter3.md)
