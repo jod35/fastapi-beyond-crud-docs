@@ -250,12 +250,13 @@ class UserSchema(BaseModel):
    
 ```
 
-Next, we created our API route which is to handle a `POST` request on the `/create_user`. The route handler for this route takes in a parameter for the `user_data` as we get it from the client. Note that this is annotated to the type of the Pydantic model `UserSchema`. 
+Following that, have crafted an API route intended to handle a POST request at /create_user. The handler for this route accepts a parameter representing the user_data obtained from the client, with its type annotated as the Pydantic model UserSchema.
 ```python
 create_user(user_data:UserSchema)
 ```
 
-Basing on this data, we create a `new_user` dictionary and add it to our `users` list.
+
+Using this `user_data`, we construct a new_user dictionary and append it to our users list.
 ```python
    new_user = {
       "username" : user_data.username,
@@ -267,31 +268,48 @@ Basing on this data, we create a `new_user` dictionary and add it to our `users`
 ```
 
 
-We finally return a response with the newly created `user` dictionary. 
+We finally return a response with the newly created `new_user` dictionary. 
 
 ```python
 
    return {"message":"User Created successfully","user":new_user}
 ```
 
-Let us test this out. When we make the request without providing the request body, we shall get the following response.
+
+Let's test this. If we make the request without providing the request body, we should receive the following response.
 ![making request without request body](./imgs/img19.png)
 
-Note that we shall get the 422 `Unprocessible Entity` status code because FastAPI has failed to get the data from the request body. we have not provided it.
 
-When we provide the body without the required fields, we shall then get the following output.
+Please note that we will receive the `422 Unprocessable Entity` status code because FastAPI failed to retrieve data from the request body, as it has not been provided.
+
+
+When we provide the body without the required fields, we will receive the following output.
 ![request with missing fields in post data](./imgs/img20.png)
 
-We shall get the same output but this time we shall be told that the required fields for the data are missing.
+
+We will receive the same output, but this time we will be notified that the required fields (`email`,`username`) for the data are missing.
 
 Let us now provide valid data.
 
-
-
 ![successful request with valid user data](./imgs/img21.png)
+
+
+Supplying valid values for the `email` and `username` fields will result in a successful response.
+
+#### Note
+There can indeed be scenarios that necessitate the use of all the features we've discussed. You can have an API route that accepts path, query, and optional parameters, and FastAPI is capable of handling such complexity seamlessly.
+
+### Request Headers
+
+During a request-response transaction, the client not only sends parameters to the server but also provides information about the context of the request's origin. This contextual information is crucial as it enables the server to customize the type of response it returns to the client.
 
 ## Conclusion
 In this chapter, we've built a straightforward web server using FastAPI. We've also delved into the process of creating API routes and running our server using the FastAPI Command Line Interface. Next up, we'll construct a simple REST API to execute CRUD operations on an in-memory database.
+
+Common request headers include:
+- `User-Agent`: This string allows network protocol peers to identify the application responsible for the request, the operating system it's running on, or the version of the software being used.
+
+
 
 **Next** [Creating a simple CRUD API](./chapter3.md)
 

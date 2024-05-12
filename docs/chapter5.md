@@ -3,7 +3,6 @@
 ## Databases with SQLModel
 Contents of this chapter are
 - [Choosing a database for FastAPI](#current-folder-structure)
-- [Choosing a Database for FastAPI](#choosing-a-database-for-fastapi)
 - [Explaining Object-Relational Mappers (ORMs)](#explaining-an-object-relational-mapper-orm)
 - [Creating a Database (PostgreSQL)](#creating-a-database)
 - [Settings Management With Pydantic](#settings-management-with-pydantic)
