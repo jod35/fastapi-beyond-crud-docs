@@ -169,7 +169,7 @@ async def delete_book(book_id: int):
 
 ```
 
-## Reading All Books (HTTP GET request)
+## Reading All Books (HTTP GET)
 
 The initial API endpoint is `/books`, designed to retrieve all the books stored in the database and present them in a list. This is accomplished by implementing the `read_books` function, which, when invoked, returns the `books` list.
 
@@ -199,7 +199,7 @@ This capability enables us to effortlessly respond with a list of book objects w
 ![List of Books](./imgs/img5.png)
 
 
-## Read one Book (HTTP GET request)
+## Read one Book (HTTP GET)
 We retrieve a single book by its ID by calling the `read_book` function whenever we make a request to `book/{book_id}`. Note that the {book_id} is refered to as a **path parameter** that is even passed to the `read_book function to find the book with the given ID. All we have done is to iterate through the book list, and check if a book exists in the list with the given ID. If not found,, we shall return a message indicating that.
 
 ```python
@@ -214,7 +214,7 @@ async def read_book(book_id: int):
 ![get a book](./imgs/img6.png)
 
 
-## Adding a New Book (Using HTTP POST)
+## Adding a New Book (HTTP POST)
 
 To insert a new book into our system, we need to create a blueprint for the book's details. FastAPI uses a tool called Pydantic for this, making sure the data follows specific rules. This helps validate the information we receive and ensures smooth communication with the database.
 
@@ -262,7 +262,7 @@ On the other hand, sending valid JSON data to the server creates a new book reco
 It's crucial to use the right HTTP status code in each response. In this case, we use `status_code=201` to indicate the successful creation of a resource. The default status code is 200, which represents a standard successful response.
 
 
-## Update a book (HTTP PATCH request)
+## Update a book (HTTP PATCH)
 Let us look at the update endpoint. This is quite similar to the create endpoint as it allows data to be sent to the server via the **PATCH** HTTP method. But it also requires we provide the `book_id` of the book that we will be updating. we loop through the book list and find the book that matches the `book_id` as shown below:
 
 ```python
@@ -300,7 +300,7 @@ Let us confirm if our book record has been updated successfully. To do so we are
 ![retrieve updated book record](./imgs/img11.png)
 
 
-## Delete a book (HTTP Delete request)
+## Delete a book (HTTP Delete)
 Let us finally look at deletion of the book record. This is carried out in the following example:
 
 ```python

@@ -5,7 +5,7 @@ repo_url: https://github.com/jod35jon/fastapi-website
 theme:
   name: material
   palette:
-    primary: orange
+    primary: deep orange
 
   font:
     text: Roboto

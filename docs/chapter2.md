@@ -105,6 +105,7 @@ Following these steps means you've successfully created a basic FastAPI applicat
 Depending on your choice, you may want to test your application with an Api Client, I will begin with [Insomnia](https://insomina.rest) which is a simple open source application for testing and development APIs.
 
 In insomnia, we shall create our simple request collection and we shall now see our response of `Hello World`.
+
 1. Create a new request collection
 ![Creatina request collection](./imgs/img1.png)
 

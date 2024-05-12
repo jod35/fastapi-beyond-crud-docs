@@ -63,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="orange" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -327,6 +327,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#5-confirm-the-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Confirm the installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#conclusion" class="md-nav__link">
     <span class="md-ellipsis">
       Conclusion
@@ -506,6 +515,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#5-confirm-the-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Confirm the installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#conclusion" class="md-nav__link">
     <span class="md-ellipsis">
       Conclusion
@@ -565,13 +583,12 @@
 <p>Freeze the installed dependencies into a <code>requirements.txt</code> file to track the exact versions of our dependencies so that we can easily reproduce it in the future.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gp gp-VirtualEnv">(env)</span> <span class="go">pip freeze &gt; requirements.txt</span>
 </code></pre></div>
-<ol>
-<li>Let us confirm our fastapi installation by running the following command.
+<h3 id="5-confirm-the-installation">5. Confirm the installation</h3>
+<p>Let us confirm our fastapi installation by running the following command.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="n">fastapi</span> <span class="o">--</span><span class="n">version</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">FastAPI</span> <span class="n">CLI</span> <span class="n">version</span><span class="p">:</span> <span class="mf">0.0.2</span>
 </code></pre></div>
-This command shall show us the version of FastAPI CLI the FastAPI commandline interface. The <code>fastapi</code> command shall help us run and manage our app as we shall see in the coming chapters.</li>
-</ol>
+This command shall show us the version of FastAPI CLI the FastAPI commandline interface. The <code>fastapi</code> command shall help us run and manage our app as we shall see in the coming chapters.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>By following these steps, you have successfully set up a virtual environment, and installed FastAPI, frozen the dependencies for future reproducing of the project and you have verified your installastion using the <code>fastapi</code> CLI command. This structured approach ensures a clean and manageable development environment for our FastAPI project. Next, we shall create a simple web server and create our first API routes.</p>
 <p><strong>Previous</strong> <a href="../">Introduction</a></p>

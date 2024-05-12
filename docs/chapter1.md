@@ -60,7 +60,8 @@ Freeze the installed dependencies into a `requirements.txt` file to track the ex
 (env) pip freeze > requirements.txt
 ```
 
-5. Let us confirm our fastapi installation by running the following command.
+### 5. Confirm the installation
+Let us confirm our fastapi installation by running the following command.
 ```python
 (env) fastapi --version
 FastAPI CLI version: 0.0.2

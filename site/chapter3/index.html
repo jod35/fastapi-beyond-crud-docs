@@ -63,7 +63,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="orange" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -355,13 +355,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reading-all-books-http-get-request" class="md-nav__link">
+  <a href="#reading-all-books-http-get" class="md-nav__link">
     <span class="md-ellipsis">
-      Reading All Books (HTTP GET request)
+      Reading All Books (HTTP GET)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Reading All Books (HTTP GET request)">
+    <nav class="md-nav" aria-label="Reading All Books (HTTP GET)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -379,22 +379,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#read-one-book-http-get-request" class="md-nav__link">
+  <a href="#read-one-book-http-get" class="md-nav__link">
     <span class="md-ellipsis">
-      Read one Book (HTTP GET request)
+      Read one Book (HTTP GET)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-a-new-book-using-http-post" class="md-nav__link">
+  <a href="#adding-a-new-book-http-post" class="md-nav__link">
     <span class="md-ellipsis">
-      Adding a New Book (Using HTTP POST)
+      Adding a New Book (HTTP POST)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Adding a New Book (Using HTTP POST)">
+    <nav class="md-nav" aria-label="Adding a New Book (HTTP POST)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -412,18 +412,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#update-a-book-http-patch-request" class="md-nav__link">
+  <a href="#update-a-book-http-patch" class="md-nav__link">
     <span class="md-ellipsis">
-      Update a book (HTTP PATCH request)
+      Update a book (HTTP PATCH)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#delete-a-book-http-delete-request" class="md-nav__link">
+  <a href="#delete-a-book-http-delete" class="md-nav__link">
     <span class="md-ellipsis">
-      Delete a book (HTTP Delete request)
+      Delete a book (HTTP Delete)
     </span>
   </a>
   
@@ -557,13 +557,13 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reading-all-books-http-get-request" class="md-nav__link">
+  <a href="#reading-all-books-http-get" class="md-nav__link">
     <span class="md-ellipsis">
-      Reading All Books (HTTP GET request)
+      Reading All Books (HTTP GET)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Reading All Books (HTTP GET request)">
+    <nav class="md-nav" aria-label="Reading All Books (HTTP GET)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -581,22 +581,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#read-one-book-http-get-request" class="md-nav__link">
+  <a href="#read-one-book-http-get" class="md-nav__link">
     <span class="md-ellipsis">
-      Read one Book (HTTP GET request)
+      Read one Book (HTTP GET)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#adding-a-new-book-using-http-post" class="md-nav__link">
+  <a href="#adding-a-new-book-http-post" class="md-nav__link">
     <span class="md-ellipsis">
-      Adding a New Book (Using HTTP POST)
+      Adding a New Book (HTTP POST)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Adding a New Book (Using HTTP POST)">
+    <nav class="md-nav" aria-label="Adding a New Book (HTTP POST)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -614,18 +614,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#update-a-book-http-patch-request" class="md-nav__link">
+  <a href="#update-a-book-http-patch" class="md-nav__link">
     <span class="md-ellipsis">
-      Update a book (HTTP PATCH request)
+      Update a book (HTTP PATCH)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#delete-a-book-http-delete-request" class="md-nav__link">
+  <a href="#delete-a-book-http-delete" class="md-nav__link">
     <span class="md-ellipsis">
-      Delete a book (HTTP Delete request)
+      Delete a book (HTTP Delete)
     </span>
   </a>
   
@@ -870,7 +870,7 @@
 <a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>            <span class="k">return</span> <span class="n">book</span>
 <a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Book not found&quot;</span><span class="p">}</span>
 </code></pre></div>
-<h2 id="reading-all-books-http-get-request">Reading All Books (HTTP GET request)</h2>
+<h2 id="reading-all-books-http-get">Reading All Books (HTTP GET)</h2>
 <p>The initial API endpoint is <code>/books</code>, designed to retrieve all the books stored in the database and present them in a list. This is accomplished by implementing the <code>read_books</code> function, which, when invoked, returns the <code>books</code> list.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/books&quot;</span><span class="p">)</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">read_books</span><span class="p">():</span>
@@ -890,7 +890,7 @@
 </ul>
 <p>This capability enables us to effortlessly respond with a list of book objects when issuing a <code>GET</code> request to <code>http://localhost:8000/books</code>, as illustrated below:</p>
 <p><img alt="List of Books" src="../imgs/img5.png" /></p>
-<h2 id="read-one-book-http-get-request">Read one Book (HTTP GET request)</h2>
+<h2 id="read-one-book-http-get">Read one Book (HTTP GET)</h2>
 <p>We retrieve a single book by its ID by calling the <code>read_book</code> function whenever we make a request to <code>book/{book_id}</code>. Note that the {book_id} is refered to as a <strong>path parameter</strong> that is even passed to the `read_book function to find the book with the given ID. All we have done is to iterate through the book list, and check if a book exists in the list with the given ID. If not found,, we shall return a message indicating that.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/book/</span><span class="si">{book_id}</span><span class="s1">&#39;</span><span class="p">)</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">read_book</span><span class="p">(</span><span class="n">book_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
@@ -900,7 +900,7 @@
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Book not found&quot;</span><span class="p">}</span>
 </code></pre></div>
 <p><img alt="get a book" src="../imgs/img6.png" /></p>
-<h2 id="adding-a-new-book-using-http-post">Adding a New Book (Using HTTP POST)</h2>
+<h2 id="adding-a-new-book-http-post">Adding a New Book (HTTP POST)</h2>
 <p>To insert a new book into our system, we need to create a blueprint for the book's details. FastAPI uses a tool called Pydantic for this, making sure the data follows specific rules. This helps validate the information we receive and ensures smooth communication with the database.</p>
 <p>Let's break down the process step by step. First, we define a class for our book details, called <code>BookSchema</code>, and save it in a file named <code>schemas.py</code>:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
@@ -930,7 +930,7 @@
 <p><img alt="Successful creation of a new book record with valid JSON data" src="../imgs/img9.png" /></p>
 <h3 id="note_1">Note</h3>
 <p>It's crucial to use the right HTTP status code in each response. In this case, we use <code>status_code=201</code> to indicate the successful creation of a resource. The default status code is 200, which represents a standard successful response.</p>
-<h2 id="update-a-book-http-patch-request">Update a book (HTTP PATCH request)</h2>
+<h2 id="update-a-book-http-patch">Update a book (HTTP PATCH)</h2>
 <p>Let us look at the update endpoint. This is quite similar to the create endpoint as it allows data to be sent to the server via the <strong>PATCH</strong> HTTP method. But it also requires we provide the <code>book_id</code> of the book that we will be updating. we loop through the book list and find the book that matches the <code>book_id</code> as shown below:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s1">&#39;/book/</span><span class="si">{book_id}</span><span class="s1">&#39;</span><span class="p">)</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">update_book</span><span class="p">(</span><span class="n">book_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">update_data</span><span class="p">:</span> <span class="n">BookUpdateSchema</span><span class="p">):</span>
@@ -957,7 +957,7 @@
 <p><img alt="successful updated of a book record" src="../imgs/img10.png" /></p>
 <p>Let us confirm if our book record has been updated successfully. To do so we are going to retrieve the book by its ID. The book record has been updated successfully.</p>
 <p><img alt="retrieve updated book record" src="../imgs/img11.png" /></p>
-<h2 id="delete-a-book-http-delete-request">Delete a book (HTTP Delete request)</h2>
+<h2 id="delete-a-book-http-delete">Delete a book (HTTP Delete)</h2>
 <p>Let us finally look at deletion of the book record. This is carried out in the following example:</p>
 <p><div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;/book/</span><span class="si">{book_id}</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">status_code</span><span class="o">=</span><span class="mi">204</span><span class="p">)</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">delete_book</span><span class="p">(</span><span class="n">book_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
