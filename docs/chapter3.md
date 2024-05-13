@@ -196,7 +196,7 @@ In Python, the following data types are serializable:
 
 This capability enables us to effortlessly respond with a list of book objects when issuing a `GET` request to `http://localhost:8000/books`, as illustrated below:
 
-![List of Books](./imgs/img5.png)
+![List of Books](./img/img5.png)
 
 
 ## Read one Book (HTTP GET)
@@ -211,7 +211,7 @@ async def read_book(book_id: int):
     return {"message": "Book not found"}
 ```
 
-![get a book](./imgs/img6.png)
+![get a book](./img/img6.png)
 
 
 ## Adding a New Book (HTTP POST)
@@ -247,15 +247,15 @@ async def create_book(book: BookSchema):
 
 The `BookSchema` class ensures that the data sent to the server follows the expected format. If invalid data is submitted, the server responds with errors, as shown below when no data is sent:
 
-![Validation for no data being sent to the server](./imgs/img7.png)
+![Validation for no data being sent to the server](./img/img7.png)
 
 Similarly, submitting incomplete or incorrect data results in validation errors:
 
-![Validation for incomplete or invalid data](./imgs/img8.png)
+![Validation for incomplete or invalid data](./img/img8.png)
 
 On the other hand, sending valid JSON data to the server creates a new book record. The response includes a 201 Created status code:
 
-![Successful creation of a new book record with valid JSON data](./imgs/img9.png)
+![Successful creation of a new book record with valid JSON data](./img/img9.png)
 
 ### Note
 
@@ -293,11 +293,11 @@ class BookUpdateSchema(BaseModel):
 
 Notice how we have neglected some of the fields that are available in our Book structure as shown in our list of books. This is to ensure that we only send those fields that will be updated. Let us update our book record.
 
-![successful updated of a book record](./imgs/img10.png)
+![successful updated of a book record](./img/img10.png)
 
 Let us confirm if our book record has been updated successfully. To do so we are going to retrieve the book by its ID. The book record has been updated successfully.
 
-![retrieve updated book record](./imgs/img11.png)
+![retrieve updated book record](./img/img11.png)
 
 
 ## Delete a book (HTTP Delete)
@@ -315,7 +315,7 @@ async def delete_book(book_id: int):
 ```
 What we have here is to loop through the books and find the book associated with the given `book_id` the we remove it from the list of books by using the `remove` list method. Notice that we are return a 204 response status code. This means that we have deleted the book and therefore we shall not return any content as shown below.
 
-![delete a book record ](./imgs/img12.png)
+![delete a book record ](./img/img12.png)
 
 
 And just like that, we have created a CRUD REST API using a simple in memory database. 

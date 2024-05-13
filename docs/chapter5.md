@@ -38,14 +38,14 @@ Let's initiate the database setup. Setting up a database can be intricate, often
 
 Throughout this course, I'll utilize [Neon](https://neon.tech/), a free fully managed PostgreSQL database with a generous free tier. With Neon, we can swiftly create a database and get started without delay.
 
-![image of Neon](./imgs/neon.png)
+![image of Neon](./img/neon.png)
 
 Once you have created your free account on Neon, you can create a new project and in it, you will also create your new database.
 
-![Create a new project and database](./imgs/neon2.png)
+![Create a new project and database](./img/neon2.png)
 
 Once you have created your database, you can then go ahead and copy your connection details. 
-![Copy your connection details](./imgs/neon3.png)
+![Copy your connection details](./img/neon3.png)
 
 
 After, Create a file called `.env` in which we shall store our project configurations as secrets. (This file is important and should not be added to version control) In your `.env` file, paste the database connection URL you have obtained from Neon. We are going to create an environment variable called `DATABASE_URL` with the value of our URL.

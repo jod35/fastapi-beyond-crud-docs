@@ -107,17 +107,17 @@ Depending on your choice, you may want to test your application with an Api Clie
 In insomnia, we shall create our simple request collection and we shall now see our response of `Hello World`.
 
 1. Create a new request collection
-![Creatina request collection](./imgs/img1.png)
+![Creatina request collection](./img/img1.png)
 
 
 2. Name the request collection
-![Name of the collection](./imgs/img2.png)
+![Name of the collection](./img/img2.png)
 
 3. Create an HTTP request
-![Create an HTTP request](./imgs/img3.png)
+![Create an HTTP request](./img/img3.png)
 
 4. Make a request
-![Make a request](./imgs/img4.png)
+![Make a request](./img/img4.png)
 
 
 And just like that, you have created your FastAPI application, run it and even made your HTTP request using an HTTP client.
@@ -149,10 +149,10 @@ async def greet(username:str):
 
 In this example the `greet()` route handler function will require `username` which is annotated with `str` indicating that the username shall be a string. Sending a greetings to the user "jona" shall return the response shown below.
 
-![Greetings a User with a username](./imgs/img14.png)
+![Greetings a User with a username](./img/img14.png)
 
 Just in we make a request to the route without the param, 
-![Greeting without a username specified](./imgs/img142.png)
+![Greeting without a username specified](./img/img142.png)
 
 ### Query Parameters
 These are key-value pairs provided at the end of a URL, indicated by a question mark (`?`). Just like path parameters, they also take in request data. Whenever we want to provide multiple query parameters, we use the ampersand (`&`) sign.
@@ -180,10 +180,10 @@ In this example, we've set up a route for searching users within a simple list. 
 
 Let us save and test the example above. Saecrning for a user who exists returns the needed response.
 
-![Searching for a user who doesnot exist](./imgs/img15.png)
+![Searching for a user who doesnot exist](./img/img15.png)
 
 And searching for a user who does not exist returns the following response. 
-![Searching a user who does not exist](./imgs/img16.png)
+![Searching a user who does not exist](./img/img16.png)
 
 ### Optional Parameters
 There may also be cases when the API route can operate as needed even in the presence of a path or query param. In this case, we can make the parameters optional when annotating their types in the route handler functions. Forexample, our first example can be modified to the following:
@@ -203,10 +203,10 @@ username:Optional[str]
 ```
 
 When we save the example, we shall test it and get the following response.
-![greeting a user with a username as a query param](./imgs/img17.png)
+![greeting a user with a username as a query param](./img/img17.png)
 
 Note that this time if we do not provide the `username`, we shall get the default username of "User".
-![greeting with the default value of the username](./imgs/img18.png)
+![greeting with the default value of the username](./img/img18.png)
 
 
 ## Request Body
@@ -270,21 +270,21 @@ We finally return a response with the newly created `new_user` dictionary.
 
 
 Let's test this. If we make the request without providing the request body, we should receive the following response.
-![making request without request body](./imgs/img19.png)
+![making request without request body](./img/img19.png)
 
 
 Please note that we will receive the `422 Unprocessable Entity` status code because FastAPI failed to retrieve data from the request body, as it has not been provided.
 
 
 When we provide the body without the required fields, we will receive the following output.
-![request with missing fields in post data](./imgs/img20.png)
+![request with missing fields in post data](./img/img20.png)
 
 
 We will receive the same output, but this time we will be notified that the required fields (`email`,`username`) for the data are missing.
 
 Let us now provide valid data.
 
-![successful request with valid user data](./imgs/img21.png)
+![successful request with valid user data](./img/img21.png)
 
 
 Supplying valid values for the `email` and `username` fields will result in a successful response.
@@ -345,7 +345,7 @@ Using the `None` argument allows the Header() function to declare the variable o
 we have then created a request_headers dictionary with the names of the headers as keys and the values as what we get by calling the `Header` function.
 
 Making a request to the `/get_headers` route shall return the following response depending on how you have made the request. For my case,
-![Response returning headers](./imgs/img23.png)
+![Response returning headers](./img/img23.png)
 
 
 ## Conclusion
