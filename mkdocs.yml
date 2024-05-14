@@ -1,0 +1,23 @@
+site_name: FastAPI Beyond CRUD
+nav:
+  - Home: index.md
+  - Project: 
+      - Installation and Project SetUp: chapter1.md
+      - Creating a Simple Web Server: chapter2.md
+      - Building a CRUD REST API: chapter3.md 
+      - Large Project Structure Using Routers: chapter4.md
+      - Databases with SQLModel: chapter5.md
+      - Finishing Up the CRUD: chapter6.md
+
+
+theme: 
+  name: readthedocs
+
+  palette:
+    primary: deep orange
+
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
