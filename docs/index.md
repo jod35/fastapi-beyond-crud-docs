@@ -1,6 +1,6 @@
 # FastAPI Beyond CRUD
 
-This course material is tailored for my [FastAPI](http://fastapi.tiangolo.com) Framework course. FastAPI has quickly emerged as one of Python's leading frameworks for crafting server-side web applications. I'm excited to present this comprehensive course, dedicated to mastering API development with FastAPI. I trust you'll find immense value in it as we delve into the complexities of building robust APIs.
+This course material is tailored for my [FastAPI](http://fastapi.tiangolo.com) Framework course. FastAPI has quickly emerged as one of Python's leading frameworks for crafting server-side web applications. I'm excited to present this comprehensive course, dedicated to helping you understand API development with FastAPI. I trust you'll find immense value in it as we delve into the complexities of building robust APIs.
 
 ## About Me:
 <img src="./img/me.png" alt="my photo" width="150">

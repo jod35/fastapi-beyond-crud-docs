@@ -3,7 +3,7 @@
 ## Introduction
 Now that we have FastAPI installed, we are going to create a simple web server on whicn our application shall run using FastAPI.
 
-At this stage, our directory only contains our virtual environment `env` and `requirements.txt` as shown below as follows:
+At this stage, our directory only contains our virtual environment directory `env` and `requirements.txt` as shown below as follows:
 ```
 └── env
 └── requirements.txt
@@ -24,13 +24,11 @@ async def read_root():
 
 In this code snippet, we perform the following actions:
 
-## **Creating a FastAPI instance:**
-We have imported the `FastAPI` class from the `fastapi` package. This class serves as the primary entry point for all FastAPI applications. Through it we can get access to various FastAPI features such as *routes* , *middleware*, exception handlers* and *path operations*.
+### **Creating a FastAPI instance:**
+We have imported the `FastAPI` class from the `fastapi` package. This class serves as the primary entry point for all FastAPI applications. Through it we can get access to various FastAPI features such as routes , middleware, exception handlers and path operations.
 
 
-We then create an instance of the `FastAPI` class named `app`.
-
-      The main FastAPI instance can be called anything as long as it is a valid Python name. 
+We then create an instance of the `FastAPI` class named `app`. The main FastAPI instance can be called anything as long as it is a valid Python name. 
 
 
 ```python
@@ -39,7 +37,7 @@ from fastapi import FastAPI
 app = FastAPI()
 ```
 
-## **Creating an API Route:**
+### **Creating an API Route:**
    We define our first API route by creating a function named `read_root`. This function, when accessed, will return a JSON message containing "Hello World!".
 
 ```python
@@ -48,11 +46,11 @@ async def read_root():
     return {"message": "Hello World!"}
 ```
 
-The `@app` decorator associates the function with the HTTP GET method  via the `get` function. We then provide the path (route) of the root path (`/`). This means that whenever the `/` route is accessed, the defined message will be returned.
+The `@app` decorator associates the function with the HTTP GET method  via the `get` method. We then provide the path (route) of the root path (`/`). This means that whenever the `/` route is accessed, the defined message will be returned.
 
 All HTTP methods such as `post`,`put`,`head`,`patch`, `delete`, `trace` and `options` are all available on the `@app` decorator.
 
-## **Running the FastAPI Application:**
+### **Running the FastAPI Application:**
    To run our FastAPI application, we shall use the `fastapi`command we introduced in the previous chapter. Open a terminal and execute the following command within the virtual environment:
 
 ```console
