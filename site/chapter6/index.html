@@ -657,18 +657,19 @@
 <p>In this chapter, we will focus on creating a dedicated service file to house the essential logic required for executing CRUD operations using our PostgreSQL database. The primary objective is to abstract away database interactions from our API routes, enhancing code readability and maintainability.</p>
 <p>We will construct a class within this service file, which will serve as a centralized point for invoking all methods related to managing our book data.</p>
 <p>To initiate this process, let's commence by creating the file <code>service.py</code> within the <code>src/books/</code> directory.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">sqlmodel.ext.asyncio.session</span> <span class="kn">import</span> <span class="n">AsyncSession</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">src.books.models</span> <span class="kn">import</span> <span class="n">Book</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span> <span class="nn">src.books.schemas</span> <span class="kn">import</span> <span class="n">BookCreateModel</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">select</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># inside /src/books/service.py</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span> <span class="nn">sqlmodel.ext.asyncio.session</span> <span class="kn">import</span> <span class="n">AsyncSession</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span> <span class="nn">src.books.models</span> <span class="kn">import</span> <span class="n">Book</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">from</span> <span class="nn">src.books.schemas</span> <span class="kn">import</span> <span class="n">BookCreateModel</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">select</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">class</span> <span class="nc">BookService</span><span class="p">:</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="sd">    This class provides methods to create, read, update, and delete books</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="k">pass</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">class</span> <span class="nc">BookService</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="sd">    This class provides methods to create, read, update, and delete books</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="k">pass</span>
 </code></pre></div></p>
 <p>We call this class <code>BookService</code> as it shall be called only when managing data about books. We then create an <code>__init__</code> method to help us define some attributes on this class. The first attribute we give to this class is the <code>session</code> object. In SQLModel, a session object is <strong>a unit of work</strong> through which all of transactions between the database and Python are done. Through it we can Create, Read, Update, Delete database objects in an efficient manner.</p>
 <p>Let us add this to our <code>BookService</code> class.
@@ -746,39 +747,43 @@ The <code>create_book</code> method is responsible for adding a new book to the 
 <a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
 <a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
 <a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>        <span class="n">book</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>        <span class="k">return</span> <span class="n">book</span> <span class="k">if</span> <span class="n">book</span> <span class="k">else</span> <span class="kc">None</span>
 </code></pre></div>
-<p>To retrieve a book from the database, we construct a select statement to fetch all books but filter by the uid to ensure that only the desired book is retrieved. This filtering is achieved using the where method.</p>
-<p>Subsequently, we execute the statement using the session object, obtaining the result. Finally, we retrieve the book by invoking the first method on the result object.</p>
+<p>To retrieve a book from the database, we construct a <code>select</code> statement to fetch all books but filter by the <code>uid</code> to ensure that only the desired book is retrieved. This filtering is achieved using the <code>where</code> method.</p>
+<p>Subsequently, we execute the statement using the <code>session</code> object, obtaining the <code>result</code>. Finally, we retrieve the book by invoking the <code>first</code> method on the result object. Note that we are returning <code>None</code> if a book matching the <code>uid</code> is not found.</p>
 <h3 id="update-a-book">Update a book</h3>
 <p>Now updating a book is going to involve the following:
 - first, we need to retrieve the book to update by its <code>uid</code>
-- second, we need to get the data we shall be updating the book with.
+- second, we need to get the data we shall be updating the book with (<code>book_update_data</code>).
 - finally, we shall update the book fields with the new data
-- return the updated book</p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">book_update_data</span><span class="p">:</span> <span class="n">BookCreateModel</span><span class="p">):</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Update a book</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="sd">        Args:</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="sd">            book_uid (str): the UUID of the book</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="sd">            book_update_data (BookCreateModel): the data to update the book</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="sd">            Book: the updated book</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">book_uid</span><span class="p">)</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>        <span class="n">book</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>
-<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">book_update_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>            <span class="nb">setattr</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
-<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>
-<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>        <span class="k">return</span> <span class="n">book</span>
+- return the updated book if found or None when not.</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>    <span class="o">...</span> <span class="c1"># rest of the BookService class</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">book_update_data</span><span class="p">:</span> <span class="n">BookCreateSchema</span><span class="p">):</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Update a book</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="sd">        Args:</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="sd">            book_uid (str): the UUID of the book</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="sd">            book_update_data (BookCreateModel): the data to update the book</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="sd">            Book: the updated book</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>        <span class="n">book</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_book</span><span class="p">(</span><span class="n">book_uid</span><span class="o">=</span><span class="n">book_uid</span><span class="p">)</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>        <span class="k">if</span> <span class="n">book</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">book_update_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>                <span class="nb">setattr</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a>            <span class="k">return</span> <span class="n">book</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a>            <span class="k">return</span> <span class="kc">None</span>
 </code></pre></div>
 To implement the <code>update_book</code> method, which updates a book by its UID, we first fetch the book based on its UID, following the approach described for retrieving a book.</p>
 <p>Next, we update the book object with the following code:</p>
@@ -789,121 +794,132 @@ To implement the <code>update_book</code> method, which updates a book by its UI
 <p>This code iterates over the key-value pairs in the dictionary obtained from <code>book_update_data.model_dump()</code>, setting each field of the book object accordingly.</p>
 <p>Finally, after updating the book object with the new data, we commit the changes to the database using session.commit(). This ensures that the modifications made to the book are saved persistently in the database.</p>
 <h3 id="delete-a-book">Delete a Book</h3>
-<p>To delete a book from the database, we follow a similar approach as when retrieving a book. Once we have obtained the book object from the database using its UID, we use the session.delete method to mark the book object for deletion. To finalize the deletion and apply the changes to the database, we call session.commit(). This ensures that the book is effectively removed from the database.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_uid</span><span class="p">):</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a book</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="sd">        Args:</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="sd">            book_uid (str): the UUID of the book</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">book_uid</span><span class="p">)</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+<p>To delete a book from the database, we follow a similar approach as when retrieving a book. Once we have obtained the book object from the database using its <code>uid</code>, we use the <code>session.delete</code> method to mark the <code>book</code> object for deletion. To finalize the deletion and apply the changes to the database, we call <code>session.commit()</code>. This ensures that the book is effectively removed from the database.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>    <span class="o">...</span> <span class="c1">#rest of the BookService class</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_uid</span><span class="p">):</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a book</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="sd">        Args:</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="sd">            book_uid (str): the UUID of the book</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>        <span class="n">book</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_book</span><span class="p">(</span><span class="n">book_uid</span><span class="o">=</span><span class="n">book_uid</span><span class="p">)</span>
 <a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="n">book</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
-<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">book</span><span class="p">:</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>            <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>            <span class="k">return</span> <span class="p">{}</span>
 </code></pre></div>
 <p>Let update our routes to ensure they use our newly created book database to Create, Read, Update and Delete our book database record. The source code for <code>src/books/service.py</code> should look like this at this point.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span> <span class="nn">sqlmodel.ext.asyncio.session</span> <span class="kn">import</span> <span class="n">AsyncSession</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Book</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="n">BookCreateModel</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">select</span>
-<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># inside /src/books/service.py</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span> <span class="nn">sqlmodel.ext.asyncio.session</span> <span class="kn">import</span> <span class="n">AsyncSession</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Book</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="n">BookCreateSchema</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">select</span><span class="p">,</span> <span class="n">desc</span>
 <a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="k">class</span> <span class="nc">BookService</span><span class="p">:</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="sd">    This class provides methods to create, read, update, and delete books</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>
-<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">):</span>
-<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
-<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
-<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_all_books</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="sd">        Get a list of all books</span>
-<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>
-<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="sd">            list: list of books</span>
-<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span>
-<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>
-<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
-<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>
-<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
-<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>
-<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_create_data</span><span class="p">:</span> <span class="n">BookCreateModel</span><span class="p">):</span>
-<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="sd">        Create a new book</span>
-<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>
-<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a><span class="sd">        Args:</span>
-<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="sd">            book_create_data (BookCreateModel): data to create a new</span>
-<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a>
-<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="sd">            Book: the new book</span>
-<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a>        <span class="n">new_book</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="o">**</span><span class="n">book_create_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
-<a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a>
-<a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_book</span><span class="p">)</span>
-<a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a>
-<a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a>        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a>
-<a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a>        <span class="k">return</span> <span class="n">new_book</span>
-<a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a>
-<a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a book by its UUID.</span>
-<a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a>
-<a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a><span class="sd">        Args:</span>
-<a id="__codelineno-9-50" name="__codelineno-9-50" href="#__codelineno-9-50"></a><span class="sd">            book_uid (str): the UUID of the book</span>
-<a id="__codelineno-9-51" name="__codelineno-9-51" href="#__codelineno-9-51"></a>
-<a id="__codelineno-9-52" name="__codelineno-9-52" href="#__codelineno-9-52"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-9-53" name="__codelineno-9-53" href="#__codelineno-9-53"></a><span class="sd">            Book: the book object</span>
-<a id="__codelineno-9-54" name="__codelineno-9-54" href="#__codelineno-9-54"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-9-55" name="__codelineno-9-55" href="#__codelineno-9-55"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">book_uid</span><span class="p">)</span>
-<a id="__codelineno-9-56" name="__codelineno-9-56" href="#__codelineno-9-56"></a>
-<a id="__codelineno-9-57" name="__codelineno-9-57" href="#__codelineno-9-57"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
-<a id="__codelineno-9-58" name="__codelineno-9-58" href="#__codelineno-9-58"></a>
-<a id="__codelineno-9-59" name="__codelineno-9-59" href="#__codelineno-9-59"></a>        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<a id="__codelineno-9-60" name="__codelineno-9-60" href="#__codelineno-9-60"></a>
-<a id="__codelineno-9-61" name="__codelineno-9-61" href="#__codelineno-9-61"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">book_update_data</span><span class="p">:</span> <span class="n">BookCreateModel</span><span class="p">):</span>
-<a id="__codelineno-9-62" name="__codelineno-9-62" href="#__codelineno-9-62"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Update a book</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="k">class</span> <span class="nc">BookService</span><span class="p">:</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="sd">    This class provides methods to create, read, update, and delete books</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">):</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_all_books</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="sd">        Get a list of all books</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="sd">            list: list of books</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">created_at</span><span class="p">))</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">create_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_create_data</span><span class="p">:</span> <span class="n">BookCreateSchema</span><span class="p">):</span>
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a><span class="sd">        Create a new book</span>
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a><span class="sd">        Args:</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a><span class="sd">            book_create_data (BookCreateModel): data to create a new</span>
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a>
+<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a><span class="sd">            Book: the new book</span>
+<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a>        <span class="n">new_book</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="o">**</span><span class="n">book_create_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+<a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a>
+<a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_book</span><span class="p">)</span>
+<a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a>
+<a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a>        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a>
+<a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a>        <span class="k">return</span> <span class="n">new_book</span>
+<a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a>
+<a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a book by its UUID.</span>
+<a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a>
+<a id="__codelineno-9-50" name="__codelineno-9-50" href="#__codelineno-9-50"></a><span class="sd">        Args:</span>
+<a id="__codelineno-9-51" name="__codelineno-9-51" href="#__codelineno-9-51"></a><span class="sd">            book_uid (str): the UUID of the book</span>
+<a id="__codelineno-9-52" name="__codelineno-9-52" href="#__codelineno-9-52"></a>
+<a id="__codelineno-9-53" name="__codelineno-9-53" href="#__codelineno-9-53"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-9-54" name="__codelineno-9-54" href="#__codelineno-9-54"></a><span class="sd">            Book: the book object</span>
+<a id="__codelineno-9-55" name="__codelineno-9-55" href="#__codelineno-9-55"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-9-56" name="__codelineno-9-56" href="#__codelineno-9-56"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">book_uid</span><span class="p">)</span>
+<a id="__codelineno-9-57" name="__codelineno-9-57" href="#__codelineno-9-57"></a>
+<a id="__codelineno-9-58" name="__codelineno-9-58" href="#__codelineno-9-58"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+<a id="__codelineno-9-59" name="__codelineno-9-59" href="#__codelineno-9-59"></a>
+<a id="__codelineno-9-60" name="__codelineno-9-60" href="#__codelineno-9-60"></a>        <span class="n">book</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<a id="__codelineno-9-61" name="__codelineno-9-61" href="#__codelineno-9-61"></a>
+<a id="__codelineno-9-62" name="__codelineno-9-62" href="#__codelineno-9-62"></a>        <span class="k">return</span> <span class="n">book</span> <span class="k">if</span> <span class="n">book</span> <span class="k">else</span> <span class="kc">None</span>
 <a id="__codelineno-9-63" name="__codelineno-9-63" href="#__codelineno-9-63"></a>
-<a id="__codelineno-9-64" name="__codelineno-9-64" href="#__codelineno-9-64"></a><span class="sd">        Args:</span>
-<a id="__codelineno-9-65" name="__codelineno-9-65" href="#__codelineno-9-65"></a><span class="sd">            book_uid (str): the UUID of the book</span>
-<a id="__codelineno-9-66" name="__codelineno-9-66" href="#__codelineno-9-66"></a><span class="sd">            book_update_data (BookCreateModel): the data to update the book</span>
-<a id="__codelineno-9-67" name="__codelineno-9-67" href="#__codelineno-9-67"></a>
-<a id="__codelineno-9-68" name="__codelineno-9-68" href="#__codelineno-9-68"></a><span class="sd">        Returns:</span>
-<a id="__codelineno-9-69" name="__codelineno-9-69" href="#__codelineno-9-69"></a><span class="sd">            Book: the updated book</span>
-<a id="__codelineno-9-70" name="__codelineno-9-70" href="#__codelineno-9-70"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-9-71" name="__codelineno-9-71" href="#__codelineno-9-71"></a>
-<a id="__codelineno-9-72" name="__codelineno-9-72" href="#__codelineno-9-72"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">book_uid</span><span class="p">)</span>
-<a id="__codelineno-9-73" name="__codelineno-9-73" href="#__codelineno-9-73"></a>
-<a id="__codelineno-9-74" name="__codelineno-9-74" href="#__codelineno-9-74"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
-<a id="__codelineno-9-75" name="__codelineno-9-75" href="#__codelineno-9-75"></a>
-<a id="__codelineno-9-76" name="__codelineno-9-76" href="#__codelineno-9-76"></a>        <span class="n">book</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<a id="__codelineno-9-77" name="__codelineno-9-77" href="#__codelineno-9-77"></a>
-<a id="__codelineno-9-78" name="__codelineno-9-78" href="#__codelineno-9-78"></a>        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">book_update_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-9-79" name="__codelineno-9-79" href="#__codelineno-9-79"></a>            <span class="nb">setattr</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-<a id="__codelineno-9-80" name="__codelineno-9-80" href="#__codelineno-9-80"></a>
-<a id="__codelineno-9-81" name="__codelineno-9-81" href="#__codelineno-9-81"></a>        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<a id="__codelineno-9-82" name="__codelineno-9-82" href="#__codelineno-9-82"></a>
-<a id="__codelineno-9-83" name="__codelineno-9-83" href="#__codelineno-9-83"></a>        <span class="k">return</span> <span class="n">book</span>
-<a id="__codelineno-9-84" name="__codelineno-9-84" href="#__codelineno-9-84"></a>
-<a id="__codelineno-9-85" name="__codelineno-9-85" href="#__codelineno-9-85"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_uid</span><span class="p">):</span>
-<a id="__codelineno-9-86" name="__codelineno-9-86" href="#__codelineno-9-86"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a book</span>
-<a id="__codelineno-9-87" name="__codelineno-9-87" href="#__codelineno-9-87"></a>
-<a id="__codelineno-9-88" name="__codelineno-9-88" href="#__codelineno-9-88"></a><span class="sd">        Args:</span>
-<a id="__codelineno-9-89" name="__codelineno-9-89" href="#__codelineno-9-89"></a><span class="sd">            book_uid (str): the UUID of the book</span>
-<a id="__codelineno-9-90" name="__codelineno-9-90" href="#__codelineno-9-90"></a><span class="sd">        &quot;&quot;&quot;</span>
-<a id="__codelineno-9-91" name="__codelineno-9-91" href="#__codelineno-9-91"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Book</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">book_uid</span><span class="p">)</span>
-<a id="__codelineno-9-92" name="__codelineno-9-92" href="#__codelineno-9-92"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
-<a id="__codelineno-9-93" name="__codelineno-9-93" href="#__codelineno-9-93"></a>
-<a id="__codelineno-9-94" name="__codelineno-9-94" href="#__codelineno-9-94"></a>        <span class="n">book</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<a id="__codelineno-9-95" name="__codelineno-9-95" href="#__codelineno-9-95"></a>
-<a id="__codelineno-9-96" name="__codelineno-9-96" href="#__codelineno-9-96"></a>        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
-<a id="__codelineno-9-97" name="__codelineno-9-97" href="#__codelineno-9-97"></a>
-<a id="__codelineno-9-98" name="__codelineno-9-98" href="#__codelineno-9-98"></a>        <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-9-64" name="__codelineno-9-64" href="#__codelineno-9-64"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">book_update_data</span><span class="p">:</span> <span class="n">BookCreateSchema</span><span class="p">):</span>
+<a id="__codelineno-9-65" name="__codelineno-9-65" href="#__codelineno-9-65"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Update a book</span>
+<a id="__codelineno-9-66" name="__codelineno-9-66" href="#__codelineno-9-66"></a>
+<a id="__codelineno-9-67" name="__codelineno-9-67" href="#__codelineno-9-67"></a><span class="sd">        Args:</span>
+<a id="__codelineno-9-68" name="__codelineno-9-68" href="#__codelineno-9-68"></a><span class="sd">            book_uid (str): the UUID of the book</span>
+<a id="__codelineno-9-69" name="__codelineno-9-69" href="#__codelineno-9-69"></a><span class="sd">            book_update_data (BookCreateModel): the data to update the book</span>
+<a id="__codelineno-9-70" name="__codelineno-9-70" href="#__codelineno-9-70"></a>
+<a id="__codelineno-9-71" name="__codelineno-9-71" href="#__codelineno-9-71"></a><span class="sd">        Returns:</span>
+<a id="__codelineno-9-72" name="__codelineno-9-72" href="#__codelineno-9-72"></a><span class="sd">            Book: the updated book</span>
+<a id="__codelineno-9-73" name="__codelineno-9-73" href="#__codelineno-9-73"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-9-74" name="__codelineno-9-74" href="#__codelineno-9-74"></a>
+<a id="__codelineno-9-75" name="__codelineno-9-75" href="#__codelineno-9-75"></a>        <span class="n">book</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_book</span><span class="p">(</span><span class="n">book_uid</span><span class="o">=</span><span class="n">book_uid</span><span class="p">)</span>
+<a id="__codelineno-9-76" name="__codelineno-9-76" href="#__codelineno-9-76"></a>
+<a id="__codelineno-9-77" name="__codelineno-9-77" href="#__codelineno-9-77"></a>        <span class="k">if</span> <span class="n">book</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-9-78" name="__codelineno-9-78" href="#__codelineno-9-78"></a>
+<a id="__codelineno-9-79" name="__codelineno-9-79" href="#__codelineno-9-79"></a>            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">book_update_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-9-80" name="__codelineno-9-80" href="#__codelineno-9-80"></a>                <span class="nb">setattr</span><span class="p">(</span><span class="n">book</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<a id="__codelineno-9-81" name="__codelineno-9-81" href="#__codelineno-9-81"></a>
+<a id="__codelineno-9-82" name="__codelineno-9-82" href="#__codelineno-9-82"></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-9-83" name="__codelineno-9-83" href="#__codelineno-9-83"></a>
+<a id="__codelineno-9-84" name="__codelineno-9-84" href="#__codelineno-9-84"></a>            <span class="k">return</span> <span class="n">book</span>
+<a id="__codelineno-9-85" name="__codelineno-9-85" href="#__codelineno-9-85"></a>
+<a id="__codelineno-9-86" name="__codelineno-9-86" href="#__codelineno-9-86"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-9-87" name="__codelineno-9-87" href="#__codelineno-9-87"></a>            <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-9-88" name="__codelineno-9-88" href="#__codelineno-9-88"></a>
+<a id="__codelineno-9-89" name="__codelineno-9-89" href="#__codelineno-9-89"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">book_uid</span><span class="p">):</span>
+<a id="__codelineno-9-90" name="__codelineno-9-90" href="#__codelineno-9-90"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a book</span>
+<a id="__codelineno-9-91" name="__codelineno-9-91" href="#__codelineno-9-91"></a>
+<a id="__codelineno-9-92" name="__codelineno-9-92" href="#__codelineno-9-92"></a><span class="sd">        Args:</span>
+<a id="__codelineno-9-93" name="__codelineno-9-93" href="#__codelineno-9-93"></a><span class="sd">            book_uid (str): the UUID of the book</span>
+<a id="__codelineno-9-94" name="__codelineno-9-94" href="#__codelineno-9-94"></a><span class="sd">        &quot;&quot;&quot;</span>
+<a id="__codelineno-9-95" name="__codelineno-9-95" href="#__codelineno-9-95"></a>        <span class="n">book</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_book</span><span class="p">(</span><span class="n">book_uid</span><span class="o">=</span><span class="n">book_uid</span><span class="p">)</span>
+<a id="__codelineno-9-96" name="__codelineno-9-96" href="#__codelineno-9-96"></a>
+<a id="__codelineno-9-97" name="__codelineno-9-97" href="#__codelineno-9-97"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">book</span><span class="p">:</span>
+<a id="__codelineno-9-98" name="__codelineno-9-98" href="#__codelineno-9-98"></a>            <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-9-99" name="__codelineno-9-99" href="#__codelineno-9-99"></a>
+<a id="__codelineno-9-100" name="__codelineno-9-100" href="#__codelineno-9-100"></a>        <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-9-101" name="__codelineno-9-101" href="#__codelineno-9-101"></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
+<a id="__codelineno-9-102" name="__codelineno-9-102" href="#__codelineno-9-102"></a>
+<a id="__codelineno-9-103" name="__codelineno-9-103" href="#__codelineno-9-103"></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-9-104" name="__codelineno-9-104" href="#__codelineno-9-104"></a>
+<a id="__codelineno-9-105" name="__codelineno-9-105" href="#__codelineno-9-105"></a>            <span class="k">return</span> <span class="p">{}</span>
 </code></pre></div>
 <h2 id="dependency-injection">Dependency Injection</h2>
 <p>Now that we have created the <code>BookService</code> class, we need to create the <code>session</code> object that we shall use a dependency in every API route that shall interact with the database in any way.</p>

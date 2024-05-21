@@ -140,6 +140,7 @@ Now updating a book is going to involve the following:
 
 
 ```python
+    ... # rest of the BookService class
     async def update_book(self, book_uid: str, book_update_data: BookCreateSchema):
         """Update a book
 
@@ -186,6 +187,7 @@ Finally, after updating the book object with the new data, we commit the changes
 To delete a book from the database, we follow a similar approach as when retrieving a book. Once we have obtained the book object from the database using its `uid`, we use the `session.delete` method to mark the `book` object for deletion. To finalize the deletion and apply the changes to the database, we call `session.commit()`. This ensures that the book is effectively removed from the database.
 
 ```python
+    ... #rest of the BookService class
     async def delete_book(self, book_uid):
         """Delete a book
 
