@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -329,9 +329,10 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#creating-a-fastapi-instance" class="md-nav__link">
     <span class="md-ellipsis">
       Creating a FastAPI instance:
@@ -339,8 +340,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#creating-an-api-route" class="md-nav__link">
     <span class="md-ellipsis">
       Creating an API Route:
@@ -348,13 +349,18 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#running-the-fastapi-application" class="md-nav__link">
     <span class="md-ellipsis">
       Running the FastAPI Application:
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -593,9 +599,10 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#creating-a-fastapi-instance" class="md-nav__link">
     <span class="md-ellipsis">
       Creating a FastAPI instance:
@@ -603,8 +610,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#creating-an-api-route" class="md-nav__link">
     <span class="md-ellipsis">
       Creating an API Route:
@@ -612,13 +619,18 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#running-the-fastapi-application" class="md-nav__link">
     <span class="md-ellipsis">
       Running the FastAPI Application:
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -742,7 +754,7 @@
 <h1 id="creating-a-simple-web-server">Creating a Simple Web Server</h1>
 <h2 id="introduction">Introduction</h2>
 <p>Now that we have FastAPI installed, we are going to create a simple web server on whicn our application shall run using FastAPI.</p>
-<p>At this stage, our directory only contains our virtual environment <code>env</code> and <code>requirements.txt</code> as shown below as follows:
+<p>At this stage, our directory only contains our virtual environment directory <code>env</code> and <code>requirements.txt</code> as shown below as follows:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>└── env
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>└── requirements.txt
 </code></pre></div></p>
@@ -756,24 +768,22 @@
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World!&quot;</span><span class="p">}</span>
 </code></pre></div>
 <p>In this code snippet, we perform the following actions:</p>
-<h2 id="creating-a-fastapi-instance"><strong>Creating a FastAPI instance:</strong></h2>
-<p>We have imported the <code>FastAPI</code> class from the <code>fastapi</code> package. This class serves as the primary entry point for all FastAPI applications. Through it we can get access to various FastAPI features such as <em>routes</em> , <em>middleware</em>, exception handlers<em> and </em>path operations*.</p>
-<p>We then create an instance of the <code>FastAPI</code> class named <code>app</code>.</p>
-<div class="highlight"><pre><span></span><code>  The main FastAPI instance can be called anything as long as it is a valid Python name.
-</code></pre></div>
+<h3 id="creating-a-fastapi-instance"><strong>Creating a FastAPI instance:</strong></h3>
+<p>We have imported the <code>FastAPI</code> class from the <code>fastapi</code> package. This class serves as the primary entry point for all FastAPI applications. Through it we can get access to various FastAPI features such as routes , middleware, exception handlers and path operations.</p>
+<p>We then create an instance of the <code>FastAPI</code> class named <code>app</code>. The main FastAPI instance can be called anything as long as it is a valid Python name. </p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 </code></pre></div>
-<h2 id="creating-an-api-route"><strong>Creating an API Route:</strong></h2>
+<h3 id="creating-an-api-route"><strong>Creating an API Route:</strong></h3>
 <p>We define our first API route by creating a function named <code>read_root</code>. This function, when accessed, will return a JSON message containing "Hello World!".</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">read_root</span><span class="p">():</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World!&quot;</span><span class="p">}</span>
 </code></pre></div>
-<p>The <code>@app</code> decorator associates the function with the HTTP GET method  via the <code>get</code> function. We then provide the path (route) of the root path (<code>/</code>). This means that whenever the <code>/</code> route is accessed, the defined message will be returned.</p>
+<p>The <code>@app</code> decorator associates the function with the HTTP GET method  via the <code>get</code> method. We then provide the path (route) of the root path (<code>/</code>). This means that whenever the <code>/</code> route is accessed, the defined message will be returned.</p>
 <p>All HTTP methods such as <code>post</code>,<code>put</code>,<code>head</code>,<code>patch</code>, <code>delete</code>, <code>trace</code> and <code>options</code> are all available on the <code>@app</code> decorator.</p>
-<h2 id="running-the-fastapi-application"><strong>Running the FastAPI Application:</strong></h2>
+<h3 id="running-the-fastapi-application"><strong>Running the FastAPI Application:</strong></h3>
 <p>To run our FastAPI application, we shall use the <code>fastapi</code>command we introduced in the previous chapter. Open a terminal and execute the following command within the virtual environment:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp gp-VirtualEnv">(env)</span><span class="gp">$ </span>fastapi<span class="w"> </span>dev<span class="w"> </span>main.py
 </code></pre></div>
@@ -1052,7 +1062,7 @@ Using the <code>None</code> argument allows the Header() function to declare the
     <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>

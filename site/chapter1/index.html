@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.22">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.732c4fb1.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -574,7 +574,7 @@
 <h1 id="installation-and-project-setup">Installation and Project SetUp</h1>
 <p>In chapter, we install FastAPI, starting with a minimal setup.</p>
 <h3 id="1-virtual-environment-creation">1. Virtual Environment Creation</h3>
-<p>Begin by creating a virtual environment using the built-in Python module <code>venv</code>. If you already have Python installed, you might not need to install it separately. However, on Linux, installation may be necessary based on your distribution. In your cmmandline or terminal, type the following command.</p>
+<p>Begin by creating a virtual environment using the built-in Python module <code>venv</code>. If you already have Python installed, you might not need to install it separately. However, on Linux, installation may be necessary based on your distribution. In your commandline or terminal, type the following command.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>env
 </code></pre></div>
 <p>This command generates a virtual environment in the specified folder (in our example, <code>env</code>). This folder is an isolated Python environment which shall separate the dependencies of our project from the system wide Python installation.</p>
@@ -597,11 +597,11 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>└── env
 </code></pre></div>
 <h3 id="3-installing-fastapi">3. Installing FastAPI</h3>
-<p>Now, install FastAPI within the virtual environment. We shall install <code>fastapi</code> with the command. </p>
+<p>Now, let us install FastAPI within the virtual environment. We shall install FastAPI with the <code>pip</code> using the following command. </p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp gp-VirtualEnv">(env)</span> <span class="go">pip install fastapi</span>
 </code></pre></div>
 <h3 id="4-freeze-dependencies">4. Freeze Dependencies</h3>
-<p>Freeze the installed dependencies into a <code>requirements.txt</code> file to track the exact versions of our dependencies so that we can easily reproduce it in the future.</p>
+<p>Freeze the installed dependencies into a <code>requirements.txt</code> file to track the exact versions of our dependencies so that we can easily reproduce them in the future.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gp gp-VirtualEnv">(env)</span> <span class="go">pip freeze &gt; requirements.txt</span>
 </code></pre></div>
 <h3 id="5-confirm-the-installation">5. Confirm the installation</h3>
@@ -610,8 +610,9 @@
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">FastAPI</span> <span class="n">CLI</span> <span class="n">version</span><span class="p">:</span> <span class="mf">0.0.2</span>
 </code></pre></div>
 This command shall show us the version of FastAPI CLI the FastAPI commandline interface. The <code>fastapi</code> command shall help us run and manage our app as we shall see in the coming chapters.</p>
+<p>If the version has been displayed, then we are sure that FastAPI has been installed in our virtual environment.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>By following these steps, you have successfully set up a virtual environment, and installed FastAPI, frozen the dependencies for future reproducing of the project and you have verified your installastion using the <code>fastapi</code> CLI command. This structured approach ensures a clean and manageable development environment for our FastAPI project. Next, we shall create a simple web server and create our first API routes.</p>
+<p>By following these steps, you have successfully set up a virtual environment, and installed FastAPI, frozen the dependencies for future reproducing of the project and you have verified your installation using the <code>fastapi</code> CLI command. This structured approach ensures a clean and manageable development environment for our FastAPI project. Next, we shall create a simple web server and create our first API routes.</p>
 <p><strong>Previous</strong> <a href="../">Introduction</a></p>
 <p><strong>Next</strong> <a href="../chapter2/">Creating a Simple Web Server</a></p>
 
@@ -663,7 +664,7 @@ This command shall show us the version of FastAPI CLI the FastAPI commandline in
     <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.5cfa9459.min.js"></script>
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
   </body>
