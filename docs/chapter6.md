@@ -305,16 +305,16 @@ class BookService:
             book_uid (str): the UUID of the book
         """
         book = await self.get_book(book_uid=book_uid)
-
-        if not book:
-            return None
         
-        else:
+        if book is not None:
             await self.session.delete(book)
 
             await self.session.commit()
 
             return {}
+        
+        else:
+            return None
 ```
 
 ## Dependency Injection
@@ -401,10 +401,16 @@ async def update_book(
 
 
 @book_router.delete("/{book_uid}", status_code=204)
-async def delete_book(book_uid: int, session: AsyncSession = Depends(get_session)):
+async def delete_book(book_uid: str, session: AsyncSession = Depends(get_session)):
     """delete a book"""
-    await BookService(session).delete_book(book_uid)
-    return {}
+    result = await BookService(session).delete_book(book_uid)
+
+    if result is not None:
+        return {}
+    else:
+        return JSONResponse(
+            content={"error": "book not found"}, status_code=status.HTTP_404_NOT_FOUND
+        )
 ```
 
 We've made minimal changes to the file but have introduced some updates that I'll outline here. Let's start by examining the dependency injection we've integrated. Take note of how we've included the following code in each route handler function.
