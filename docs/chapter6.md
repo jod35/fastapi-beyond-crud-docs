@@ -9,7 +9,7 @@ We will construct a class within this service file, which will serve as a centra
 
 To initiate this process, let's commence by creating the file `service.py` within the `src/books/` directory.
 ```python
-
+# inside /src/books/service.py
 from sqlmodel.ext.asyncio.session import AsyncSession
 from src.books.models import Book
 from src.books.schemas import BookCreateModel
@@ -121,24 +121,26 @@ class BookCreateModel(BaseModel):
 
         result = await self.session.exec(statement)
 
-        return result.first()
+        book = result.first()
+
+        return book if book else None
 ```
 
-To retrieve a book from the database, we construct a select statement to fetch all books but filter by the uid to ensure that only the desired book is retrieved. This filtering is achieved using the where method.
+To retrieve a book from the database, we construct a `select` statement to fetch all books but filter by the `uid` to ensure that only the desired book is retrieved. This filtering is achieved using the `where` method.
 
-Subsequently, we execute the statement using the session object, obtaining the result. Finally, we retrieve the book by invoking the first method on the result object.
+Subsequently, we execute the statement using the `session` object, obtaining the `result`. Finally, we retrieve the book by invoking the `first` method on the result object. Note that we are returning `None` if a book matching the `uid` is not found.
 
 ### Update a book
 Now updating a book is going to involve the following:
 - first, we need to retrieve the book to update by its `uid`
-- second, we need to get the data we shall be updating the book with.
+- second, we need to get the data we shall be updating the book with (`book_update_data`).
 - finally, we shall update the book fields with the new data
-- return the updated book
+- return the updated book if found or None when not.
 
 
 
 ```python
-    async def update_book(self, book_uid: str, book_update_data: BookCreateModel):
+    async def update_book(self, book_uid: str, book_update_data: BookCreateSchema):
         """Update a book
 
         Args:
@@ -149,19 +151,19 @@ Now updating a book is going to involve the following:
             Book: the updated book
         """
 
-        statement = select(Book).where(Book.uid == book_uid)
+        book = await self.get_book(book_uid=book_uid)
 
-        result = await self.session.exec(statement)
+        if book is not None:
 
-        book = result.first()
+            for key, value in book_update_data.model_dump().items():
+                setattr(book, key, value)
 
-        for key, value in book_update_data.model_dump().items():
-            setattr(book, key, value)
+            await self.session.commit()
 
-        await self.session.commit()
-
-        return book
-
+            return book
+        
+        else:
+            return None
 ```
 To implement the `update_book` method, which updates a book by its UID, we first fetch the book based on its UID, following the approach described for retrieving a book.
 
@@ -181,7 +183,7 @@ Finally, after updating the book object with the new data, we commit the changes
 
 
 ### Delete a Book
-To delete a book from the database, we follow a similar approach as when retrieving a book. Once we have obtained the book object from the database using its UID, we use the session.delete method to mark the book object for deletion. To finalize the deletion and apply the changes to the database, we call session.commit(). This ensures that the book is effectively removed from the database.
+To delete a book from the database, we follow a similar approach as when retrieving a book. Once we have obtained the book object from the database using its `uid`, we use the `session.delete` method to mark the `book` object for deletion. To finalize the deletion and apply the changes to the database, we call `session.commit()`. This ensures that the book is effectively removed from the database.
 
 ```python
     async def delete_book(self, book_uid):
@@ -190,23 +192,27 @@ To delete a book from the database, we follow a similar approach as when retriev
         Args:
             book_uid (str): the UUID of the book
         """
-        statement = select(Book).where(Book.uid == book_uid)
-        result = await self.session.exec(statement)
+        book = await self.get_book(book_uid=book_uid)
 
-        book = result.first()
+        if not book:
+            return None
+        
+        else:
+            await self.session.delete(book)
 
-        await self.session.delete(book)
+            await self.session.commit()
 
-        await self.session.commit()
+            return {}
 ```
 
 Let update our routes to ensure they use our newly created book database to Create, Read, Update and Delete our book database record. The source code for `src/books/service.py` should look like this at this point.
 
 ```python
+# inside /src/books/service.py
 from sqlmodel.ext.asyncio.session import AsyncSession
 from .models import Book
-from .schemas import BookCreateModel
-from sqlmodel import select
+from .schemas import BookCreateSchema
+from sqlmodel import select, desc
 
 
 class BookService:
@@ -224,13 +230,13 @@ class BookService:
         Returns:
             list: list of books
         """
-        statement = select(Book).order_by(Book.created_at)
+        statement = select(Book).order_by(desc(Book.created_at))
 
         result = await self.session.exec(statement)
 
         return result.all()
 
-    async def create_book(self, book_create_data: BookCreateModel):
+    async def create_book(self, book_create_data: BookCreateSchema):
         """
         Create a new book
 
@@ -261,9 +267,11 @@ class BookService:
 
         result = await self.session.exec(statement)
 
-        return result.first()
+        book = result.first()
 
-    async def update_book(self, book_uid: str, book_update_data: BookCreateModel):
+        return book if book else None
+
+    async def update_book(self, book_uid: str, book_update_data: BookCreateSchema):
         """Update a book
 
         Args:
@@ -274,18 +282,19 @@ class BookService:
             Book: the updated book
         """
 
-        statement = select(Book).where(Book.uid == book_uid)
+        book = await self.get_book(book_uid=book_uid)
 
-        result = await self.session.exec(statement)
+        if book is not None:
 
-        book = result.first()
+            for key, value in book_update_data.model_dump().items():
+                setattr(book, key, value)
 
-        for key, value in book_update_data.model_dump().items():
-            setattr(book, key, value)
+            await self.session.commit()
 
-        await self.session.commit()
-
-        return book
+            return book
+        
+        else:
+            return None
 
     async def delete_book(self, book_uid):
         """Delete a book
@@ -293,14 +302,17 @@ class BookService:
         Args:
             book_uid (str): the UUID of the book
         """
-        statement = select(Book).where(Book.uid == book_uid)
-        result = await self.session.exec(statement)
+        book = await self.get_book(book_uid=book_uid)
 
-        book = result.first()
+        if not book:
+            return None
+        
+        else:
+            await self.session.delete(book)
 
-        await self.session.delete(book)
+            await self.session.commit()
 
-        await self.session.commit()
+            return {}
 ```
 
 ## Dependency Injection
