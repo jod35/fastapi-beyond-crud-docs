@@ -8,7 +8,8 @@ nav:
       - Large Project Structure Using Routers: chapter4.md
       - Databases with SQLModel: chapter5.md
       - Finishing Up the CRUD: chapter6.md
-      - Authentication and Authorization: chapter7.md
+      - Creating a user authentication model: chapter7.md
+      - JWT Authentication: chapter8.md
 
 theme: 
   name: material

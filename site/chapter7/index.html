@@ -12,13 +12,15 @@
         <link rel="prev" href="../chapter6/">
       
       
+        <link rel="next" href="../chapter8/">
+      
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
     
     
       
-        <title>Authentication and Authorization - FastAPI Beyond CRUD</title>
+        <title>Creating a user authentication model - FastAPI Beyond CRUD</title>
       
     
     
@@ -68,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#authentication-and-authorization" class="md-skip">
+        <a href="#creating-the-user-authentication-model" class="md-skip">
           Skip to content
         </a>
       
@@ -104,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Authentication and Authorization
+              Creating a user authentication model
             
           </span>
         </div>
@@ -393,7 +395,7 @@
           
   
   <span class="md-ellipsis">
-    Authentication and Authorization
+    Creating a user authentication model
   </span>
   
 
@@ -404,7 +406,7 @@
         
   
   <span class="md-ellipsis">
-    Authentication and Authorization
+    Creating a user authentication model
   </span>
   
 
@@ -450,26 +452,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#different-authentication-types" class="md-nav__link">
+  <a href="#conclusion" class="md-nav__link">
     <span class="md-ellipsis">
-      Different Authentication Types
+      Conclusion
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Different Authentication Types">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#http-basic-authentication" class="md-nav__link">
-    <span class="md-ellipsis">
-      HTTP Basic Authentication
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -477,6 +464,27 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JWT Authentication
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -540,26 +548,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#different-authentication-types" class="md-nav__link">
+  <a href="#conclusion" class="md-nav__link">
     <span class="md-ellipsis">
-      Different Authentication Types
+      Conclusion
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Different Authentication Types">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#http-basic-authentication" class="md-nav__link">
-    <span class="md-ellipsis">
-      HTTP Basic Authentication
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -578,7 +571,7 @@
                   
 
 
-<h1 id="authentication-and-authorization">Authentication And Authorization</h1>
+<h1 id="creating-the-user-authentication-model">Creating the User Authentication Model</h1>
 <p>Now that we have a working CRUD API, let's move on to more advanced topics. The first thing we need to tackle is figuring out who our users are and what they can do in the application. This breaks down into two main points:</p>
 <ul>
 <li><strong>Authentication</strong>: Making sure users are who they say they are.</li>
@@ -893,30 +886,8 @@
 <a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="go">    &quot;user_accounts_pkey&quot; PRIMARY KEY, btree (uid)</span>
 </code></pre></div>
 <p>Ladies and gentlemen, we have successfully created the <code>user_accounts</code> table from the <code>User</code> model. Now that we have done this, let us look at some ways to implement authentication in FastAPI.</p>
-<h2 id="different-authentication-types">Different Authentication Types</h2>
-<h3 id="http-basic-authentication">HTTP Basic Authentication</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">status</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="kn">from</span> <span class="nn">fastapi.security</span> <span class="kn">import</span> <span class="n">HTTPBasic</span><span class="p">,</span> <span class="n">HTTPBasicCredentials</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="kn">from</span> <span class="nn">fastapi.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="n">auth_router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="n">basic</span> <span class="o">=</span> <span class="n">HTTPBasic</span><span class="p">()</span>
-<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
-<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span>
-<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">login_user</span><span class="p">(</span><span class="n">user_creds</span><span class="p">:</span> <span class="n">HTTPBasicCredentials</span><span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">basic</span><span class="p">)):</span>
-<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    <span class="n">test_username</span> <span class="o">=</span> <span class="s2">&quot;jona&quot;</span>
-<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    <span class="n">test_password</span> <span class="o">=</span> <span class="s2">&quot;p455w0rd&quot;</span>
-<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>
-<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    <span class="n">user</span> <span class="o">=</span> <span class="n">user_creds</span><span class="o">.</span><span class="n">username</span>
-<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    <span class="n">password</span> <span class="o">=</span> <span class="n">user_creds</span><span class="o">.</span><span class="n">password</span>
-<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>
-<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">user</span> <span class="o">==</span> <span class="n">test_username</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">password</span> <span class="o">==</span> <span class="n">test_password</span><span class="p">):</span>
-<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;username&quot;</span><span class="p">:</span><span class="n">user</span> <span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">:</span><span class="n">password</span><span class="p">}</span>
-<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>
-<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span><span class="s2">&quot;Invalid username or password&quot;</span><span class="p">},</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span>
-</code></pre></div>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this chapter, we have created a simple database model to enable us manage user accounts in our application. We have introduced Alembic, a database migration tool that runs on SQLAlchemy database models, allowing us to easily introduce changes to an existing database structure without haveing to delete data.</p>
 
 
 
