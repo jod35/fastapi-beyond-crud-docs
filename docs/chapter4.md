@@ -98,7 +98,6 @@ Now, create a folder named `books` inside the `src` directory. Inside this folde
 ├── env/
 ├── main.py
 ├── requirements.txt
-├── schemas.py
 └── src/
     └── __init__.py
     └── books/
