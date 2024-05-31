@@ -122,60 +122,96 @@ books = [
 Once we have that, we shall build our endpoints on the simple database.
 
 ```python
-rom fastapi import FastAPI, Query
-from schemas import BookSchema,BookUpdateSchema
+from fastapi import FastAPI, status
+from fastapi.exceptions import HTTPException
+from pydantic import BaseModel
+from typing import List
 
-@app.get("/books")
-async def read_books():
-    """Read all books"""
+
+app = FastAPI()
+
+class Book(BaseModel):
+    id: int
+    title: str
+    author: str
+    publisher: str
+    published_date: str
+    page_count: int
+    language: str
+
+class BookUpdateModel(BaseModel):
+    title: str
+    author: str
+    publisher: str
+    page_count: int
+    language: str
+
+
+@app.get("/books", response_model=List[Book])
+async def get_all_books():
     return books
 
-@app.get('/book/{book_id}')
-async def read_book(book_id: int):
-    """Read a book"""
+
+@app.post("/books", status_code=status.HTTP_201_CREATED)
+async def create_a_book(book_data: Book) -> dict:
+    new_book = book_data.model_dump()
+
+    books.append(new_book)
+
+    return new_book
+
+
+@app.get("/book/{book_id}")
+async def get_book(book_id: int) -> dict:
+    for book in books:
+        if book["id"] == book_id:
+            return book
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+
+
+@app.patch("/book/{book_id}")
+async def update_book(book_id: int,book_update_data:BookUpdateModel) -> dict:
+    
     for book in books:
         if book['id'] == book_id:
+            book['title'] = book_update_data.title
+            book['publisher'] = book_update_data.publisher
+            book['page_count'] = book_update_data.page_count
+            book['language'] = book_update_data.language
+
             return book
-    return {"message": "Book not found"}
-
-@app.post('/books',status_code=201)
-async def create_book(book: BookSchema):
-    """Create a new book"""
-    books.append(book)
-    return book
-
-@app.patch('/book/{book_id}')
-async def update_book(book_id: int, update_data: BookUpdateSchema):
-    """"update book """
-    for book in books:
-        if book['id'] == book_id:
-            book['title'] = update_data.title
-            book['author'] = update_data.author
-            book['publisher'] = update_data.publisher
-            book['page_count'] = update_data.page_count
-            book['language'] = update_data.language
-            return book
-    return {"message": "Book not found"}
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 
 
-@app.delete('/book/{book_id}',status_code=204)
+@app.delete("/book/{book_id}",status_code=status.HTTP_204_NO_CONTENT)
 async def delete_book(book_id: int):
-    """delete a book"""
     for book in books:
-        if book['id'] == book_id:
+        if book["id"] == book_id:
             books.remove(book)
-            return book
-    return {"message": "Book not found"}
+
+            return {}
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 
 ```
 
 ## Reading All Books (HTTP GET)
-
-The initial API endpoint is `/books`, designed to retrieve all the books stored in the database and present them in a list. This is accomplished by implementing the `read_books` function, which, when invoked, returns the `books` list.
-
+This route responds to GET requests made to `/books`, providing a list of all books available in the application. It ensures that the response adheres to the `List[Book]` model, guaranteeing consistency with the structure defined by the `Book` model.
 ```python
-@app.get("/books")
-async def read_books():
+class Book(BaseModel):
+    id: int
+    title: str
+    author: str
+    publisher: str
+    published_date: str
+    page_count: int
+    language: str
+
+
+@app.get("/books", response_model=List[Book])
+async def get_all_books():
     return books
 ```
 
@@ -200,15 +236,16 @@ This capability enables us to effortlessly respond with a list of book objects w
 
 
 ## Read one Book (HTTP GET)
-We retrieve a single book by its ID by calling the `read_book` function whenever we make a request to `book/{book_id}`. Note that the {book_id} is refered to as a **path parameter** that is even passed to the `read_book function to find the book with the given ID. All we have done is to iterate through the book list, and check if a book exists in the list with the given ID. If not found,, we shall return a message indicating that.
+To retrieve a single book by its ID, the FastAPI application employs the `read_book` function whenever a request is made to `book/{book_id}`. The `{book_id}` serves as a path parameter passed to the `read_book` function to locate the book with the corresponding ID. The process involves iterating through the list of books to verify the existence of a book with the provided ID. If the book is not found, an `HTTPException` is raised, signaling that the book resource is not available. Notably, FastAPI's `status` module facilitates access to status codes, enabling the use of codes such as `HTTP_404_NOT_FOUND` to indicate resource absence.
 
 ```python
-@app.get('/book/{book_id}')
-async def read_book(book_id: int):
+@app.get("/book/{book_id}")
+async def get_book(book_id: int) -> dict:
     for book in books:
-        if book['id'] == book_id:
+        if book["id"] == book_id:
             return book
-    return {"message": "Book not found"}
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 ```
 
 ![get a book](./img/img6.png)
@@ -216,36 +253,36 @@ async def read_book(book_id: int):
 
 ## Adding a New Book (HTTP POST)
 
-To insert a new book into our system, we need to create a blueprint for the book's details. FastAPI uses a tool called Pydantic for this, making sure the data follows specific rules. This helps validate the information we receive and ensures smooth communication with the database.
-
-Let's break down the process step by step. First, we define a class for our book details, called `BookSchema`, and save it in a file named `schemas.py`:
+To facilitate the insertion of a new book into the system, the Book model is utilized to define the structure and constraints for creating a new book resource.
 
 ```python
 from pydantic import BaseModel
-from datetime import datetime
 
-class BookSchema(BaseModel):
+class Book(BaseModel):
     id: int
     title: str
     author: str
     publisher: str
-    published_date: datetime
+    published_date: str
     page_count: int
     language: str
 ```
 
-In simpler terms, this class represents a model for a book. It includes information like the book's ID, title, author, publisher, publication date, page count, and language.
-
-Next, we create an endpoint to allow the addition of a new book. This endpoint expects data in the format specified by our `BookSchema`. The provided data is then added to our list of books. This process also ensures that the data sent to the server is valid and secure.
-
+Subsequently, an endpoint is established to enable the addition of a new book. This endpoint is designed to receive data formatted according to the specifications outlined by our Book model. Upon receipt, the incoming data undergoes validation to ensure its adherence to the predefined schema, thereby maintaining data integrity and security.
 ```python
-@app.post('/books', status_code=201)
-async def create_book(book: BookSchema):
-    books.append(book)
-    return book
+
+@app.post("/books", status_code=status.HTTP_201_CREATED)
+async def create_a_book(book_data: Book) -> dict:
+    new_book = book_data.model_dump()
+
+    books.append(new_book)
+
+    return new_book
 ```
 
-The `BookSchema` class ensures that the data sent to the server follows the expected format. If invalid data is submitted, the server responds with errors, as shown below when no data is sent:
+Upon successful validation, the provided book data is appended to the list of existing books within the system. This systematic approach guarantees the integrity of the data being transmitted to the server. Furthermore, the endpoint is configured to return a status code of 201 (Created) upon successful creation of the new book, signifying the successful addition of the resource.
+
+The `Book` class ensures that the data sent to the server follows the expected format. If invalid data is submitted, the server responds with errors, as shown below when no data is sent:
 
 ![Validation for no data being sent to the server](./img/img7.png)
 
@@ -266,21 +303,22 @@ It's crucial to use the right HTTP status code in each response. In this case, w
 Let us look at the update endpoint. This is quite similar to the create endpoint as it allows data to be sent to the server via the **PATCH** HTTP method. But it also requires we provide the `book_id` of the book that we will be updating. we loop through the book list and find the book that matches the `book_id` as shown below:
 
 ```python
-@app.patch('/book/{book_id}')
-async def update_book(book_id: int, update_data: BookUpdateSchema):
-    """"update book """
+@app.patch("/book/{book_id}")
+async def update_book(book_id: int,book_update_data:BookUpdateModel) -> dict:
+    
     for book in books:
         if book['id'] == book_id:
-            book['title'] = update_data.title
-            book['author'] = update_data.author
-            book['publisher'] = update_data.publisher
-            book['page_count'] = update_data.page_count
-            book['language'] = update_data.language
+            book['title'] = book_update_data.title
+            book['publisher'] = book_update_data.publisher
+            book['page_count'] = book_update_data.page_count
+            book['language'] = book_update_data.language
+
             return book
-    return {"message": "Book not found"}
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 ```
 
-If you notice, we have added the `update_data` parameter to our handler function and this is to be the validator for the data we shall use to update the book record. Notice this has a different schema called `BookUpdateSchema`. In our **schemas.py**, let us add the following code.
+If you notice, we have added the `book_update_data` parameter to our handler function and this is to be the validator for the data we shall use to update the book record. Notice this has a different schema called `BookUpdateModel`.
 
 ```python
 class BookUpdateSchema(BaseModel):
@@ -301,22 +339,26 @@ Let us confirm if our book record has been updated successfully. To do so we are
 
 
 ## Delete a book (HTTP Delete)
-Let us finally look at deletion of the book record. This is carried out in the following example:
+Let us finally look at the deletion of a book record. This is carried out in the following example:
 
 ```python
-@app.delete('/book/{book_id}',status_code=204)
+from fastapi import HTTPException, status
+
+@app.delete("/book/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_book(book_id: int):
-    """delete a book"""
     for book in books:
-        if book['id'] == book_id:
+        if book["id"] == book_id:
             books.remove(book)
-            return book
-    return {"message": "Book not found"}
+            return {}
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 ```
-What we have here is to loop through the books and find the book associated with the given `book_id` the we remove it from the list of books by using the `remove` list method. Notice that we are return a 204 response status code. This means that we have deleted the book and therefore we shall not return any content as shown below.
 
-![delete a book record ](./img/img12.png)
+In this code, we loop through the books and find the book associated with the given `book_id`. We then remove it from the list of books using the `remove` list method. Notice that we return a 204 response status code, indicating that the book has been deleted and therefore no content is returned.
 
+Here is a visual example of the deletion process:
+
+![delete a book record](./img/img12.png)
 
 And just like that, we have created a CRUD REST API using a simple in memory database. 
 
