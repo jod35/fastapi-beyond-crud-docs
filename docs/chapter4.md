@@ -7,7 +7,6 @@ So far, our project structure is quite simple:
 ├── env/
 ├── main.py
 ├── requirements.txt
-└── schemas.py
 ```
 
 ### Currrent code structure
@@ -33,46 +32,53 @@ books = [
     # ... (other book entries)
 ]
 
-@app.get("/books")
-async def read_books():
-    """Read all books"""
+@app.get("/books", response_model=List[Book])
+async def get_all_books():
     return books
 
-@app.get('/book/{book_id}')
-async def read_book(book_id: int):
-    """Read a book"""
+
+@app.post("/books", status_code=status.HTTP_201_CREATED)
+async def create_a_book(book_data: Book) -> dict:
+    new_book = book_data.model_dump()
+
+    books.append(new_book)
+
+    return new_book
+
+
+@app.get("/book/{book_id}")
+async def get_book(book_id: int) -> dict:
+    for book in books:
+        if book["id"] == book_id:
+            return book
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+
+
+@app.patch("/book/{book_id}")
+async def update_book(book_id: int,book_update_data:BookUpdateModel) -> dict:
+    
     for book in books:
         if book['id'] == book_id:
+            book['title'] = book_update_data.title
+            book['publisher'] = book_update_data.publisher
+            book['page_count'] = book_update_data.page_count
+            book['language'] = book_update_data.language
+
             return book
-    return {"message": "Book not found"}
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 
-@app.post('/books', status_code=201)
-async def create_book(book: BookSchema):
-    """Create a new book"""
-    books.append(book)
-    return book
 
-@app.patch('/book/{book_id}')
-async def update_book(book_id: int, update_data: BookUpdateSchema):
-    """"Update book"""
-    for book in books:
-        if book['id'] == book_id:
-            book['title'] = update_data.title
-            book['author'] = update_data.author
-            book['publisher'] = update_data.publisher
-            book['page_count'] = update_data.page_count
-            book['language'] = update_data.language
-            return book
-    return {"message": "Book not found"}
-
-@app.delete('/book/{book_id}', status_code=204)
+@app.delete("/book/{book_id}",status_code=status.HTTP_204_NO_CONTENT)
 async def delete_book(book_id: int):
-    """Delete a book"""
     for book in books:
-        if book['id'] == book_id:
+        if book["id"] == book_id:
             books.remove(book)
-            return book
-    return {"message": "Book not found"}
+
+            return {}
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 ```
 ## Restructuring the project
 
@@ -82,7 +88,6 @@ The problem here is that if we add more code to this file, our code will become 
 ├── env/
 ├── main.py
 ├── requirements.txt
-└── schemas.py
 └── src/
     └── __init__.py
 ```
@@ -130,7 +135,7 @@ Next, let's also move our `schemas.py` to the `books` directory.
 from pydantic import BaseModel
 from datetime import datetime
 
-class BookSchema(BaseModel):
+class Book(BaseModel):
     id: int
     title: str
     author: str
@@ -139,7 +144,7 @@ class BookSchema(BaseModel):
     page_count: int
     language: str
 
-class BookUpdateSchema(BaseModel):
+class BookUpdateModel(BaseModel):
     title: str
     author: str
     publisher: str
@@ -153,51 +158,58 @@ Now, let's update `routes.py` as follows:
 # Inside routes.py
 
 from fastapi import APIRouter
-from .book_data import books
-from .schemas import BookSchema, BookUpdateSchema
+from src.books.book_data import books
+from src.books.schemas import BookSchema, BookUpdateSchema
 
 book_router = APIRouter()
 
-@book_router.get("/")
-async def read_books():
-    """Read all books"""
+@book_router.get("/books", response_model=List[Book])
+async def get_all_books():
     return books
 
-@book_router.get('/{book_id}')
-async def read_book(book_id: int):
-    """Read a book"""
+
+@book_router.post("/books", status_code=status.HTTP_201_CREATED)
+async def create_a_book(book_data: Book) -> dict:
+    new_book = book_data.model_dump()
+
+    books.append(new_book)
+
+    return new_book
+
+
+@book_router.get("/book/{book_id}")
+async def get_book(book_id: int) -> dict:
+    for book in books:
+        if book["id"] == book_id:
+            return book
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+
+
+@book_router.patch("/book/{book_id}")
+async def update_book(book_id: int,book_update_data:BookUpdateModel) -> dict:
+    
     for book in books:
         if book['id'] == book_id:
+            book['title'] = book_update_data.title
+            book['publisher'] = book_update_data.publisher
+            book['page_count'] = book_update_data.page_count
+            book['language'] = book_update_data.language
+
             return book
-    return {"message": "Book not found"}
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 
-@book_router.post('/', status_code=201)
-async def create_book(book: BookSchema):
-    """Create a new book"""
-    books.append(book)
-    return book
 
-@book_router.patch('/{book_id}')
-async def update_book(book_id: int, update_data: BookUpdateSchema):
-    """"Update book"""
-    for book in books:
-        if book['id'] == book_id:
-            book['title'] = update_data.title
-            book['author'] = update_data.author
-            book['publisher'] = update_data.publisher
-            book['page_count'] = update_data.page_count
-            book['language'] = update_data.language
-            return book
-    return {"message": "Book not found"}
-
-@book_router.delete('/{book_id}', status_code=204)
+@book_router.delete("/book/{book_id}",status_code=status.HTTP_204_NO_CONTENT)
 async def delete_book(book_id: int):
-    """Delete a book"""
     for book in books:
-        if book['id'] == book_id:
+        if book["id"] == book_id:
             books.remove(book)
-            return book
-    return {"message": "Book not found"}
+
+            return {}
+        
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 ```
 ## Introduction to FastAPI routers 
 What has been accomplished is the division of our project into modules using routers. FastAPI routers allow easy modularization of our API by grouping related API routes together. Routers function similarly to FastAPI instances (similar to what we have in `main.py`). As our project expands, we will introduce additional API routes, and all of them will be organized into modules grouping related functionalities.
@@ -214,11 +226,11 @@ version = 'v1'
 
 app = FastAPI(
     title='Bookly',
-    description='A RESTful API for a book review service',
+    description='A RESTful API for a book review web service',
     version=version,
 )
 
-app.include_router(prefix=f"/api/{version}/books", tags=['books'])
+app.include_router(book_router,prefix=f"/api/{version}/books", tags=['books'])
 ```
 
 Firstly, a variable called `version` has been introduced to hold the API version. Next, we import the `book_router` created in the previous example. Using our FastAPI instance, we include all endpoints created with it by calling the `include_router` method.
@@ -252,7 +264,7 @@ app = FastAPI(
     version=version,
 )
 
-app.include_router(prefix=f"/api/{version}/books", tags=['books'])
+app.include_router(book_router,prefix=f"/api/{version}/books", tags=['books'])
 ```
 Having moved our code, we shall now have this folder structure.
 ```console
