@@ -15,7 +15,7 @@ Additionally, our `main.py` file looks like this:
 ```python
 # inside main.py
 from fastapi import FastAPI, Query
-from schemas import BookSchema, BookUpdateSchema
+
 
 app = FastAPI()
 
@@ -31,6 +31,22 @@ books = [
     },
     # ... (other book entries)
 ]
+
+class Book(BaseModel):
+    id: int
+    title: str
+    author: str
+    publisher: str
+    published_date: str
+    page_count: int
+    language: str
+
+class BookUpdateModel(BaseModel):
+    title: str
+    author: str
+    publisher: str
+    page_count: int
+    language: str
 
 @app.get("/books", response_model=List[Book])
 async def get_all_books():
@@ -126,20 +142,19 @@ books = [
 ]
 ```
 
-Next, let's also move our `schemas.py` to the `books` directory.
+Next, let's also move our Pydantic validation models from `main.py` to the `schemas.py` module inside the `books` directory.
 
 ```python
 # Inside src/books/schemas.py
 
 from pydantic import BaseModel
-from datetime import datetime
 
 class Book(BaseModel):
     id: int
     title: str
     author: str
     publisher: str
-    published_date: datetime
+    published_date: str
     page_count: int
     language: str
 

@@ -94,7 +94,8 @@ class Settings(BaseSettings):
     DATABASE_URL: str ="sqlite:///db.sqlite3"
 
     model_config = SettingsConfigDict(
-        env_file=".env"
+        env_file=".env", 
+        extra="ignore"
     )
 ```
 
