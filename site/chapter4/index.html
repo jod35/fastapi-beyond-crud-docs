@@ -928,12 +928,13 @@
 <a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">version</span> <span class="o">=</span> <span class="s1">&#39;v1&#39;</span>
 <a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
 <a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span>
-<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Bookly&#39;</span><span class="p">,</span>
-<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="n">description</span><span class="o">=</span><span class="s1">&#39;A RESTful API for a book review service&#39;</span><span class="p">,</span>
-<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
-<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="p">)</span>
-<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
-<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">book_router</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/api/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/books&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;books&#39;</span><span class="p">])</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Bookly&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A REST API for a book review web service&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="n">version</span><span class="o">=</span> <span class="n">version</span><span class="p">,</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    <span class="n">lifespan</span><span class="o">=</span><span class="n">life_span</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="p">)</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">book_router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/api/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/books&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;books&#39;</span><span class="p">])</span>
 </code></pre></div>
 Having moved our code, we shall now have this folder structure.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="go">├── requirements.txt</span>
@@ -942,11 +943,10 @@ Having moved our code, we shall now have this folder structure.
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="go">    ├── books</span>
 <a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="go">    │   ├── book_data.py</span>
 <a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="go">    │   ├── __init__.py</span>
-<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="go">    │   ├── models.py</span>
-<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="go">    │   ├── routes.py</span>
-<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="go">    │   ├── schemas.py</span>
-<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="go">    │   ├── book_data.py</span>
-<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="go">    └── __init__.py</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="go">    │   ├── routes.py</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="go">    │   ├── schemas.py</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="go">    │   ├── book_data.py</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="go">    └── __init__.py</span>
 </code></pre></div></p>
 <p>Once more, let's start our server using <code>fastapi dev src/</code>. Pay attention to the fact that this time we're specifying<code>src/</code>. This is because we've designated it as a package by including <code>__init__.py</code>. Additionally, our FastAPI instance named <code>app</code> is created there. Consequently, FastAPI will utilize it to operate our application.</p>
 <p>Runnning our application will the following terminal output.
@@ -972,7 +972,7 @@ Having moved our code, we shall now have this folder structure.
 <a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="go"> ╰──────────────────────────╯                                                                                                                               </span>
 </code></pre></div></p>
 <h3 id="note">Note:</h3>
-<p>The current organization of our API is as follows:</p>
+<p>The current organization of our API endpoints is as follows:</p>
 <table>
 <thead>
 <tr>
@@ -1010,7 +1010,7 @@ Having moved our code, we shall now have this folder structure.
 </tbody>
 </table>
 <h2 id="conclusion">Conclusion</h2>
-<p>This chapter has focused on creating a folder structure that we can use even when our project gets bigger. In the nest chapter, we shall focus on database and look at how we can persist our data and use Python to manage a relational database.</p>
+<p>This chapter has focused on creating a folder structure that we can use even when our project gets bigger. In the next chapter, we shall focus on database and look at how we can persist our data and use Python to manage a relational database.</p>
 <p><strong>Previous</strong> <a href="./">Improved Project Structure Using Routers</a></p>
 <p><strong>Next</strong> <a href="../chapter5/">Databases with SQLModel</a></p>
 

@@ -273,12 +273,13 @@ from src.books.routes import book_router
 version = 'v1'
 
 app = FastAPI(
-    title='Bookly',
-    description='A RESTful API for a book review service',
-    version=version,
+    title="Bookly",
+    description="A REST API for a book review web service",
+    version= version,
+    lifespan=life_span
 )
 
-app.include_router(book_router,prefix=f"/api/{version}/books", tags=['books'])
+app.include_router(book_router, prefix=f"/api/{version}/books", tags=['books'])
 ```
 Having moved our code, we shall now have this folder structure.
 ```console
@@ -288,7 +289,6 @@ Having moved our code, we shall now have this folder structure.
     ├── books
     │   ├── book_data.py
     │   ├── __init__.py
-    │   ├── models.py
     │   ├── routes.py
     │   ├── schemas.py
     │   ├── book_data.py
@@ -323,7 +323,7 @@ INFO     Found importable FastAPI app
 
 ### Note:
 
-The current organization of our API is as follows:
+The current organization of our API endpoints is as follows:
 
 | Endpoint	| Method |	Description |
 |-----------|--------|--------------|
@@ -335,7 +335,7 @@ The current organization of our API is as follows:
 
 
 ## Conclusion
-This chapter has focused on creating a folder structure that we can use even when our project gets bigger. In the nest chapter, we shall focus on database and look at how we can persist our data and use Python to manage a relational database.
+This chapter has focused on creating a folder structure that we can use even when our project gets bigger. In the next chapter, we shall focus on database and look at how we can persist our data and use Python to manage a relational database.
 
 **Previous** [Improved Project Structure Using Routers](./chapter4.md)
 
