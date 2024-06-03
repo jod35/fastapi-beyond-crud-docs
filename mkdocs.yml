@@ -12,13 +12,38 @@ nav:
       - JWT Authentication: chapter8.md
 
 theme: 
-  name: material
-  color_mode: dark 
-  palette:
-    primary: deep orange
+ name: material
+ palette:
+    # Light mode
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+
+    # Dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      primary: deep orange
+      accent: deep orange
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/jod35
+
 
 
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.superfences
+
+
+repo_name: jod35/fastapi-beyond-CRUD
+repo_url: https://github.com/jod35/fastapi-beyond-CRUD
