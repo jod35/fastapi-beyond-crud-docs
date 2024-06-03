@@ -979,7 +979,7 @@ After installing <code>pydantic-settings</code>, let us now go ahead and create 
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span><span class="s2">&quot;sqlite:///db.sqlite3&quot;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span> 
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        <span class="n">env_file</span><span class="o">=</span><span class="s2">&quot;.env&quot;</span><span class="p">,</span> 
@@ -992,11 +992,10 @@ After installing <code>pydantic-settings</code>, let us now go ahead and create 
 <li>We are importing the <code>BaseSettings</code> class from <code>pydantic_settings</code>.</li>
 <li>Creating a subclass called <code>Settings</code>, inheriting from <code>BaseSettings</code>.</li>
 <li>Defining an attribute named <code>DATABASE_URL</code> with a type annotation of <code>str</code>.</li>
-<li>Setting a default value of <code>"sqlite:///db.sqlite3"</code> for <code>DATABASE_URL</code>.</li>
-<li>To modify our configuration to read from the <code>.env</code> file, we modified the <code>model_config</code> attribute of the <code>Settings</code> class which is one to help us with modifying the configuration of any pydantic model class. This is set to an instance of the <code>SettingsConfigDict</code> class which enables us to read the configuration from the <code>.env</code> file. This is by simply setting the <code>env_file</code> argument to the name of the <code>.env</code> file.</li>
+<li>To modify our configuration to read from the <code>.env</code> file, we modified the <code>model_config</code> attribute of the <code>Settings</code> class which is one to help us with modifying the configuration of any pydantic model class. This is set to an instance of the <code>SettingsConfigDict</code> class which enables us to read the configuration from the <code>.env</code> file. This is by simply setting the <code>env_file</code> argument to the name of the <code>.env</code> file. We have also added the <code>extra</code> argument and given it a value of <code>ignore</code> as we may want to ignore any extra attributes provided within our <code>Settings</code> class.</li>
 </ol>
-<p>This configuration allows us to read the <code>DATABASE_URL</code> from the environment variables. If it's not provided, it falls back to the default value, <code>"sqlite:///db.sqlite3"</code>.</p>
-<p>Let's observe how this configuration operates. We'll initiate a Python interpreter shell for testing:</p>
+<p>This configuration allows us to read the <code>DATABASE_URL</code> from the environment variables. 
+Let's observe how this configuration operates. We'll initiate a Python interpreter shell for testing:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>python3
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Python<span class="w"> </span><span class="m">3</span>.10.12<span class="w"> </span><span class="o">(</span>main,<span class="w"> </span>Nov<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="m">2023</span>,<span class="w"> </span><span class="m">15</span>:14:05<span class="o">)</span><span class="w"> </span><span class="o">[</span>GCC<span class="w"> </span><span class="m">11</span>.4.0<span class="o">]</span><span class="w"> </span>on<span class="w"> </span>linux
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Type<span class="w"> </span><span class="s2">&quot;help&quot;</span>,<span class="w"> </span><span class="s2">&quot;copyright&quot;</span>,<span class="w"> </span><span class="s2">&quot;credits&quot;</span><span class="w"> </span>or<span class="w"> </span><span class="s2">&quot;license&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>more<span class="w"> </span>information.
@@ -1012,14 +1011,15 @@ After installing <code>pydantic-settings</code>, let us now go ahead and create 
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span> <span class="nn">pydantic_settings</span> <span class="kn">import</span> <span class="n">BaseSettings</span><span class="p">,</span> <span class="n">SettingsConfigDict</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="n">DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span> 
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
 <a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="n">env_file</span><span class="o">=</span><span class="s2">&quot;.env&quot;</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="p">)</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="c1"># add this line    </span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="n">Config</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="n">env_file</span><span class="o">=</span><span class="s2">&quot;.env&quot;</span><span class="p">,</span> 
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="p">)</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="c1"># add this line    </span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="n">Config</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
 </code></pre></div>
 We add this line so that we don't have to create a new instance of our <code>Settings</code> class whenever we shall need to access environment variables. From now on, we shall shall just have to import the <code>Config</code> variable and use it.</p>
 <h2 id="creating-database-models-with-sqlmodel">Creating database models with SQLModel</h2>
@@ -1164,14 +1164,14 @@ Inside <code>models.py</code>, add the following code.
 <li>
 <p>Finally, we create a function called <code>initdb</code> which is responsible for connecting to the database and executing a simple SQL statement. </p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">initdb</span><span class="p">():</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="sd">&quot;&quot;&quot;create a connection to our db&quot;&quot;&quot;</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;create a connection to our db&quot;&quot;&quot;</span><span class="err">`</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">async</span> <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="k">async</span> <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
 <a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">statement</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="s2">&quot;select &#39;Hello World&#39;&quot;</span><span class="p">)</span>
 <a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
 <a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
 <a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">all</span><span class="p">())</span><span class="err">`</span>
 </code></pre></div>
 <p>Inside the <code>initdb</code> function, we begin by creating a connection object <code>conn</code> using an async context manager. (created with <code>async with engine.begin()</code>). We then create a plain text SQL statement and call the <code>text</code> function.</p>
 <p>The result of the statement is what we access through the <code>result</code> object which we finally print to our terminal when we call the <code>all</code> method on it.</p>

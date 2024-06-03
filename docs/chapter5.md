@@ -91,7 +91,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    DATABASE_URL: str ="sqlite:///db.sqlite3"
+    DATABASE_URL: str 
 
     model_config = SettingsConfigDict(
         env_file=".env", 
@@ -106,11 +106,9 @@ In the provided code snippet, we've performed the following actions:
 1. We are importing the `BaseSettings` class from `pydantic_settings`.
 2. Creating a subclass called `Settings`, inheriting from `BaseSettings`.
 3. Defining an attribute named `DATABASE_URL` with a type annotation of `str`.
-4. Setting a default value of `"sqlite:///db.sqlite3"` for `DATABASE_URL`.
-5. To modify our configuration to read from the `.env` file, we modified the `model_config` attribute of the `Settings` class which is one to help us with modifying the configuration of any pydantic model class. This is set to an instance of the `SettingsConfigDict` class which enables us to read the configuration from the `.env` file. This is by simply setting the `env_file` argument to the name of the `.env` file.
+4. To modify our configuration to read from the `.env` file, we modified the `model_config` attribute of the `Settings` class which is one to help us with modifying the configuration of any pydantic model class. This is set to an instance of the `SettingsConfigDict` class which enables us to read the configuration from the `.env` file. This is by simply setting the `env_file` argument to the name of the `.env` file. We have also added the `extra` argument and given it a value of `ignore` as we may want to ignore any extra attributes provided within our `Settings` class.
 
-This configuration allows us to read the `DATABASE_URL` from the environment variables. If it's not provided, it falls back to the default value, `"sqlite:///db.sqlite3"`.
-
+This configuration allows us to read the `DATABASE_URL` from the environment variables. 
 Let's observe how this configuration operates. We'll initiate a Python interpreter shell for testing:
 
 ```bash
@@ -132,10 +130,11 @@ Once this has been implemented, let us then add the following line to `config.py
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
-    DATABASE_URL: str
+    DATABASE_URL: str 
 
     model_config = SettingsConfigDict(
-        env_file=".env"
+        env_file=".env", 
+        extra="ignore"
     )
 
 # add this line    
@@ -294,14 +293,14 @@ async def initdb():
 
     ```python
     async def initdb():
-    """create a connection to our db"""
+        """create a connection to our db"""`
 
-    async with engine.begin() as conn:
+        async with engine.begin() as conn:
         statement = text("select 'Hello World'")
 
         result = await conn.execute(statement)
 
-        print(result.all())
+        print(result.all())`
     ```
 
     Inside the `initdb` function, we begin by creating a connection object `conn` using an async context manager. (created with `async with engine.begin()`). We then create a plain text SQL statement and call the `text` function.
