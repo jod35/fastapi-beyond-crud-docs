@@ -173,7 +173,7 @@ Next, we update the book object with the following code:
 ```python
 # Unpack the book data dictionary and set fields
 for key, value in book_update_data.model_dump().items():
-    setattr(book, key, value)
+    setattr(book, k, v)
 ```
 
 This code iterates over the key-value pairs in the dictionary obtained from `book_update_data.model_dump()`, setting each field of the book object accordingly.
@@ -194,17 +194,17 @@ To delete a book from the database, we follow a similar approach as when retriev
         Args:
             book_uid (str): the UUID of the book
         """
-        book = await self.get_book(book_uid=book_uid)
+        book_to_delete = await self.get_book(book_uid,session)
 
-        if not book:
-            return None
-        
-        else:
-            await self.session.delete(book)
+        if book_to_delete is not None:
+            await session.delete(book_to_delete)
 
-            await self.session.commit()
+            await session.commit()
 
             return {}
+
+        else:
+            return None
 ```
 
 Let update our routes to ensure they use our newly created book database to Create, Read, Update and Delete our book database record. The source code for `src/books/service.py` should look like this at this point.
@@ -234,7 +234,7 @@ class BookService:
         """
         statement = select(Book).order_by(desc(Book.created_at))
 
-        result = await self.session.exec(statement)
+        result = await session.exec(statement)
 
         return result.all()
 
@@ -248,11 +248,17 @@ class BookService:
         Returns:
             Book: the new book
         """
-        new_book = Book(**book_create_data.model_dump())
+        book_data_dict = book_data.model_dump()
 
-        self.session.add(new_book)
+        new_book = Book(
+            **book_data_dict
+        )
 
-        await self.session.commit()
+        new_book.published_date = datetime.strptime(book_data_dict['published_date'],"%Y-%m-%d")
+
+        session.add(new_book)
+
+        await session.commit()
 
         return new_book
 
@@ -273,7 +279,7 @@ class BookService:
 
         return book if book else None
 
-    async def update_book(self, book_uid: str, book_update_data: BookCreateSchema):
+    async def update_book(self, book_uid: str, update_data: BookCreateSchema):
         """Update a book
 
         Args:
@@ -283,20 +289,20 @@ class BookService:
         Returns:
             Book: the updated book
         """
+        book_to_update = await self.get_book(book_uid,session)
 
-        book = await self.get_book(book_uid=book_uid)
+        if book_to_update is not None:
+            update_data_dict = update_data.model_dump()
 
-        if book is not None:
+            for k, v in update_data_dict.items():
+                setattr(book_to_update,k ,v)
 
-            for key, value in book_update_data.model_dump().items():
-                setattr(book, key, value)
+            await session.commit()
 
-            await self.session.commit()
-
-            return book
-        
+            return book_to_update
         else:
             return None
+
 
     async def delete_book(self, book_uid):
         """Delete a book
@@ -304,15 +310,15 @@ class BookService:
         Args:
             book_uid (str): the UUID of the book
         """
-        book = await self.get_book(book_uid=book_uid)
-        
-        if book is not None:
-            await self.session.delete(book)
+        book_to_delete = await self.get_book(book_uid,session)
 
-            await self.session.commit()
+        if book_to_delete is not None:
+            await session.delete(book_to_delete)
+
+            await session.commit()
 
             return {}
-        
+
         else:
             return None
 ```
@@ -355,62 +361,77 @@ Now that we have an understanding of how we shall get our session, let us go to 
 
 ```python
 # inside src/books/routes.py
-from fastapi import APIRouter, Depends
 from sqlmodel.ext.asyncio.session import AsyncSession
-from src.books.book_data import books
-from src.books.schemas import BookSchema, BookUpdateSchema
-from src.db.main import get_session
-from .service import BookService
+from .schemas import BookCreateModel, BookUpdateModel
+from sqlmodel import select, desc
+from .models import Book
+from datetime import datetime
 
-book_router = APIRouter()
+class BookService:
+    async def get_all_books(self, session: AsyncSession):
+        statement = select(Book).order_by(desc(Book.created_at))
 
+        result = await session.exec(statement)
 
-@book_router.get("/")
-async def read_books(session: AsyncSession = Depends(get_session)):
-    """Read all books"""
-    books = await BookService(session).get_all_books()
-    return books
+        return result.all()
 
+    async def get_book(self, book_uid: str, session: AsyncSession):
+        statement = select(Book).where(Book.uid == book_uid)
 
-@book_router.get("/{book_uid}")
-async def read_book(book_uid: str, session: AsyncSession = Depends(get_session)):
-    """Read a book"""
-    book = await BookService(session).get_book(book_uid)
-    return book
+        result = await session.exec(statement)
 
+        book = result.first()
 
-@book_router.post("/", status_code=201)
-async def create_book(book: BookSchema, session: AsyncSession = Depends(get_session)):
-    """Create a new book"""
-    new_book = await BookService(session).create_book(book)
+        if book is not None:
+            return book
+        else: 
+            return None
 
-    return new_book
+    async def create_book(self, book_data: BookCreateModel, session: AsyncSession):
+        book_data_dict = book_data.model_dump()
 
-
-@book_router.patch("/{book_uid}")
-async def update_book(
-    book_uid: int,
-    update_data: BookUpdateSchema,
-    session: AsyncSession = Depends(get_session),
-):
-    """ "update book"""
-
-    updated_book = await BookService(session).update_book(book_uid, update_data)
-
-    return updated_book
-
-
-@book_router.delete("/{book_uid}", status_code=204)
-async def delete_book(book_uid: str, session: AsyncSession = Depends(get_session)):
-    """delete a book"""
-    result = await BookService(session).delete_book(book_uid)
-
-    if result is not None:
-        return {}
-    else:
-        return JSONResponse(
-            content={"error": "book not found"}, status_code=status.HTTP_404_NOT_FOUND
+        new_book = Book(
+            **book_data_dict
         )
+
+        new_book.published_date = datetime.strptime(book_data_dict['published_date'],"%Y-%m-%d")
+
+        session.add(new_book)
+
+        await session.commit()
+
+        return new_book
+
+    async def update_book(
+        self, book_uid: str, update_data: BookUpdateModel, session: AsyncSession
+    ):
+        book_to_update = await self.get_book(book_uid,session)
+
+        if book_to_update is not None:
+            update_data_dict = update_data.model_dump()
+
+            for k, v in update_data_dict.items():
+                setattr(book_to_update,k ,v)
+
+            await session.commit()
+
+            return book_to_update
+        else:
+            return None
+
+    async def delete_book(self,book_uid:str, session:AsyncSession):
+        
+        book_to_delete = await self.get_book(book_uid,session)
+
+        if book_to_delete is not None:
+            await session.delete(book_to_delete)
+
+            await session.commit()
+
+            return {}
+
+        else:
+            return None
 ```
 
 We've made minimal changes to the file but have introduced some updates that I'll outline here. Let's start by examining the dependency injection we've integrated. Take note of how we've included the following code in each route handler function.
