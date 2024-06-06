@@ -153,6 +153,7 @@ Now, our folder structure looks like this:
 ```
 
 The `migrations` directory contains the following:
+
 - `versions/`: This folder will contain Python scripts created for each migration to track database changes.
 - `env.py`: This script serves as the entry point for Alembic. When you run Alembic commands like `alembic init`, `alembic revision`, or `alembic upgrade`, this script executes the necessary actions.
 - `README`: This file contains a description of the migration environment we have set up.

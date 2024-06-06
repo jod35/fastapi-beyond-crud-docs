@@ -760,11 +760,13 @@
 <a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="go">    │   └── main.py</span>
 <a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="go">    └── __init__.py</span>
 </code></pre></div></p>
-<p>The <code>migrations</code> directory contains the following:
-- <code>versions/</code>: This folder will contain Python scripts created for each migration to track database changes.
-- <code>env.py</code>: This script serves as the entry point for Alembic. When you run Alembic commands like <code>alembic init</code>, <code>alembic revision</code>, or <code>alembic upgrade</code>, this script executes the necessary actions.
-- <code>README</code>: This file contains a description of the migration environment we have set up.
-- <code>script.py.mako</code>: This is a template used by Alembic to create new Python migration scripts each time we create a new migration.</p>
+<p>The <code>migrations</code> directory contains the following:</p>
+<ul>
+<li><code>versions/</code>: This folder will contain Python scripts created for each migration to track database changes.</li>
+<li><code>env.py</code>: This script serves as the entry point for Alembic. When you run Alembic commands like <code>alembic init</code>, <code>alembic revision</code>, or <code>alembic upgrade</code>, this script executes the necessary actions.</li>
+<li><code>README</code>: This file contains a description of the migration environment we have set up.</li>
+<li><code>script.py.mako</code>: This is a template used by Alembic to create new Python migration scripts each time we create a new migration.</li>
+</ul>
 <p>Sure, here is the rewritten text:</p>
 <hr />
 <p>The <code>alembic.ini</code> file contains configurations for Alembic that enable it to interact with our database and project.</p>
