@@ -9,7 +9,7 @@ nav:
       - Databases with SQLModel: chapter5.md
       - Finishing Up the CRUD: chapter6.md
       - Creating a user authentication model: chapter7.md
-      - JWT Authentication: chapter8.md
+      - User Account Creation: chapter8.md
 
 theme: 
  name: material
