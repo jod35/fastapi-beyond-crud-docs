@@ -90,7 +90,7 @@ async def get_user_by_email(self, email: str, session: AsyncSession):
 
 This function is responsible for retrieving a user by their username. First we create a statement the queries for a user by their email.
 ```python
-statement = select(User).where(User.email == email
+statement = select(User).where(User.email == email)
 ```
 
 Next, we create a result object from using our session object to execute the statement.
@@ -142,21 +142,79 @@ class UserCreateModel(BaseModel):
     password: str  = Field(min_length=6)
 ```
 
-This is a normal pydantic model for helping us define how we shall create a new user account. It has the fields defined on the `User` database model necessary for creating user accounts.
+This example demonstrates a typical Pydantic model used for defining the structure required to create a new user account. The model includes fields from the `User` database model that are necessary for account creation.
 
-Notice how we are using `Field` to add extra validation for fields such `max_length` and `min_length`. This class alows us to validate any data that shall come from a client. The `session` object
+We use the `Field` class to enforce additional validation on certain fields, such as specifying `max_length` and `min_length`. This ensures that any data received from a client adheres to these constraints. 
 
-on the other hand is one created from the `get_session` dependency.
+The `session` object, which is instantiated from the `get_session` dependency, is then utilized.
 
-We then create a dictionary `new_user` from the `user_data` object. We then use that dictionary to create a new `User` object by unpacking its attributes as those for the user object. Netx we use the 
-
-`session` to add it to the session and finally commit the session to save that to the database. Finally we return the newly created user object.
-
-
-## Creating the Auth Router
-After creating our `UserService`, we can now create an API endpoint to make use of this route. First we shall create a `routes.py` file and add the folowing code to it.
+A dictionary named `new_user` is created from the `user_data` object. This dictionary is then unpacked to instantiate a new `User` object with the corresponding attributes. Subsequently, the `session` object is used to add this new `User` object to the session. We commit the session to persist the new user to the database. Finally, we return the newly created user object.
 
 ```python
+user_data_dict = user_data.model_dump()
+
+new_user = User(**user_data_dict)
+
+new_user.password_hash = generate_passwd_hash(user_data_dict["password"])
+
+session.add(new_user)
+
+await session.commit()
+
+return new_user
+```
+
+Let's take a closer look at how the password is hashed using the generate_password_hash function defined in src/auth/utils.py.
+
+First, note how we utilize the generate_password_hash function within our user creation process to securely hash the user's password before storing it in the database. This ensures that passwords are not stored in plain text, enhancing security.
+
+```python
+# inside src/auth/utils.py
+from passlib.context import CryptContext
+
+passwd_context = CryptContext(
+    schemes=['bcrypt']
+)
+
+def generate_password_hash(password: str) -> str:
+    hash = passwd_context.hash(password)
+    return hash
+
+def verify_password(password: str, hash: str) -> bool:
+    return passwd_context.verify(password, hash)
+```
+
+This file contains two crucial functions:
+
+1. **generate_password_hash**: This function takes a plain text password and returns its hashed version.
+2. **verify_password**: This function checks if a given plain text password matches a stored hash, returning `True` if they match and `False` otherwise.
+
+To make these functions work, we use Passlib, a library that supports various password hashing algorithms. You can install it with the following command:
+
+```console
+pip install passlib
+```
+
+Passlib's `CryptContext` class allows us to specify which hashing algorithms to use. In this case, we create a `passwd_context` object configured to use the Bcrypt algorithm:
+
+```python
+passwd_context = CryptContext(
+    schemes=['bcrypt']
+)
+```
+
+This object is initialized with the `schemes` parameter, a list of the hashing algorithms we want to use. Here, we've chosen Bcrypt.
+
+We then use this object to hash and verify passwords by calling its methods:
+1. **hash**: This method takes a plain text password and returns a hashed version of it.
+2. **verify**: This method takes a plain text password and a hash, returning `True` if they match and `False` if they don't.
+
+## Creating the Auth Router
+
+After creating our `UserService`, we can now create an API endpoint to utilize this service. First, we will create a `routes.py` file and add the following code to it:
+
+```python
+#indisde src/auth/routes.py
 from fastapi import APIRouter, Depends, status
 from .schemas import UserCreateModel, UserModel
 from .service import UserService
@@ -164,15 +222,13 @@ from src.db.main import get_session
 from sqlmodel.ext.asyncio.session import AsyncSession
 from fastapi.exceptions import HTTPException
 
-
 auth_router = APIRouter()
 user_service = UserService()
-
 
 @auth_router.post(
     "/signup", response_model=UserModel, status_code=status.HTTP_201_CREATED
 )
-async def create_user_Account(
+async def create_user_account(
     user_data: UserCreateModel, session: AsyncSession = Depends(get_session)
 ):
     email = user_data.email
@@ -188,12 +244,11 @@ async def create_user_Account(
     new_user = await user_service.create_user(user_data, session)
 
     return new_user
-
 ```
 
-Inside this file, we create a router object called `auth_router` to help group all the routes that shall be related to the authentication. In addition to that, we shall also create the `user_service`
- to allow us access the methods we defined in the `UserService`object. We then create the endpoint for creating user accounts. Inside its handler, we shall access the user email and use it to check if the user with that email exists.
+In this file, we create a router object called `auth_router` to group all routes related to authentication. We also instantiate `user_service` to access the methods defined in the UserService object. Then, we create an endpoint for creating user accounts. The primary endpoint in this file is for creating user accounts. This endpoint extracts the email from the `user_data` object and checks if a user with that email already exists using the `user_service.user_exists` method. 
 
-If the user does not exist, we shall raise an exception informing the user that an account has been created with trhe provided email. Just in case no account exists with that email, we proceed to save the object in the database.
+If the user exists, it raises an `HTTPException` with a 403 status code and an appropriate message. If the user does not exist, it creates and saves the new user in the database using the user_service.create_user method and returns the newly created user object. To test this endpoint, use a tool like Insomnia to send a POST request to the /signup endpoint with the required fields in the request body, ensuring the user account is created successfully or that the correct error message is returned if the user already exist.
 
-Let us test this. In Insomnia, we shall make a request to the endpoint. 
+
+
