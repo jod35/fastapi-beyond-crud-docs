@@ -852,11 +852,11 @@
 <h2 id="introduction">Introduction</h2>
 <p>Now that we have FastAPI installed, we are going to create a simple web server on whicn our application shall run using FastAPI.</p>
 <p>At this stage, our directory only contains our virtual environment directory <code>env</code> and <code>requirements.txt</code> as shown below as follows:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>└── env
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>└── requirements.txt
+<div class="highlight"><span class="filename">Current directory structure</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">└── env</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="go">└── requirements.txt</span>
 </code></pre></div></p>
 <p>Let's create a file named <code>main.py</code> and populate it with the following code:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><span class="filename">main.py</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
@@ -868,13 +868,13 @@
 <h3 id="creating-a-fastapi-instance"><strong>Creating a FastAPI instance:</strong></h3>
 <p>We have imported the <code>FastAPI</code> class from the <code>fastapi</code> package. This class serves as the primary entry point for all FastAPI applications. Through it we can get access to various FastAPI features such as routes , middleware, exception handlers and path operations.</p>
 <p>We then create an instance of the <code>FastAPI</code> class named <code>app</code>. The main FastAPI instance can be called anything as long as it is a valid Python name. </p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><span class="filename">Creating the FastAPI instance</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 </code></pre></div>
 <h3 id="creating-an-api-route"><strong>Creating an API Route:</strong></h3>
 <p>We define our first API route by creating a function named <code>read_root</code>. This function, when accessed, will return a JSON message containing "Hello World!".</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<div class="highlight"><span class="filename">Your first API endpoint</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">read_root</span><span class="p">():</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World!&quot;</span><span class="p">}</span>
 </code></pre></div>
@@ -882,10 +882,10 @@
 <p>All HTTP methods such as <code>post</code>,<code>put</code>,<code>head</code>,<code>patch</code>, <code>delete</code>, <code>trace</code> and <code>options</code> are all available on the <code>@app</code> decorator.</p>
 <h3 id="running-the-fastapi-application"><strong>Running the FastAPI Application:</strong></h3>
 <p>To run our FastAPI application, we shall use the <code>fastapi</code>command we introduced in the previous chapter. Open a terminal and execute the following command within the virtual environment:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp gp-VirtualEnv">(env)</span><span class="gp">$ </span>fastapi<span class="w"> </span>dev<span class="w"> </span>main.py
+<div class="highlight"><span class="filename">Running the server with the FastAPI CLI</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="gp gp-VirtualEnv">(env)</span><span class="gp">$ </span>fastapi<span class="w"> </span>dev<span class="w"> </span>main.py
 </code></pre></div>
 <p>The <code>fastapi dev</code> command enables us to execute our FastAPI application in development mode. This feature facilitates running our application with auto-reload functionality, ensuring that any modifications we make are automatically applied, restarting the server accordingly. It operates by identifying the FastAPI instance within the specified module or Python package, which in our scenario is <code>main.py</code>, where we have defined the app object. When we initiate our application, it will display the following output.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">INFO     Using path main.py                                                                              </span>
+<div class="highlight"><span class="filename">terminal ouput</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="go">INFO     Using path main.py                                                                              </span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="go">INFO     Resolved absolute path /home/jod35/Documents/fastapi-beyond-CRUD/main.py                         </span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="go">INFO     Searching for package file structure from directories with __init__.py files                 </span>
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="go">INFO     Importing from /home/jod35/Documents/fastapi-beyond-CRUD                                     </span>
@@ -954,7 +954,7 @@
 These data types represent common conventions in Python and are utilized for variable type annotations. They facilitate type checking and model validation during compilation. Examples include <code>Optional</code>, <code>List</code>, <code>Dict</code>, <code>Set</code>, <code>Union</code>, <code>Tuple</code>, <code>FrozenSet</code>, <code>Iterable</code>, and <code>Deque</code>.</p>
 <h3 id="path-parameters">Path Parameters</h3>
 <p>All request data supplied in the endpoint URL of a FastAPI API is acquired through a path parameter, thus rendering URLs dynamic. FastAPI adopts curly braces (<code>{}</code>) to denote path parameters when defining a URL. Once enclosed within the braces, FastAPI requires that they be provided as parameters to the route handler functions we establish for those paths.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">#inside main.py</span>
+<div class="highlight"><span class="filename">path parameters</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">#inside main.py</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/greet/</span><span class="si">{username}</span><span class="s1">&#39;</span><span class="p">)</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">username</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="sa">f</span><span class="s2">&quot;Hello </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
@@ -965,7 +965,7 @@ These data types represent common conventions in Python and are utilized for var
 <img alt="Greeting without a username specified" src="../img/img142.png" /></p>
 <h3 id="query-parameters">Query Parameters</h3>
 <p>These are key-value pairs provided at the end of a URL, indicated by a question mark (<code>?</code>). Just like path parameters, they also take in request data. Whenever we want to provide multiple query parameters, we use the ampersand (<code>&amp;</code>) sign.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># inside main.py</span>
+<div class="highlight"><span class="filename">Query params</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># inside main.py</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">user_list</span> <span class="o">=</span> <span class="p">[</span>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>   <span class="s2">&quot;Jerry&quot;</span><span class="p">,</span>
@@ -989,7 +989,7 @@ These data types represent common conventions in Python and are utilized for var
 <img alt="Searching a user who does not exist" src="../img/img16.png" /></p>
 <h3 id="optional-parameters">Optional Parameters</h3>
 <p>There may also be cases when the API route can operate as needed even in the presence of a path or query param. In this case, we can make the parameters optional when annotating their types in the route handler functions. Forexample, our first example can be modified to the following:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<div class="highlight"><span class="filename">Optional Query Params</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/greet/&#39;</span><span class="p">)</span>
 <a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">username</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;User&quot;</span><span class="p">):</span>
@@ -1004,7 +1004,7 @@ These data types represent common conventions in Python and are utilized for var
 <img alt="greeting with the default value of the username" src="../img/img18.png" /></p>
 <h2 id="request-body">Request Body</h2>
 <p>Frequently, clients need to send data to the server for tasks like creating or updating resources through methods like POST, PATCH, PUT, DELETE, or for various other operations. FastAPI simplifies this process by enabling you to define a Pydantic model to establish the structure of the data being sent. Furthermore, it aids in validating data types using type hints. Let's delve into a straightforward example to illustrate this concept.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># inside main.py</span>
+<div class="highlight"><span class="filename">Request Body</span><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># inside main.py</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># the User model</span>
@@ -1025,7 +1025,7 @@ These data types represent common conventions in Python and are utilized for var
 <a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;User Created successfully&quot;</span><span class="p">,</span><span class="s2">&quot;user&quot;</span><span class="p">:</span><span class="n">new_user</span><span class="p">}</span>
 </code></pre></div>
 <p>What we have done in the above example is to create a Pydantic model by inheriting Pydantic's <code>BaseModel</code> class. On this class we have defined attributes <code>username</code> and <code>email</code> and also annotated them with the <code>str</code> type. 
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">class</span> <span class="nc">UserSchema</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<div class="highlight"><span class="filename">A simple Pydantic model</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">class</span> <span class="nc">UserSchema</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>   <span class="n">username</span><span class="p">:</span><span class="nb">str</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>   <span class="n">email</span><span class="p">:</span><span class="nb">str</span>
 </code></pre></div></p>
@@ -1079,7 +1079,7 @@ These data types represent common conventions in Python and are utilized for var
 </li>
 </ul>
 <p>To access such headers, FastAPI provides us with the <code>Header</code> function giving us the ability to get the values of these headers using the exact names but in a snake-case syntax forexample, <code>User-Agent</code> is <code>user_agent</code>, <code>Accept-Encoding</code> is <code>accept_encoding</code> and so on. Let us take a look at a small code example.</p>
-<p><div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># inside main.py</span>
+<p><div class="highlight"><span class="filename">Request Headers</span><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># inside main.py</span>
 <a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/get_headers&#39;</span><span class="p">)</span>
 <a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_all_request_headers</span><span class="p">(</span>
 <a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">user_agent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
