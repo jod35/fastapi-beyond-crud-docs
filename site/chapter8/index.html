@@ -554,6 +554,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -649,6 +658,15 @@
   <a href="#creating-the-auth-router" class="md-nav__link">
     <span class="md-ellipsis">
       Creating the Auth Router
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
     </span>
   </a>
   
@@ -874,6 +892,14 @@ we have to created inside our <code>auth</code> directory.</p>
 </code></pre></div>
 <p>In this file, we create a router object called <code>auth_router</code> to group all routes related to authentication. We also instantiate <code>user_service</code> to access the methods defined in the UserService object. Then, we create an endpoint for creating user accounts. The primary endpoint in this file is for creating user accounts. This endpoint extracts the email from the <code>user_data</code> object and checks if a user with that email already exists using the <code>user_service.user_exists</code> method. </p>
 <p>If the user exists, it raises an <code>HTTPException</code> with a 403 status code and an appropriate message. If the user does not exist, it creates and saves the new user in the database using the user_service.create_user method and returns the newly created user object. To test this endpoint, use a tool like Insomnia to send a POST request to the /signup endpoint with the required fields in the request body, ensuring the user account is created successfully or that the correct error message is returned if the user already exist.</p>
+<p>Making a sucessful request to the endpoint creates a new user account.
+<img alt="New user account created successfully" src="../img/img24.png" /></p>
+<p>Making the same request again shows that the user already exists with the defined status code.
+<img alt="Account already exists" src="../img/img25.png" /></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>For now, we have been successful in creating user accounts using the database model we created in the previous section. In the next section, we are going to allow users identify themselves, so that they access various API endpoints.</p>
+<p><strong>Previous</strong>: <a href="../chapter7/">Creating the User Authentication Model</a></p>
+<p><strong>Next</strong>: <a href="../chapter9/">Authentication Using JWTs</a></p>
 
 
 

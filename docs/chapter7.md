@@ -375,3 +375,7 @@ Ladies and gentlemen, we have successfully created the `user_accounts` table fro
 
 ## Conclusion
 In this chapter, we have created a simple database model to enable us manage user accounts in our application. We have introduced Alembic, a database migration tool that runs on SQLAlchemy database models, allowing us to easily introduce changes to an existing database structure without haveing to delete data.
+
+**Previous**: [Finishing Up the CRUD](./chapter6.md)
+
+**Next**: [User Account Creation](./chapter8.md)

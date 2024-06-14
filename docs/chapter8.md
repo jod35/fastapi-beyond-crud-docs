@@ -249,5 +249,18 @@ In this file, we create a router object called `auth_router` to group all routes
 
 If the user exists, it raises an `HTTPException` with a 403 status code and an appropriate message. If the user does not exist, it creates and saves the new user in the database using the user_service.create_user method and returns the newly created user object. To test this endpoint, use a tool like Insomnia to send a POST request to the /signup endpoint with the required fields in the request body, ensuring the user account is created successfully or that the correct error message is returned if the user already exist.
 
+Making a sucessful request to the endpoint creates a new user account.
+![New user account created successfully](./img/img24.png)
 
+Making the same request again shows that the user already exists with the defined status code.
+![Account already exists](./img/img25.png)
+
+
+
+## Conclusion
+For now, we have been successful in creating user accounts using the database model we created in the previous section. In the next section, we are going to allow users identify themselves, so that they access various API endpoints.
+
+**Previous**: [Creating the User Authentication Model](./chapter7.md)
+
+**Next**: [Authentication Using JWTs](./chapter9.md)
 
