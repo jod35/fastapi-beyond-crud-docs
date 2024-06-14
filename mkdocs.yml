@@ -10,6 +10,7 @@ nav:
       - Finishing Up the CRUD: chapter6.md
       - Creating a user authentication model: chapter7.md
       - User Account Creation: chapter8.md
+      - JWT Authentication: chapter9.md
 
 theme: 
  name: material
