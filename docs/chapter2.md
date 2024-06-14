@@ -4,14 +4,14 @@
 Now that we have FastAPI installed, we are going to create a simple web server on whicn our application shall run using FastAPI.
 
 At this stage, our directory only contains our virtual environment directory `env` and `requirements.txt` as shown below as follows:
-```
+```console title="Current directory structure"
 └── env
 └── requirements.txt
 ```
 
 Let's create a file named `main.py` and populate it with the following code:
 
-```python
+```python title="main.py"
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -31,7 +31,7 @@ We have imported the `FastAPI` class from the `fastapi` package. This class serv
 We then create an instance of the `FastAPI` class named `app`. The main FastAPI instance can be called anything as long as it is a valid Python name. 
 
 
-```python
+```python title="Creating the FastAPI instance"
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -40,7 +40,7 @@ app = FastAPI()
 ### **Creating an API Route:**
    We define our first API route by creating a function named `read_root`. This function, when accessed, will return a JSON message containing "Hello World!".
 
-```python
+```python title="Your first API endpoint"
 @app.get('/')
 async def read_root():
     return {"message": "Hello World!"}
@@ -53,12 +53,12 @@ All HTTP methods such as `post`,`put`,`head`,`patch`, `delete`, `trace` and `opt
 ### **Running the FastAPI Application:**
    To run our FastAPI application, we shall use the `fastapi`command we introduced in the previous chapter. Open a terminal and execute the following command within the virtual environment:
 
-```console
+```console title="Running the server with the FastAPI CLI"
 (env)$ fastapi dev main.py
 ```
 
 The `fastapi dev` command enables us to execute our FastAPI application in development mode. This feature facilitates running our application with auto-reload functionality, ensuring that any modifications we make are automatically applied, restarting the server accordingly. It operates by identifying the FastAPI instance within the specified module or Python package, which in our scenario is `main.py`, where we have defined the app object. When we initiate our application, it will display the following output.
-```console
+```console title="terminal ouput"
 
 INFO     Using path main.py                                                                              
 INFO     Resolved absolute path /home/jod35/Documents/fastapi-beyond-CRUD/main.py                         
@@ -138,7 +138,7 @@ These data types represent common conventions in Python and are utilized for var
 ### Path Parameters
 All request data supplied in the endpoint URL of a FastAPI API is acquired through a path parameter, thus rendering URLs dynamic. FastAPI adopts curly braces (`{}`) to denote path parameters when defining a URL. Once enclosed within the braces, FastAPI requires that they be provided as parameters to the route handler functions we establish for those paths.
 
-```python
+```python title="path parameters"
 #inside main.py
 @app.get('/greet/{username}')
 async def greet(username:str):
@@ -155,7 +155,7 @@ Just in we make a request to the route without the param,
 ### Query Parameters
 These are key-value pairs provided at the end of a URL, indicated by a question mark (`?`). Just like path parameters, they also take in request data. Whenever we want to provide multiple query parameters, we use the ampersand (`&`) sign.
 
-```python
+```python title="Query params"
 # inside main.py
 
 user_list = [
@@ -185,7 +185,7 @@ And searching for a user who does not exist returns the following response.
 
 ### Optional Parameters
 There may also be cases when the API route can operate as needed even in the presence of a path or query param. In this case, we can make the parameters optional when annotating their types in the route handler functions. Forexample, our first example can be modified to the following:
-```python
+```python title="Optional Query Params"
 from typing import Optional
 
 @app.get('/greet/')
@@ -210,7 +210,7 @@ Note that this time if we do not provide the `username`, we shall get the defaul
 ## Request Body
 Frequently, clients need to send data to the server for tasks like creating or updating resources through methods like POST, PATCH, PUT, DELETE, or for various other operations. FastAPI simplifies this process by enabling you to define a Pydantic model to establish the structure of the data being sent. Furthermore, it aids in validating data types using type hints. Let's delve into a straightforward example to illustrate this concept.
 
-```python
+```python title="Request Body"
 # inside main.py
 from pydantic import BaseModel
 
@@ -234,7 +234,7 @@ async def create_user(user_data:UserSchema):
 ```
 
 What we have done in the above example is to create a Pydantic model by inheriting Pydantic's `BaseModel` class. On this class we have defined attributes `username` and `email` and also annotated them with the `str` type. 
-```python
+```python title="A simple Pydantic model"
 class UserSchema(BaseModel):
    username:str
    email:str
@@ -312,7 +312,7 @@ Common request headers include:
 
 To access such headers, FastAPI provides us with the `Header` function giving us the ability to get the values of these headers using the exact names but in a snake-case syntax forexample, `User-Agent` is `user_agent`, `Accept-Encoding` is `accept_encoding` and so on. Let us take a look at a small code example.
 
-```python
+```python title="Request Headers"
 # inside main.py
 @app.get('/get_headers')
 async def get_all_request_headers(

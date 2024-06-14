@@ -6,7 +6,7 @@ Now that we have a working CRUD API, let's move on to more advanced topics. The 
  
 ## Creating the user account model
 To achieve that, we shall begin by having a database model for keeping information about user accounts. Our current project structure looks like.
-```
+```console title="Current Project Structure"
 ├── README.md
 ├── requirements.txt
 └── src
@@ -26,7 +26,7 @@ To achieve that, we shall begin by having a database model for keeping informati
 
 Inside the `src` folder, we shall create a directory called `auth`. This shall keep all source code associated with user account management. Inside it, we shall create a `__init__.py` file to mark it as a Python package. Our updated directory structure is now:
 
-```
+```console title="Create the auth directory"
 ├── README.md
 ├── requirements.txt
 └── src
@@ -48,8 +48,7 @@ Inside the `src` folder, we shall create a directory called `auth`. This shall k
 
 Let us now add a `models.py` file in which we shall create the user account model. 
 
-```python
-# inside src/auth/models.py
+```python title="src/auth/models.py"
 from sqlmodel import SQLModel, Field, Column
 import sqlalchemy.dialects.postgresql as pg
 import uuid
@@ -98,18 +97,18 @@ Previously, we applied changes to the database using the lifespan event created 
 To achieve this, we will use [Alembic](https://alembic.sqlalchemy.org/en/latest/), a database migration tool for use with SQLAlchemy. Since we are using SQLModel, which is based on SQLAlchemy, Alembic will be very useful.
 
 Let's begin by installing Alembic in our virtual environment using `pip`:
-```console
+```console title="Installling Alembic"
 (env) $ pip install alembic
 ```
 
 To confirm that Alembic has been installed, run the following command:
-```console
+```console title="checking Alembic version"
 (env) $ alembic --version
 alembic 1.13.1
 ```
 
 Alembic is installed and the version is `1.13.1`. Now, let's initialize Alembic in our project with this command:
-```console
+```console title="Creating the migration environment"
 (env) $ alembic init -t async migrations
   Creating directory '/home/jod35/Documents/fastapi-beyond-CRUD/migrations' ...  done
   Creating directory '/home/jod35/Documents/fastapi-beyond-CRUD/migrations/versions' ...  done
@@ -125,7 +124,7 @@ The above command uses Alembic to create a **migration environment**. The migrat
 We used the `-t` option to specify the template for setting up the environment. We chose the async template because our project uses an async DBAPI.
 
 Now, our folder structure looks like this:
-```console
+```console title="Current Project structure with migration environment"
 ├── alembic.ini
 ├── migrations
 │   ├── env.py
@@ -169,7 +168,7 @@ The `alembic.ini` file contains configurations for Alembic that enable it to int
 
 Now that we understand our migration environment, let's set up SQLModel to work with Alembic. We start by editing `migrations/env.py`:
 
-```python
+```python title="migrations/env.py"
 import asyncio
 from logging.config import fileConfig
 
@@ -203,8 +202,7 @@ In this example, we import the `User` model we created in `/src/auth/models.py`.
 
 Next, we edit the `migrations/script.py.mako` file to include SQLModel:
 
-```python
-# inside migrations/script.mako.py
+```python title="migrations/script.mako.py"
 """${message}
 
 Revision ID: ${up_revision}
@@ -223,7 +221,7 @@ import sqlmodel # ADD THIS
 
 We then edit `alembic.ini` to specify the URL to the database we want to migrate:
 
-```ini
+```ini title="alembic.ini"
 # set to 'true' to search source files recursively
 # in each "version_locations" directory
 # new in Alembic version 1.10
@@ -238,7 +236,7 @@ sqlalchemy.url = postgresql+asyncpg://user:pswd@host/db # use the URL to your da
 
 Having made these changes, let's create our first database migration. Our database currently contains only the `books` table. We'll create a migration to add the `user_accounts` table:
 
-```console
+```console title="Creating our first Migration"
 (env) $ alembic revision --autogenerate -m "init"
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
@@ -248,8 +246,7 @@ INFO  [alembic.autogenerate.compare] Detected added table 'user_accounts'
 
 The newly created `migrations/versions/8cf8276d5f3c_init.py` file contains the following:
 
-```python
-# inside src/migrations/versions/8cf8276d5f3c_init.py
+```python title="src/migrations/versions/8cf8276d5f3c_init.py"
 """init
 
 Revision ID: 8cf8276d5f3c
@@ -305,7 +302,7 @@ The `upgrade` function defines the changes to the database structure, creating t
 
 To apply these changes to the database, use the following command:
 
-```console
+```console title="Apply migrations"
 (env) $ alembic upgrade head
 INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
 INFO  [alembic.runtime.migration] Will assume transactional DDL.
@@ -314,13 +311,13 @@ INFO  [alembic.runtime.migration] Running upgrade  -> 8cf8276d5f3c, init
 
 This command creates the `user_accounts` table in the database. To verify, list the tables in your current database:
 
-```console
+```console title="Connecting to your PostgreSQL"
 (env) $ psql --username=<your-username> --dbname=<your-db>
 ```
 
 For example:
 
-```console
+```console title="List table in database"
 (env) $ psql --username=jod35 --dbname=books
 psql (14.11 (Ubuntu 14.11-0ubuntu0.22.04.1))
 Type "help" for help.
@@ -339,7 +336,7 @@ The `alembic_version` and `user_accounts` tables have been created. Let's examin
 
 For `alembic_version`:
 
-```console
+```console title="Structure of the alembic_version table"
 books=# \d alembic_version
                     Table "public.alembic_version"
    Column    |         Type          | Collation | Nullable | Default 
@@ -353,7 +350,7 @@ This table includes one column, `version_num`, which keeps records of the versio
 
 For `user_accounts`:
 
-```console
+```console title="Structure of the user accounts table"
 books=# \d user_accounts
                          Table "public.user_accounts"
     Column     |            Type             | Collation | Nullable | Default 

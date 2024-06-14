@@ -5,7 +5,7 @@ In the previous chapter, we created a database model for user accounts. Using th
 Ths first task shall be one of making users join our application through signing up. Using thisstep, users shall have user accounts that can allow them use the application.
 
 Our current project structure is something like this.
-```console
+```console title="Current Project structure"
 ├── alembic.ini
 ├── migrations
 │   ├── env.py
@@ -35,8 +35,7 @@ Our current project structure is something like this.
 
 
 Let us begin by creating `src/auth/service.py` and adding the folowing code to it.
-```python
-# inside src/auth/service.py
+```python title="src/auth/service.py"
 from .models import User
 from .schemas import UserCreateModel
 from .utils import generate_passwd_hash
@@ -75,9 +74,10 @@ class UserService:
 ```
 
 ### Retrieving a user by their email
-Inside this file, we have created a class `UserService` containing some methods that shall be necessary when creating user accounts. Let us begin by looking at the first method `get_user_by_email`.
-```python
-#inside src/auth/service.py
+Inside this file, we have created a class `UserService` containing some methods that shall be necessary when creating user accounts. Let us begin by looking at the first method `get_user_by_email` .
+
+```python title="src/auth/service.py"
+
 async def get_user_by_email(self, email: str, session: AsyncSession):
     statement = select(User).where(User.email == email)
 
@@ -89,12 +89,13 @@ async def get_user_by_email(self, email: str, session: AsyncSession):
 ```
 
 This function is responsible for retrieving a user by their username. First we create a statement the queries for a user by their email.
-```python
+```python title="select a user by their email"
 statement = select(User).where(User.email == email)
 ```
 
 Next, we create a result object from using our session object to execute the statement.
-```python
+
+```python title="Using the session to execute the statement"
 result = await session.exec(statement)
 
 user = result.first()
@@ -106,7 +107,7 @@ We then access to the returned user object using the `first` method. Finally, we
 ### Checking if a user exists
 The next method is the `user_exists` method that shows if a user exists by returning `True` if the user exists else `False`.
 
-```python
+```python title="Checking is the user account exists"
 async def user_exists(self, email, session: AsyncSession):
     user = await self.get_user_by_email(email, session)
 
@@ -115,7 +116,7 @@ async def user_exists(self, email, session: AsyncSession):
 
 ### Creating the user account
 Lastly we have the `create_user` function that is responsible fo creating a user account.
-```python
+```python title="Creating a user account"
 async def create_user(self, user_data: UserCreateModel, session: AsyncSession):
     user_data_dict = user_data.model_dump()
 
@@ -132,8 +133,8 @@ async def create_user(self, user_data: UserCreateModel, session: AsyncSession):
 
 This function has two parameters, the `user_data` and the `session` object. The `user_data` parameter is of type `BookCreateModel` which we are going to define in a  `schemas.py`
 we have to created inside our `auth` directory.
-```python
-#inside src/auth/schemas.py
+
+```python title="src/auth/schemas.py"
 class UserCreateModel(BaseModel):
     first_name: str =Field(max_length=25)
     last_name:  str =Field(max_length=25)
@@ -168,8 +169,7 @@ Let's take a closer look at how the password is hashed using the generate_passwo
 
 First, note how we utilize the generate_password_hash function within our user creation process to securely hash the user's password before storing it in the database. This ensures that passwords are not stored in plain text, enhancing security.
 
-```python
-# inside src/auth/utils.py
+```python title="src/auth/utils.py"
 from passlib.context import CryptContext
 
 passwd_context = CryptContext(
@@ -191,13 +191,13 @@ This file contains two crucial functions:
 
 To make these functions work, we use Passlib, a library that supports various password hashing algorithms. You can install it with the following command:
 
-```console
+```console title="Installing passlib"
 pip install passlib
 ```
 
 Passlib's `CryptContext` class allows us to specify which hashing algorithms to use. In this case, we create a `passwd_context` object configured to use the Bcrypt algorithm:
 
-```python
+```python title="Creating the password context"
 passwd_context = CryptContext(
     schemes=['bcrypt']
 )
@@ -213,8 +213,7 @@ We then use this object to hash and verify passwords by calling its methods:
 
 After creating our `UserService`, we can now create an API endpoint to utilize this service. First, we will create a `routes.py` file and add the following code to it:
 
-```python
-#indisde src/auth/routes.py
+```python title="src/auth/routes.py"
 from fastapi import APIRouter, Depends, status
 from .schemas import UserCreateModel, UserModel
 from .service import UserService

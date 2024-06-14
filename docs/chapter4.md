@@ -3,7 +3,7 @@
 ### Current folder structure
 So far, our project structure is quite simple:
 
-```console
+```console title="Current Project structure"
 ├── env/
 ├── main.py
 ├── requirements.txt
@@ -12,8 +12,7 @@ So far, our project structure is quite simple:
 ### Currrent code structure
 Additionally, our `main.py` file looks like this:
 
-```python
-# inside main.py
+```python title="main.py"
 from fastapi import FastAPI, Query
 
 
@@ -100,7 +99,7 @@ async def delete_book(book_id: int):
 
 The problem here is that if we add more code to this file, our code will become messy and hard to maintain beacuse all our code will be in one file `main.py`. To address this, we need to create a more organized project structure. To start, let's create a new folder called `src`, which will contain an `__init__.py` file to make it a Python package:
 
-```console
+```console title="creating the src directory"
 ├── env/
 ├── main.py
 ├── requirements.txt
@@ -110,7 +109,7 @@ The problem here is that if we add more code to this file, our code will become 
 
 Now, create a folder named `books` inside the `src` directory. Inside this folder, add an `__init__.py` file, a `routes.py` file, a `schemas.py` file, and a `book_data.py` file. The `routes.py` file will contain all the book routes, similar to what we created in the previous chapter. The `schemas.py` file will contain the schemas that are currently in our root directory.
 
-```console
+```console title="creating the books directory"
 ├── env/
 ├── main.py
 ├── requirements.txt
@@ -125,8 +124,8 @@ Now, create a folder named `books` inside the `src` directory. Inside this folde
 
 First, let's move our `books` list from `main.py` to `book_data.py` inside the `books` directory.
 
-```python
-# Inside src/books/book_data.py
+```python title="src/books/book_data.py"
+
 
 books = [
     {
@@ -144,8 +143,7 @@ books = [
 
 Next, let's also move our Pydantic validation models from `main.py` to the `schemas.py` module inside the `books` directory.
 
-```python
-# Inside src/books/schemas.py
+```python title="src/books/schemas.py"
 
 from pydantic import BaseModel
 
@@ -168,8 +166,7 @@ class BookUpdateModel(BaseModel):
 
 Now, let's update `routes.py` as follows:
 
-```python
-# Inside routes.py
+```python title="src/books/routes.py"
 
 from fastapi import APIRouter
 from src.books.book_data import books
@@ -230,9 +227,9 @@ What has been accomplished is the division of our project into modules using rou
 
 Let's enhance our `main.py` file to adopt this modular structure:
 
-```python
+```python title="Including the book router to our app"
 
-# Inside main.py
+# Inside main.py title
 from fastapi import FastAPI
 from src.books.routes import book_router
 
@@ -265,8 +262,7 @@ Furthermore, we added the following arguments to the include_router method:
 
 Let us now now move all the source code in our `main.py` module to `src/__init__.py`. (delete your `main.py`)
 
-```python
-# inside src/__init__.py
+```python title="src/__init__.py"
 from fastapi import FastAPI
 from src.books.routes import book_router
 
@@ -282,7 +278,7 @@ app = FastAPI(
 app.include_router(book_router, prefix=f"/api/{version}/books", tags=['books'])
 ```
 Having moved our code, we shall now have this folder structure.
-```console
+```console title="modified directory structure"
 ├── requirements.txt
 ├── run.py
 └── src
@@ -298,7 +294,7 @@ Having moved our code, we shall now have this folder structure.
 Once more, let's start our server using `fastapi dev src/`. Pay attention to the fact that this time we're specifying`src/`. This is because we've designated it as a package by including `__init__.py`. Additionally, our FastAPI instance named `app` is created there. Consequently, FastAPI will utilize it to operate our application.
 
 Runnning our application will the following terminal output.
-```console
+```console title="Running the server"
 INFO     Using path src                                                                                                                                     
 INFO     Resolved absolute path /home/jod35/Documents/fastapi-beyond-CRUD/src                                                                               
 INFO     Searching for package file structure from directories with __init__.py files                                                                       

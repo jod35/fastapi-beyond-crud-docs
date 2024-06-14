@@ -43,6 +43,7 @@ markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.superfences
+  - admonition
 
 
 repo_name: jod35/fastapi-beyond-CRUD

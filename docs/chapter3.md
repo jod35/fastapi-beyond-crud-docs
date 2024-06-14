@@ -59,8 +59,8 @@ The provided table describes various API endpoints, their associated HTTP method
 
 Now that we have a plan of our simple API, we can now build our simple CRUD API by adding the following code to `main.py`. We shall begin by creating a very simple list of books that we will use as our database.
 
-```py
-# in memory database of the books
+```py title="in memory database of the books"
+
 books = [
     {
         "id": 1,
@@ -121,7 +121,7 @@ books = [
 
 Once we have that, we shall build our endpoints on the simple database.
 
-```python
+```python title="All CRUD endpoints on the in-memory store"
 from fastapi import FastAPI, status
 from fastapi.exceptions import HTTPException
 from pydantic import BaseModel
@@ -199,7 +199,7 @@ async def delete_book(book_id: int):
 
 ## Reading All Books (HTTP GET)
 This route responds to GET requests made to `/books`, providing a list of all books available in the application. It ensures that the response adheres to the `List[Book]` model, guaranteeing consistency with the structure defined by the `Book` model.
-```python
+```python title="Read all books"
 class Book(BaseModel):
     id: int
     title: str
@@ -238,7 +238,7 @@ This capability enables us to effortlessly respond with a list of book objects w
 ## Read one Book (HTTP GET)
 To retrieve a single book by its ID, the FastAPI application employs the `read_book` function whenever a request is made to `book/{book_id}`. The `{book_id}` serves as a path parameter passed to the `read_book` function to locate the book with the corresponding ID. The process involves iterating through the list of books to verify the existence of a book with the provided ID. If the book is not found, an `HTTPException` is raised, signaling that the book resource is not available. Notably, FastAPI's `status` module facilitates access to status codes, enabling the use of codes such as `HTTP_404_NOT_FOUND` to indicate resource absence.
 
-```python
+```python title="Retrieve a book by ID"
 @app.get("/book/{book_id}")
 async def get_book(book_id: int) -> dict:
     for book in books:
@@ -255,7 +255,7 @@ async def get_book(book_id: int) -> dict:
 
 To facilitate the insertion of a new book into the system, the Book model is utilized to define the structure and constraints for creating a new book resource.
 
-```python
+```python title="Pydantic model to define a book structure"
 from pydantic import BaseModel
 
 class Book(BaseModel):
@@ -269,7 +269,7 @@ class Book(BaseModel):
 ```
 
 Subsequently, an endpoint is established to enable the addition of a new book. This endpoint is designed to receive data formatted according to the specifications outlined by our Book model. Upon receipt, the incoming data undergoes validation to ensure its adherence to the predefined schema, thereby maintaining data integrity and security.
-```python
+```python title="Creating a new book"
 
 @app.post("/books", status_code=status.HTTP_201_CREATED)
 async def create_a_book(book_data: Book) -> dict:
@@ -302,7 +302,7 @@ It's crucial to use the right HTTP status code in each response. In this case, w
 ## Update a book (HTTP PATCH)
 Let us look at the update endpoint. This is quite similar to the create endpoint as it allows data to be sent to the server via the **PATCH** HTTP method. But it also requires we provide the `book_id` of the book that we will be updating. we loop through the book list and find the book that matches the `book_id` as shown below:
 
-```python
+```python title="Updating a Book"
 @app.patch("/book/{book_id}")
 async def update_book(book_id: int,book_update_data:BookUpdateModel) -> dict:
     
@@ -320,7 +320,7 @@ async def update_book(book_id: int,book_update_data:BookUpdateModel) -> dict:
 
 If you notice, we have added the `book_update_data` parameter to our handler function and this is to be the validator for the data we shall use to update the book record. Notice this has a different schema called `BookUpdateModel`.
 
-```python
+```python title="Pydantic model for updating a book"
 class BookUpdateSchema(BaseModel):
     title:str
     author:str
@@ -341,7 +341,7 @@ Let us confirm if our book record has been updated successfully. To do so we are
 ## Delete a book (HTTP Delete)
 Let us finally look at the deletion of a book record. This is carried out in the following example:
 
-```python
+```python title="Delete a book"
 from fastapi import HTTPException, status
 
 @app.delete("/book/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
