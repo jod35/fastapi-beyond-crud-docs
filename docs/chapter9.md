@@ -381,10 +381,8 @@ acccess_token_bearer = AccessTokenBearer()
 @book_router.get("/", response_model=List[Book])
 async def get_all_books(
     session: AsyncSession = Depends(get_session),
-    user_details=Depends(acccess_token_bearer),
+    token_details=Depends(acccess_token_bearer),
 ):
-    
-    print(user_details)
     books = await book_service.get_all_books(session)
     return books
 
@@ -399,3 +397,295 @@ Making the request without the header being set results into the following. The 
 Providing the Authorization headers results into a successful response.
 ![Success request with Authorization  header](./img/img29.png)
 
+While this is enough to add protection to API  endpoints, we may want to customize it by adding our own checks. Let us modify our `AccessTokenBearer` class to allow for those checks to be made. 
+
+```python title="Modified AccessTokenBearer class"
+# inside src/auth/dependendencies.py
+class AccessTokenBearer(HTTPBearer):
+
+    def __init__(self, auto_error=True):
+        super().__init__(auto_error=auto_error)
+
+    async def __call__(self, request: Request) -> HTTPAuthorizationCredentials | None:
+        creds = await super().__call__(request)
+
+        token = creds.credentials
+
+        if not self.token_valid(token):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail={
+                    "error":"This token is invalid or expired",
+                    "resolution":"Please get new token"
+                }
+            )
+    
+
+        return token_data
+
+    def token_valid(self, token: str) -> bool:
+
+        token_data = decode_token(token)
+
+        return token_data is not None 
+```
+
+We begin by initializing the class with the `__init__` method, which accepts an optional `auto_error` parameter, defaulting to `True`, and passes this to the parent `HTTPBearer` class. The core functionality is in the `__call__` method, which makes instances of the class callable. This asynchronous method takes a `Request` object, extracts the authorization credentials by calling the `__call__` method of the parent class, and retrieves the token from these credentials.
+
+Once the token is extracted, the `token_valid` method is invoked to verify the token's validity. This method attempts to decode the token using a `decode_token` function (that we defined in `src/auth/utils.py`). If `decode_token` successfully decodes the token, it returns some `token_data`; otherwise, it returns `None`. The `token_valid` method returns `True` if `token_data` is not `None`, indicating the token is valid, and `False` otherwise.
+
+Back in the `__call__` method, if the token is found to be invalid, an `HTTPException` is raised with a status code of `403 Forbidden`, accompanied by a detailed message indicating that the token is invalid or expired and advising the user to obtain a new token. If the token is valid, the decoded token data is returned. This mechanism ensures that only requests with valid tokens are processed further, enhancing the security of the application by preventing unauthorized access.
+
+
+We have now protected API Enpoints for CRUD on books so that they can only be accessed by providing a JWT in the Authorization header. Our routes for books should look like this.
+```python title="Modified book API endpoints with HTTP Bearer Auth"
+from fastapi import APIRouter, status, Depends
+from fastapi.exceptions import HTTPException
+from src.books.schemas import Book, BookUpdateModel, BookCreateModel
+from sqlmodel.ext.asyncio.session import AsyncSession
+from src.books.service import BookService
+from src.db.main import get_session
+from typing import List
+from src.auth.dependencies import AccessTokenBearer
+
+
+book_router = APIRouter()
+book_service = BookService()
+acccess_token_bearer = AccessTokenBearer()
+
+
+@book_router.get("/", response_model=List[Book])
+async def get_all_books(
+    session: AsyncSession = Depends(get_session),
+    token_details=Depends(acccess_token_bearer),
+):
+    
+    print(token_details)
+    books = await book_service.get_all_books(session)
+    return books
+
+
+@book_router.post(
+    "/",
+    status_code=status.HTTP_201_CREATED,
+    response_model=Book,
+)
+async def create_a_book(
+    book_data: BookCreateModel,
+    session: AsyncSession = Depends(get_session),
+    token_details=Depends(acccess_token_bearer),
+) -> dict:
+    new_book = await book_service.create_book(book_data, session)
+    return new_book
+
+
+@book_router.get("/{book_uid}", response_model=Book)
+async def get_book(
+    book_uid: str,
+    session: AsyncSession = Depends(get_session),
+    token_details=Depends(acccess_token_bearer),
+) -> dict:
+    book = await book_service.get_book(book_uid, session)
+
+    if book:
+        return book
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Book not found"
+        )
+
+
+@book_router.patch("/{book_uid}", response_model=Book)
+async def update_book(
+    book_uid: str,
+    book_update_data: BookUpdateModel,
+    session: AsyncSession = Depends(get_session),
+    token_details=Depends(acccess_token_bearer),
+) -> dict:
+
+    updated_book = await book_service.update_book(book_uid, book_update_data, session)
+
+    if updated_book is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Book not found"
+        )
+
+    else:
+        return updated_book
+
+
+@book_router.delete("/{book_uid}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_book(
+    book_uid: str,
+    session: AsyncSession = Depends(get_session),
+    token_details=Depends(acccess_token_bearer),
+):
+    book_to_delete = await book_service.delete_book(book_uid, session)
+
+    if book_to_delete is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Book not found"
+        )
+    else:
+
+        return {}
+```
+
+### Renew User Access with Refresh Tokens
+Now that we have implemented protection for our routes, we need to handle renewing user access by using refresh tokens. Refresh tokens are designed to be long-lived tokens that enable users to obtain new access tokens. Let's implement this functionality. To begin, we are going to refactor our dependencies so that we allow validation even for acess tokens.
+
+```python title="modified dependencies"
+from fastapi import Request, status
+from fastapi.security import HTTPBearer
+from fastapi.security.http import HTTPAuthorizationCredentials
+from .utils import decode_token
+from fastapi.exceptions import HTTPException
+
+
+class TokenBearer(HTTPBearer):
+
+    def __init__(self, auto_error=True):
+        super().__init__(auto_error=auto_error)
+
+    async def __call__(self, request: Request) -> HTTPAuthorizationCredentials | None:
+        creds = await super().__call__(request)
+
+        token = creds.credentials
+
+        token_data = decode_token(token)
+
+        if not self.token_valid(token):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail={
+                    "error":"This token is invalid or expired",
+                    "resolution":"Please get new token"
+                }
+            )
+    
+
+        self.verify_token_data(token_data)
+
+        return token_data
+
+    def token_valid(self, token: str) -> bool:
+
+        token_data = decode_token(token)
+
+        return token_data is not None 
+
+    def verify_token_data(self, token_data):
+        raise NotImplementedError("Please Override this method in child classes")
+
+
+class AccessTokenBearer(TokenBearer):
+
+    def verify_token_data(self, token_data: dict) -> None:
+        if token_data and token_data["refresh"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Please provide an access token",
+            )
+
+
+class RefreshTokenBearer(TokenBearer):
+    def verify_token_data(self, token_data: dict) -> None:
+        if token_data and not token_data["refresh"]:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Please provide a refresh token",
+            )
+
+```
+
+This code establishes a system for managing both access and refresh token authentication in a FastAPI application. It begins with the `TokenBearer` class, which extends the `HTTPBearer` class. The `TokenBearer` class overrides the `__call__` method to extract the token from incoming requests and decode it using the `decode_token` function. If the token is invalid, indicated by a failed decode, it raises an `HTTPException` with a `403 Forbidden` status. Additionally, the `verify_token_data` method is designed to be overridden by subclasses, enabling specific checks on the token data to ensure the token's purpose aligns with the request's requirements.
+
+The system is further refined with two subclasses: `AccessTokenBearer` and `RefreshTokenBearer`. The `AccessTokenBearer` subclass overrides the `verify_token_data` method to ensure that the provided token is an access token. It does this by checking if the `refresh` field in the token data is `False`, raising an exception if it is a refresh token. On the other hand, the `RefreshTokenBearer` subclass ensures that the token is a refresh token by checking if the `refresh` field is `True`, raising an exception if it is not. This dual approach allows the application to handle authentication using both access and refresh tokens effectively, ensuring appropriate validation and error handling for each token type. 
+
+
+With that out of the way, we can now creat the endpoint that will be used to generate new access tokens when a user provides a refresh token. Inside `src/auth/routes.py`, let us add the following code.
+```python title="API path for creating new access tokens with a refresh token"
+@auth_router.get("/refresh_token")
+async def get_new_access_token(token_details: dict = Depends(RefreshTokenBearer())):
+    expiry_timestamp = token_details["exp"]
+
+    if datetime.fromtimestamp(expiry_timestamp) > datetime.now():
+        new_access_token = create_access_token(user_data=token_details["user"])
+
+        return JSONResponse(content={"access_token": new_access_token})
+
+    raise HTTPException(
+        status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid Or expired token"
+    )
+```
+
+This code defines an endpoint for obtaining a new access token using a refresh token in a FastAPI application. The endpoint is created at `/refresh_token` and is handled by the asynchronous function `get_new_access_token`. This function utilizes dependency injection with `Depends(RefreshTokenBearer())` to ensure that the request contains a valid refresh token. The `RefreshTokenBearer` class checks the token and returns its decoded data as `token_details`. Inside the function, the expiry timestamp is extracted from the token details, and a check is performed to determine if the refresh token is still valid by comparing the current time with the expiry timestamp. If the token is valid, a new access token is created using the `create_access_token` function, which takes user data from the refresh token, and a JSON response is returned containing the new access token.
+
+If the refresh token is found to be invalid or expired, an `HTTPException` is raised with a status code of `400 Bad Request` and an appropriate error message. This endpoint ensures that users can obtain fresh access tokens without needing to re-authenticate, thereby maintaining secure user sessions. By validating the refresh token and generating a new access token only if the refresh token is valid and not expired, the application enhances security and user experience. This mechanism helps streamline the process of renewing user access while preventing unauthorized access with expired or invalid tokens.
+
+### Revoking Tokens Using Redis
+Now that we have granted users access using access tokens, we also need a way to invalidate these tokens when users log out. We will implement this using a token blocklist. A token blocklist will store information about revoked JWTs, ensuring that they cannot be used to access protected endpoints. 
+
+There are many options available, but in our case, we will use Redis for this purpose. Redis will provide us with a key-value store that will be sufficient for implementing this functionality.
+
+To use Redis with FastAPI, we are going to use Aioredis which is an asyncio based Python client for Redis. Through it, we shall get access to methods allowing us to interact with Redis using Python. So let us begin by installing it with;
+
+```console title="Installing aioredis"
+pip install aioredis
+```
+
+Once Aioredis has been installed, we are going to add this code to a new file called `src/db/redis.py`
+```python title="Functions to handle token revoking"
+# inside src/db/redis.py
+
+import aioredis
+from src.config import Config
+
+JTI_EXPIRY = 3600
+
+token_blocklist = aioredis.StrictRedis(
+    host=Config.REDIS_HOST, port=Config.REDIS_PORT, db=0
+)
+
+
+async def add_jti_to_blocklist(jti: str) -> None:
+    await token_blocklist.set(name=jti, value="", ex=JTI_EXPIRY)
+
+
+async def token_in_blocklist(jti:str) -> bool:
+   jti =  await token_blocklist.get(jti)
+
+   return jti is not None
+```
+
+
+
+This code snippet sets up a token blocklist using Redis. It begins by importing the aioredis library, and configuration settings from the project's config module. A constant JTI_EXPIRY is defined to set the expiration time for blocklist entries to 3600 seconds (1 hour). The Redis client token_blocklist is initialized using aioredis.StrictRedis, connecting to the Redis server with the specified host, port, and database number (db=0).
+
+The `add_jti_to_blocklist` function asynchronously adds a JWT ID (JTI) to the Redis blocklist, setting an expiration time for the entry. The `token_in_blocklist` function checks if a given JTI is in the blocklist by attempting to retrieve it from Redis; it returns `True` if the JTI is found and `False` otherwise. 
+
+Once we have created these, we need to update our `TokenBearer` function to accomodate the checks for a token being in the token blocklist. 
+
+
+```python title="Updated __call__ method"
+from src.db.redis import token_in_blocklist
+
+class TokenBearer(HTTPBearer):
+
+    def __init__(self, auto_error=True):
+        super().__init__(auto_error=auto_error)
+
+    async def __call__(self, request: Request) -> HTTPAuthorizationCredentials | None:
+        creds = await super().__call__(request)
+
+        token = creds.credentials
+
+        token_data = decode_token(token)
+
+        # add this 
+        if await token_in_blocklist(token_data['jti']):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail={
+                    "error":"This token is invalid or has been revoked",
+                    "resolution":"Please get new token"
+                }
+            )
+```
