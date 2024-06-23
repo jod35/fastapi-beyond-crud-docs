@@ -621,6 +621,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -765,6 +774,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -785,7 +803,7 @@
 
 <h1 id="authentication-using-jwts">Authentication using JWTS</h1>
 <h2 id="introduction">Introduction</h2>
-<p>Now that we can create user accounts, let us build on top of that to allow users to login or have a session in our application. While there are very many approaches to authentication we shall look at JWT Authentication in this chapter. JWTs stand for JSON Web Tokens, a mechanism for transferring claims (secret data) between parties. The claims in a JWT are encoded as a JSON object that is used as a payload that can be signed or integrity protected or encrypted.</p>
+<p>Now that we can create user accounts, let's build on that to allow users to log in and maintain a session in our application. While there are many approaches to authentication, we will focus on JWT (JSON Web Token) authentication in this chapter. JWTs are a mechanism for transferring claims (secret data) between parties. The claims in a JWT are encoded as a JSON object, which is used as a payload that can be signed, integrity protected, or encrypted.</p>
 <h3 id="basic-structure-of-a-jwt">Basic structure of a JWT</h3>
 <p>A JWT shall have the following components;</p>
 <ol>
@@ -1425,6 +1443,18 @@
 <a id="__codelineno-21-32" name="__codelineno-21-32" href="#__codelineno-21-32"></a>    <span class="p">)</span>
 </code></pre></div>
 The logout endpoint will be found on the <code>/logout</code> path. It is secured by the <code>AccessTokenBearer</code> class, which requires a valid access token for access. Upon receiving the token, we retrieve the relevant details <code>token_details</code> from the dependency and extract the token's JTI (JWT ID). We then call the <code>add_jti_to_blocklist</code> function to add this JTI to the blocklist in Redis. After successfully adding the JTI to the blocklist, we return a response indicating the success of the operation.</p>
+<p>Let us test this out in the client. Let us begin by get a new token pair from the Login endpoint,
+<img alt="Logging In to get new token" src="../img/img30.png" /></p>
+<p>Using the new access token, let us try to access the endpoint for listing all books.
+<img alt="Listing all books with the new token" src="../img/img31.png" /></p>
+<p>Let us now revoke this token by accessing the token by using the logging endpoint.
+<img alt="Logging Out" src="../img/img32.png" /></p>
+<p>Notice how this token cannot be used to list all books again. So this shows how revoked access tokens can not be used to access a protected endpoint.
+<img alt="Protected endpoint" src="../img/img33.png" /></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>At this point, we have covered several key aspects of implementing JWT authentication in a FastAPI application. We started by granting users access using access tokens. We then explored protecting endpoints with HTTP Bearer Authentication, ensuring that users can only access them with valid tokens. Additionally, we implemented a way for users to renew their access tokens using refresh tokens when their current tokens expire. Finally, we demonstrated how to revoke tokens using Redis, preventing them from being used to access protected endpoints.</p>
+<p><strong>Previous</strong>: <a href="../chapter5/">Databases with SQLModel</a></p>
+<p><strong>Next</strong>: <a href="../chapter8/">User Account Creation</a></p>
 
 
 
