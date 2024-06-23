@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Now that we can create user accounts, let us build on top of that to allow users to login or have a session in our application. While there are very many approaches to authentication we shall look at JWT Authentication in this chapter. JWTs stand for JSON Web Tokens, a mechanism for transferring claims (secret data) between parties. The claims in a JWT are encoded as a JSON object that is used as a payload that can be signed or integrity protected or encrypted.
+Now that we can create user accounts, let's build on that to allow users to log in and maintain a session in our application. While there are many approaches to authentication, we will focus on JWT (JSON Web Token) authentication in this chapter. JWTs are a mechanism for transferring claims (secret data) between parties. The claims in a JWT are encoded as a JSON object, which is used as a payload that can be signed, integrity protected, or encrypted.
 
 ### Basic structure of a JWT
 
@@ -689,3 +689,61 @@ class TokenBearer(HTTPBearer):
                 }
             )
 ```
+
+To implement the logout functionality by adding the token to the blocklist, we'll create the logout endpoint. This endpoint will ensure the token is not already in the blocklist before proceeding to block it.
+
+```python title="the logout endpoint"
+from fastapi import APIRouter, Depends, status
+from .schemas import UserCreateModel, UserModel, UserLoginModel
+from .service import UserService
+from src.db.main import get_session
+from sqlmodel.ext.asyncio.session import AsyncSession
+from fastapi.exceptions import HTTPException
+from .utils import create_access_token, verify_password
+from fastapi.responses import JSONResponse
+from datetime import timedelta, datetime
+from .dependencies import RefreshTokenBearer,AccessTokenBearer
+from src.db.redis import add_jti_to_blocklist
+
+auth_router = APIRouter()
+user_service = UserService()
+
+
+... #the rest of the code in src/auth/routes.py
+
+
+@auth_router.get('/logout')
+async def revoke_token(token_details:dict=Depends(AccessTokenBearer())):
+
+    jti = token_details['jti']
+
+    await add_jti_to_blocklist(jti)
+
+    return JSONResponse(
+        content={
+            "message":"Logged Out Successfully"
+        },
+        status_code=status.HTTP_200_OK
+    )
+```
+The logout endpoint will be found on the `/logout` path. It is secured by the `AccessTokenBearer` class, which requires a valid access token for access. Upon receiving the token, we retrieve the relevant details `token_details` from the dependency and extract the token's JTI (JWT ID). We then call the `add_jti_to_blocklist` function to add this JTI to the blocklist in Redis. After successfully adding the JTI to the blocklist, we return a response indicating the success of the operation.
+
+
+Let us test this out in the client. Let us begin by get a new token pair from the Login endpoint,
+![Logging In to get new token](./img/img30.png)
+
+Using the new access token, let us try to access the endpoint for listing all books.
+![Listing all books with the new token](./img/img31.png)
+
+Let us now revoke this token by accessing the token by using the logging endpoint.
+![Logging Out](./img/img32.png)
+
+Notice how this token cannot be used to list all books again. So this shows how revoked access tokens can not be used to access a protected endpoint.
+![Protected endpoint](./img/img33.png)
+
+## Conclusion
+At this point, we have covered several key aspects of implementing JWT authentication in a FastAPI application. We started by granting users access using access tokens. We then explored protecting endpoints with HTTP Bearer Authentication, ensuring that users can only access them with valid tokens. Additionally, we implemented a way for users to renew their access tokens using refresh tokens when their current tokens expire. Finally, we demonstrated how to revoke tokens using Redis, preventing them from being used to access protected endpoints.
+
+**Previous**: [Databases with SQLModel](./chapter5.md)
+
+**Next**: [User Account Creation](./chapter8.md)
