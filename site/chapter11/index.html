@@ -533,9 +533,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#modifying-the-user-table" class="md-nav__link">
+  <a href="#associating-books-with-users-one-to-many-relationship" class="md-nav__link">
     <span class="md-ellipsis">
-      Modifying the User Table
+      Associating Books With Users (One To Many Relationship)
     </span>
   </a>
   
@@ -563,6 +563,15 @@
   <a href="#pydantic-relationships" class="md-nav__link">
     <span class="md-ellipsis">
       Pydantic Relationships
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asssociating-books-with-reviews" class="md-nav__link">
+    <span class="md-ellipsis">
+      Asssociating Books With Reviews
     </span>
   </a>
   
@@ -618,9 +627,9 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#modifying-the-user-table" class="md-nav__link">
+  <a href="#associating-books-with-users-one-to-many-relationship" class="md-nav__link">
     <span class="md-ellipsis">
-      Modifying the User Table
+      Associating Books With Users (One To Many Relationship)
     </span>
   </a>
   
@@ -648,6 +657,15 @@
   <a href="#pydantic-relationships" class="md-nav__link">
     <span class="md-ellipsis">
       Pydantic Relationships
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asssociating-books-with-reviews" class="md-nav__link">
+    <span class="md-ellipsis">
+      Asssociating Books With Reviews
     </span>
   </a>
   
@@ -683,7 +701,7 @@
 <p>To ensure that users can submit multiple books in a one-to-many relationship, we can modify the database structure. Here's how the updated structure would look:</p>
 <p><img alt="Modified database structure" src="../img/img37.png" /></p>
 <p>In  this structure, we have not really made changes to the <code>users</code> table and we have modified the <code>books</code> table by adding the <code>user_uid</code> that referencing the <code>uid</code> field on the <code>users</code> table to establish a foreign key relationship.This relationship signifies that each book entry in the books table is associated with a single user who submitted it.</p>
-<h3 id="modifying-the-user-table">Modifying the User Table</h3>
+<h3 id="associating-books-with-users-one-to-many-relationship">Associating Books With Users (One To Many Relationship)</h3>
 <p>To achieve this, let us modify the <code>Book</code> database model in <code>src/books/models.py</code> to make the above changes take effect.</p>
 <div class="highlight"><span class="filename">the modified books table</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">SQLModel</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;books&quot;</span>
@@ -897,7 +915,42 @@ In the above code, we have created a subclass of <code>UserModel</code> called <
 </code></pre></div>
 <p>What we have done is add the <code>response_model</code> argument to the HTTP method of the path to get the current user. This is provided the value of the <code>UserBooksModel</code>, meaning that the <code>user</code> will be returned with a list of books they have submitted. To test this, let us use our API client, Insomnia.</p>
 <p><img alt="Get user with books" src="../img/img39.png" /></p>
-<p>With that, we shall notice that we can get the currently logged in user as well as the books that they added.</p>
+<p>With that, we shall notice that we can get the currently logged in user as well as the books that they added. </p>
+<h3 id="asssociating-books-with-reviews">Asssociating Books With Reviews</h3>
+<p>Let us now create the relationship between books, users, and reviews. In our application, we want users to have the ability to add reviews to books. These reviews are just comments about what they feel about the book that has been submitted. The diagram below shows the relationship in detail.</p>
+<p><img alt="The user, books and reviews relationship" src="../img/img40.png" /></p>
+<p>From the diagram above, we notice that we are going to have a more complex one-to-many relationship connecting three tables: users, reviews, and books. A user can make many reviews (forming a one-to-many relationship), and a book can also have many reviews. This means that we shall a one to many relationship on both the user's side and also the books side.</p>
+<p>To begin, we shall create a <code>Review</code> model to hold reviews that users will make on books. To do that, we are going to begin by making one really major change. We shall move all our models inside the <code>src/db</code> directory. Our new folder structure will look like this.</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="go">├── alembic.ini</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="go">├── migrations</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="go">│   ├── env.py</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="go">│   ├── README</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="go">│   ├── script.py.mako</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="go">│   └── versions</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="go">│       ├── # your alembic version files</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="go">├── requirements.txt</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="go">└── src/</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="go">|-- ├── auth</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="go">|-- │   ├── dependencies.py</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="go">|-- │   ├── __init__.py</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="go">|-- │   ├── models.py</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="go">|-- │   ├── routes.py</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="go">|-- │   ├── schemas.py</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="go">|-- │   ├── service.py</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="go">|-- │   └── utils.py</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="go">|-- ├── books</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="go">|-- │   ├── __init__.py</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="go">|-- │   ├── models.py</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="go">|-- │   ├── routes.py</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="go">|-- │   ├── schemas.py</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="go">|-- │   └── service.py</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="go">|-- ├── config.py</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="go">`-- ├── db/</span>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a><span class="go">    |-- ├── __init__.py</span>
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a><span class="go">    |-- ├── main.py</span>
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a><span class="go">    `-- ├── models.py</span>
+</code></pre></div>
+As you will see, we have created a <code>models.py</code> file where all the database models are going to reside. The reason behind this is that </p>
 
 
 
