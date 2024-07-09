@@ -7,21 +7,20 @@ Now that we have a working CRUD API, let's move on to more advanced topics. The 
 ## Creating the user account model
 To achieve that, we shall begin by having a database model for keeping information about user accounts. Our current project structure looks like.
 ```console title="Current Project Structure"
-├── README.md
 ├── requirements.txt
 └── src
-    ├── books
-    │   ├── book_data.py
-    │   ├── __init__.py
-    │   ├── models.py
-    │   ├── routes.py
-    │   ├── schemas.py
-    │   └── service.py
-    ├── config.py
-    ├── db
-    │   ├── __init__.py
-    │   └── main.py
-    └── __init__.py
+|-- ├── books
+|-- │   ├── book_data.py
+|-- │   ├── __init__.py
+|-- │   ├── models.py
+|-- │   ├── routes.py
+|-- │   ├── schemas.py
+|-- │   └── service.py
+|-- ├── config.py
+|-- ├── db
+|-- │   ├── __init__.py
+|-- │   └── main.py
+`-- └── __init__.py
 ```
 
 Inside the `src` folder, we shall create a directory called `auth`. This shall keep all source code associated with user account management. Inside it, we shall create a `__init__.py` file to mark it as a Python package. Our updated directory structure is now:
@@ -30,20 +29,20 @@ Inside the `src` folder, we shall create a directory called `auth`. This shall k
 ├── README.md
 ├── requirements.txt
 └── src
-    ├── auth
-    │   └── __init__.py
-    ├── books
-    │   ├── book_data.py
-    │   ├── __init__.py
-    │   ├── models.py
-    │   ├── routes.py
-    │   ├── schemas.py
-    │   └── service.py
-    ├── config.py
-    ├── db
-    │   ├── __init__.py
-    │   └── main.py
-    └── __init__.py
+|-- ├── auth
+|-- │   └── __init__.py
+|-- ├── books
+|-- │   ├── book_data.py
+|-- │   ├── __init__.py
+|-- │   ├── models.py
+|-- │   ├── routes.py
+|-- │   ├── schemas.py
+|-- │   └── service.py
+|-- ├── config.py
+|-- ├── db
+|-- │   ├── __init__.py
+|-- │   └── main.py
+`-- └── __init__.py
 ```
 
 Let us now add a `models.py` file in which we shall create the user account model. 

@@ -12,7 +12,7 @@ To ensure that users can submit multiple books in a one-to-many relationship, we
 In  this structure, we have not really made changes to the `users` table and we have modified the `books` table by adding the `user_uid` that referencing the `uid` field on the `users` table to establish a foreign key relationship.This relationship signifies that each book entry in the books table is associated with a single user who submitted it.
 
 
-### Modifying the User Table
+### Associating Books With Users (One To Many Relationship)
 To achieve this, let us modify the `Book` database model in `src/books/models.py` to make the above changes take effect.
 
 ```python title="the modified books table"
@@ -277,5 +277,49 @@ What we have done is add the `response_model` argument to the HTTP method of the
 
 ![Get user with books](./img/img39.png)
 
-With that, we shall notice that we can get the currently logged in user as well as the books that they added.
+With that, we shall notice that we can get the currently logged in user as well as the books that they added. 
+
+
+### Asssociating Books With Reviews
+Let us now create the relationship between books, users, and reviews. In our application, we want users to have the ability to add reviews to books. These reviews are just comments about what they feel about the book that has been submitted. The diagram below shows the relationship in detail.
+
+
+![The user, books and reviews relationship](./img/img40.png)
+
+From the diagram above, we notice that we are going to have a more complex one-to-many relationship connecting three tables: users, reviews, and books. A user can make many reviews (forming a one-to-many relationship), and a book can also have many reviews. This means that we shall a one to many relationship on both the user's side and also the books side.
+
+To begin, we shall create a `Review` model to hold reviews that users will make on books. To do that, we are going to begin by making one really major change. We shall move all our models inside the `src/db` directory. Our new folder structure will look like this.
+
+```console
+├── alembic.ini
+├── migrations
+│   ├── env.py
+│   ├── README
+│   ├── script.py.mako
+│   └── versions
+│       ├── # your alembic version files
+├── requirements.txt
+└── src/
+|-- ├── auth
+|-- │   ├── dependencies.py
+|-- │   ├── __init__.py
+|-- │   ├── models.py
+|-- │   ├── routes.py
+|-- │   ├── schemas.py
+|-- │   ├── service.py
+|-- │   └── utils.py
+|-- ├── books
+|-- │   ├── __init__.py
+|-- │   ├── models.py
+|-- │   ├── routes.py
+|-- │   ├── schemas.py
+|-- │   └── service.py
+|-- ├── config.py
+`-- ├── db/
+    |-- ├── __init__.py
+    |-- ├── main.py
+    `-- ├── models.py
+```
+As you will see, we have created a `models.py` file where all the database models are going to reside. The reason behind this is that 
+
 

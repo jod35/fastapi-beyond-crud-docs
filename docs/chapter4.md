@@ -100,11 +100,12 @@ async def delete_book(book_id: int):
 The problem here is that if we add more code to this file, our code will become messy and hard to maintain beacuse all our code will be in one file `main.py`. To address this, we need to create a more organized project structure. To start, let's create a new folder called `src`, which will contain an `__init__.py` file to make it a Python package:
 
 ```console title="creating the src directory"
+
 ├── env/
 ├── main.py
 ├── requirements.txt
 └── src/
-    └── __init__.py
+`-- └── __init__.py
 ```
 
 Now, create a folder named `books` inside the `src` directory. Inside this folder, add an `__init__.py` file, a `routes.py` file, a `schemas.py` file, and a `book_data.py` file. The `routes.py` file will contain all the book routes, similar to what we created in the previous chapter. The `schemas.py` file will contain the schemas that are currently in our root directory.
@@ -114,12 +115,12 @@ Now, create a folder named `books` inside the `src` directory. Inside this folde
 ├── main.py
 ├── requirements.txt
 └── src/
-    └── __init__.py
-    └── books/
-        └── __init__.py
-        └── routes.py
-        └── schemas.py
-        └── book_data.py
+|-- └── __init__.py
+`-- └── books/
+    |-- └── __init__.py
+    |-- └── routes.py
+    |-- └── schemas.py
+    `-- └── book_data.py
 ```
 
 First, let's move our `books` list from `main.py` to `book_data.py` inside the `books` directory.
@@ -282,13 +283,13 @@ Having moved our code, we shall now have this folder structure.
 ├── requirements.txt
 ├── run.py
 └── src
-    ├── books
-    │   ├── book_data.py
-    │   ├── __init__.py
-    │   ├── routes.py
-    │   ├── schemas.py
-    │   ├── book_data.py
-    └── __init__.py
+|-- ├── books
+|-- │   ├── book_data.py
+|-- │   ├── __init__.py
+|-- │   ├── routes.py
+|-- │   ├── schemas.py
+|-- │   ├── book_data.py
+`-- └── __init__.py
 ```
 
 Once more, let's start our server using `fastapi dev src/`. Pay attention to the fact that this time we're specifying`src/`. This is because we've designated it as a package by including `__init__.py`. Additionally, our FastAPI instance named `app` is created there. Consequently, FastAPI will utilize it to operate our application.

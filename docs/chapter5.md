@@ -157,13 +157,13 @@ Once we have `sqlmodel` installed, let us now create a database model using it. 
 ├── requirements.txt
 └── schemas.py
 └── src/
-    └── __init__.py
-    └── books/
-        └── __init__.py
-        └── routes.py
-        |__ models.py
-        └── schemas.py
-        └── book_data.py
+|-- └── __init__.py
+`-- └── books/
+    |-- └── __init__.py
+    |-- └── routes.py
+    |-- |__ models.py
+    |-- └── schemas.py
+    `-- └── book_data.py
 ```
 Inside `models.py`, add the following code. 
 ```python title="Creating the book database model in src/books/models.py"

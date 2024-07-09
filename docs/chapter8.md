@@ -16,21 +16,21 @@ Our current project structure is something like this.
 ├── README.md
 ├── requirements.txt
 └── src
-    ├── auth
-    │   ├── __init__.py
-    │   ├── models.py
-    ├── books
-    │   ├── book_data.py
-    │   ├── __init__.py
-    │   ├── models.py
-    │   ├── routes.py
-    │   ├── schemas.py
-    │   └── service.py
-    ├── config.py
-    ├── db
-    │   ├── __init__.py
-    │   └── main.py
-    └── __init__.pyz
+|-- ├── auth
+|-- │   ├── __init__.py
+|-- │   ├── models.py
+|-- ├── books
+|-- │   ├── book_data.py
+|-- │   ├── __init__.py
+|-- │   ├── models.py
+|-- │   ├── routes.py
+|-- │   ├── schemas.py
+|-- │   └── service.py
+|-- ├── config.py
+|-- ├── db
+|-- │   ├── __init__.py
+|-- │   └── main.py
+`-- └── __init__.py
 ```
 
 
