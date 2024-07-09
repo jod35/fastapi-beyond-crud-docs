@@ -743,7 +743,3 @@ Notice how this token cannot be used to list all books again. So this shows how 
 
 ## Conclusion
 At this point, we have covered several key aspects of implementing JWT authentication in a FastAPI application. We started by granting users access using access tokens. We then explored protecting endpoints with HTTP Bearer Authentication, ensuring that users can only access them with valid tokens. Additionally, we implemented a way for users to renew their access tokens using refresh tokens when their current tokens expire. Finally, we demonstrated how to revoke tokens using Redis, preventing them from being used to access protected endpoints.
-
-**Previous**: [Databases with SQLModel](./chapter5.md)
-
-**Next**: [User Account Creation](./chapter8.md)

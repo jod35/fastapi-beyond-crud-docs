@@ -1,26 +1,71 @@
-site_name: FastAPI Beyond CRUD
+site_name:  FastAPI Beyond CRUD
+site_description: Course webist for the FastAPI Beyond CRUD Course
+site_author: Ssali Jonathan
+site_url: https://jod35jon.github.io/fastapi-website/site/
 nav:
   - Home: index.md
-  - Project: 
-      - Installation and Project SetUp: chapter1.md
-      - Creating a Simple Web Server: chapter2.md
-      - Building a CRUD REST API: chapter3.md 
-      - Large Project Structure Using Routers: chapter4.md
-      - Databases with SQLModel: chapter5.md
-      - Finishing Up the CRUD: chapter6.md
-      - Creating a user authentication model: chapter7.md
-      - User Account Creation: chapter8.md
-      - JWT Authentication: chapter9.md
-      - Role-Based Access Control: chapter10.md
+  - Installation and Project SetUp: chapter1.md
+  - Creating a Simple Web Server: chapter2.md
+  - Building a CRUD REST API: chapter3.md 
+  - Large Project Structure Using Routers: chapter4.md
+  - Databases with SQLModel: chapter5.md
+  - Finishing Up the CRUD: chapter6.md
+  - Creating a user authentication model: chapter7.md
+  - User Account Creation: chapter8.md
+  - JWT Authentication: chapter9.md
+  - Role-Based Access Control: chapter10.md
+  - Model And Schema Relationships: chapter11.md
 
-theme: 
- name: material
- palette:
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - meta
+  - def_list
+  - toc:
+      permalink: ⚑
+      baselevel: 2
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      options:
+        custom_icons:
+          - theme/.icons
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+theme:
+  name: material
+  custom_dir: theme
+  logo: img/logo.svg
+  features:
+    - navigation.footer
+    - navigation.instant
+    - navigation.top
+    - content.code.annotate
+    - search.suggest
+    - search.highlight
+
+  palette:
     # Light mode
     - media: '(prefers-color-scheme: light)'
       scheme: default
-      primary: deep orange
-      accent: deep orange
+      primary: teal
+      accent: teal
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to dark mode
@@ -28,18 +73,13 @@ theme:
     # Dark mode
     - media: '(prefers-color-scheme: dark)'
       scheme: slate
-      primary: deep orange
-      accent: deep orange
+      primary: teal
+      accent: teal
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode
 
-extra:
-  social:
-    - icon: fontawesome/brands/github-alt
-      link: https://github.com/jod35
-
-
+extra_css: [stylesheets/extra.css]
 
 markdown_extensions:
   - pymdownx.highlight:
@@ -47,6 +87,10 @@ markdown_extensions:
   - pymdownx.superfences
   - admonition
 
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/jod35
 
 repo_name: jod35/fastapi-beyond-CRUD
 repo_url: https://github.com/jod35/fastapi-beyond-CRUD

@@ -260,7 +260,4 @@ Making the same request again shows that the user already exists with the define
 ## Conclusion
 For now, we have been successful in creating user accounts using the database model we created in the previous section. In the next section, we are going to allow users identify themselves, so that they access various API endpoints.
 
-**Previous**: [Creating the User Authentication Model](./chapter7.md)
-
-**Next**: [Authentication Using JWTs](./chapter9.md)
 

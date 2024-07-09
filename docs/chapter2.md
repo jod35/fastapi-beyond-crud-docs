@@ -350,6 +350,3 @@ Making a request to the `/get_headers` route shall return the following response
 
 In this chapter, we utilized FastAPI to construct a basic web server and delved into different methods of communicating and inputting data. We introduced concepts such as path and query parameters, along with request headers. Moving forward, the next chapter will focus on developing a straightforward CRUD API for managing book resources utilizing an in-memory database.
 
-**Next** [Creating a simple CRUD API](./chapter3.md)
-
-**Previous** [Installation and Configuration](./index.md)

@@ -333,6 +333,4 @@ The current organization of our API endpoints is as follows:
 ## Conclusion
 This chapter has focused on creating a folder structure that we can use even when our project gets bigger. In the next chapter, we shall focus on database and look at how we can persist our data and use Python to manage a relational database.
 
-**Previous** [Improved Project Structure Using Routers](./chapter4.md)
 
-**Next** [Databases with SQLModel](./chapter5.md)

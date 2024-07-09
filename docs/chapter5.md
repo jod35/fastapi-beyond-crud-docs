@@ -451,7 +451,3 @@ Running the code above shall allow us to create the table in the database also l
 In this chapter, we've introduced persistence to our data by employing a relational database management system (PostgreSQL). Additionally, we've explored the utilization of Pydantic for configuration settings. We've also examined SQLModel, an ORM that combines Pydantic and SQLAlchemy to manage relational databases effectively. Our database, which stores book data, is now operational. Looking ahead, I've outlined the CRUD actions for our persistent database in the following chapter.
 
 
-**Previous**: [Improved Project Structure Using Routers](./chapter4.md)
-
-**Next**: [Finishing Up the CRUD](./chapter6.md)
-

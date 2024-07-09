@@ -367,6 +367,4 @@ And just like that, we have created a CRUD REST API using a simple in memory dat
 ## Conclusion
 In this chapter, we've developed a basic CRUD REST API using FastAPI. We utilized a simple in-memory database, represented by a Python list, to explore all CRUD actions. Moving forward, we'll restructure our project files to achieve a more organized and easily maintainable file structure.
 
-**Previous** [Creating a Simple Web Server](./index.md)
 
-**Next** [Improved Project Structure Using Routers](./chapter4.md)

@@ -394,7 +394,3 @@ We instantiate the `BookService` function to invoke its `get_all_books()` method
 
 In this chapter, we expanded our application to incorporate CRUD operations on our book data by leveraging our persistent PostgreSQL database. We explored how to utilize SQLModel to accomplish this task efficiently.
 
-
-**Previous**: [Databases with SQLModel](./chapter5.md)
-
-**Next**: [Finishing Up the CRUD](./chapter7.md)

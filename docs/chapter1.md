@@ -72,8 +72,3 @@ If the version has been displayed, then we are sure that FastAPI has been instal
 
 ## Conclusion
 By following these steps, you have successfully set up a virtual environment, and installed FastAPI, frozen the dependencies for future reproducing of the project and you have verified your installation using the `fastapi` CLI command. This structured approach ensures a clean and manageable development environment for our FastAPI project. Next, we shall create a simple web server and create our first API routes.
-
-
-**Previous** [Introduction](./index.md)
-
-**Next** [Creating a Simple Web Server](./chapter2.md)
