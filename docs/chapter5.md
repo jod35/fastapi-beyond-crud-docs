@@ -63,12 +63,12 @@ At this point, your folder structure needs to look something like this:
 ├── requirements.txt
 └── schemas.py
 └── src/
-    └── __init__.py
-    └── books/
-        └── __init__.py
-        └── routes.py
-        └── schemas.py
-        └── book_data.py
+|-- └── __init__.py
+`-- └── books/
+    |-- └── __init__.py
+    |-- └── routes.py
+    |-- └── schemas.py
+    `-- └── book_data.py
 ```
 ### Settings Management With Pydantic
 With that in place, we can now set up our configurations so that we can read them out from anywhere within our application. Let us begin by creating a `config.py` file that contains the configuration variables that will be used in this series.

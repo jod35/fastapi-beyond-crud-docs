@@ -92,5 +92,10 @@ extra:
     - icon: fontawesome/brands/github-alt
       link: https://github.com/jod35
 
+  analytics:
+    provider: google
+    property: G-TCHXJCN975
+              
+
 repo_name: jod35/fastapi-beyond-CRUD
 repo_url: https://github.com/jod35/fastapi-beyond-CRUD
