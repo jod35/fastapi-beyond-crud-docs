@@ -71,7 +71,16 @@
     
     
     
-  </head>
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -162,45 +171,6 @@
       <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
-    
-      <label class="md-header__button md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-      </label>
-      <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
-        </button>
-      </nav>
-      
-        <div class="md-search__suggest" data-md-component="search-suggest"></div>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
     
     
       <div class="md-header__source">
@@ -1037,9 +1007,9 @@
 </code></pre></div>
 <p>The <code>user_service.get_user_by_email</code> function is then called to retrieve the user from the database using the provided email. If the user is found, the password provided is verified against the stored password hash using the <code>verify_password function</code>. If the password is valid, an <code>access_token</code> and a <code>refresh_token</code> are generated using the <code>create_access_token function</code>. The tokens and user information are returned in a JSON response indicating a successful login. If the user is not found or the password is invalid, an HTTP 403 Forbidden exception is raised, indicating that the email or password is incorrect.</p>
 <p>Let us test this endpoint in Insomnia. Make a request with correct email and password.
-<img alt="Successful Login" src="../img/img26.png" /></p>
+<a class="glightbox" href="../img/img26.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Successful Login" src="../img/img26.png" /></a></p>
 <p>Giving invalid credentials results into the following.
-<img alt="Invalid Login" src="../img/img27.png" /></p>
+<a class="glightbox" href="../img/img27.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Invalid Login" src="../img/img27.png" /></a></p>
 <h3 id="http-bearer-authentication">HTTP Bearer Authentication</h3>
 <p>Now that we can grant access tokens to users, we need to protect our API endpoints such that users require to provide access tokens to access them. This is where <strong>HTTP Bearer Authentication</strong> comes in. HTTP Bearer Authentication is an HTTP authentication scheme that involves security tokens called <strong>Bearer Tokens</strong>. This can be understood as "give accewss to the bearer of the token". Everytime a client is to make a request to a protected endpoint, they must send a string in form of
 <code>Bearer &lt;token&gt;</code> in the request's <code>Authorization</code> header.</p>
@@ -1154,9 +1124,9 @@
 </code></pre></div>
 <p>In the code above, what we have done is to import the <code>AccessTokenBearer</code> class and create an object called <code>access_token_bearer</code> that we provide as a dependency to the path handler via <code>Depends()</code>. By doing that, we have protected an endpoints and made it a requirement for us to access it by using an <code>Authorization</code> Header in the request.</p>
 <p>Making the request without the header being set results into the following. The user wont access the resources because they are not authenticated.
-<img alt="Making request without Authorization header" src="../img/img28.png" /></p>
+<a class="glightbox" href="../img/img28.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Making request without Authorization header" src="../img/img28.png" /></a></p>
 <p>Providing the Authorization headers results into a successful response.
-<img alt="Success request with Authorization  header" src="../img/img29.png" /></p>
+<a class="glightbox" href="../img/img29.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Success request with Authorization  header" src="../img/img29.png" /></a></p>
 <p>While this is enough to add protection to API  endpoints, we may want to customize it by adding our own checks. Let us modify our <code>AccessTokenBearer</code> class to allow for those checks to be made. </p>
 <div class="highlight"><span class="filename">Modified AccessTokenBearer class</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># inside src/auth/dependendencies.py</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">class</span> <span class="nc">AccessTokenBearer</span><span class="p">(</span><span class="n">HTTPBearer</span><span class="p">):</span>
@@ -1451,13 +1421,13 @@
 </code></pre></div>
 The logout endpoint will be found on the <code>/logout</code> path. It is secured by the <code>AccessTokenBearer</code> class, which requires a valid access token for access. Upon receiving the token, we retrieve the relevant details <code>token_details</code> from the dependency and extract the token's JTI (JWT ID). We then call the <code>add_jti_to_blocklist</code> function to add this JTI to the blocklist in Redis. After successfully adding the JTI to the blocklist, we return a response indicating the success of the operation.</p>
 <p>Let us test this out in the client. Let us begin by get a new token pair from the Login endpoint,
-<img alt="Logging In to get new token" src="../img/img30.png" /></p>
+<a class="glightbox" href="../img/img30.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Logging In to get new token" src="../img/img30.png" /></a></p>
 <p>Using the new access token, let us try to access the endpoint for listing all books.
-<img alt="Listing all books with the new token" src="../img/img31.png" /></p>
+<a class="glightbox" href="../img/img31.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Listing all books with the new token" src="../img/img31.png" /></a></p>
 <p>Let us now revoke this token by accessing the token by using the logging endpoint.
-<img alt="Logging Out" src="../img/img32.png" /></p>
+<a class="glightbox" href="../img/img32.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Logging Out" src="../img/img32.png" /></a></p>
 <p>Notice how this token cannot be used to list all books again. So this shows how revoked access tokens can not be used to access a protected endpoint.
-<img alt="Protected endpoint" src="../img/img33.png" /></p>
+<a class="glightbox" href="../img/img33.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Protected endpoint" src="../img/img33.png" /></a></p>
 <h2 id="conclusion">Conclusion</h2>
 <p>At this point, we have covered several key aspects of implementing JWT authentication in a FastAPI application. We started by granting users access using access tokens. We then explored protecting endpoints with HTTP Bearer Authentication, ensuring that users can only access them with valid tokens. Additionally, we implemented a way for users to renew their access tokens using refresh tokens when their current tokens expire. Finally, we demonstrated how to revoke tokens using Redis, preventing them from being used to access protected endpoints.</p>
 
@@ -1575,5 +1545,7 @@ The logout endpoint will be found on the <code>/logout</code> path. It is secure
       <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
-  </body>
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
 </html>

@@ -69,7 +69,16 @@
     
     
     
-  </head>
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
   
   
     
@@ -160,45 +169,6 @@
       <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
-    
-      <label class="md-header__button md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-      </label>
-      <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
-          
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
-        </button>
-      </nav>
-      
-        <div class="md-search__suggest" data-md-component="search-suggest"></div>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
     
     
       <div class="md-header__source">
@@ -597,6 +567,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#testing-review-api-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing review API Routes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#associate-books-with-tags" class="md-nav__link">
     <span class="md-ellipsis">
       Associate Books With Tags
@@ -614,8 +593,26 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#testing-the-tags-api-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing the tags API Routes
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
   
 </li>
       
@@ -718,6 +715,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#testing-review-api-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing review API Routes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#associate-books-with-tags" class="md-nav__link">
     <span class="md-ellipsis">
       Associate Books With Tags
@@ -735,8 +741,26 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#testing-the-tags-api-routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing the tags API Routes
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
   
 </li>
       
@@ -761,9 +785,9 @@
 <h1 id="model-and-schema-relationships">Model And Schema Relationships</h1>
 <h2 id="introduction">Introduction</h2>
 <p>At this point, the only database tables that we have in our database look like the following. If you want such good database design diagrams, please use <a href="https://dbdiagram.io/">DB Diagrams</a></p>
-<p><img alt="Current database structure" src="../img/img36.png" /></p>
+<p><a class="glightbox" href="../img/img36.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Current database structure" src="../img/img36.png" /></a></p>
 <p>To ensure that users can submit multiple books in a one-to-many relationship, we can modify the database structure. Here's how the updated structure would look:</p>
-<p><img alt="Modified database structure" src="../img/img37.png" /></p>
+<p><a class="glightbox" href="../img/img37.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Modified database structure" src="../img/img37.png" /></a></p>
 <p>In this structure, we have not really made changes to the <code>users</code> table and we have modified the <code>books</code> table by adding the <code>user_uid</code> that referencing the <code>uid</code> field on the <code>users</code> table to establish a foreign key relationship.This relationship signifies that each book entry in the books table is associated with a single user who submitted it.</p>
 <h3 id="associating-books-with-users-one-to-many-relationship">Associating Books With Users (One To Many Relationship)</h3>
 <p>To achieve this, let us modify the <code>Book</code> database model in <code>src/books/models.py</code> to make the above changes take effect.</p>
@@ -890,7 +914,7 @@
 <div class="highlight"><span class="filename">create book with user who added it</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">new_book</span> <span class="o">=</span> <span class="k">await</span> <span class="n">book_service</span><span class="o">.</span><span class="n">create_book</span><span class="p">(</span><span class="n">book_data</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
 </code></pre></div>
 <p>Creating a Book will result in:</p>
-<p><img alt="creating a book" src="../img/img38.png" /></p>
+<p><a class="glightbox" href="../img/img38.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="creating a book" src="../img/img38.png" /></a></p>
 <p>In the database, the book will be saved with the <code>user_uid</code>.</p>
 <h3 id="relationship-attributes">Relationship attributes</h3>
 <p>With the relationship between books and users established, let's explore a method of performing CRUD operations in a more object-oriented manner using relationship attributes. These attributes enable us to define fields in our model classes that serve not as database rows but as means to access related objects. For instance, we will retrieve all books added by a user using user.books, where books is the attribute that provides access to all the books submitted by the user.</p>
@@ -998,11 +1022,11 @@
 <a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>    <span class="k">return</span> <span class="n">user</span>
 </code></pre></div>
 <p>What we have done is add the <code>response_model</code> argument to the HTTP method of the path to get the current user. This is provided the value of the <code>UserBooksModel</code>, meaning that the <code>user</code> will be returned with a list of books they have submitted. To test this, let us use our API client, Insomnia.</p>
-<p><img alt="Get user with books" src="../img/img39.png" /></p>
+<p><a class="glightbox" href="../img/img39.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Get user with books" src="../img/img39.png" /></a></p>
 <p>With that, we shall notice that we can get the currently logged in user as well as the books that they added.</p>
 <h3 id="asssociating-books-with-reviews">Asssociating Books With Reviews</h3>
 <p>Let us now create the relationship between books, users, and reviews. In our application, we want users to have the ability to add reviews to books. These reviews are just comments about what they feel about the book that has been submitted. The diagram below shows the relationship in detail.</p>
-<p><img alt="The user, books and reviews relationship" src="../img/img40.png" /></p>
+<p><a class="glightbox" href="../img/img40.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="The user, books and reviews relationship" src="../img/img40.png" /></a></p>
 <p>From the diagram above, we notice that we are going to have a more complex one-to-many relationship connecting three tables: users, reviews, and books. A user can make many reviews (forming a one-to-many relationship), and a book can also have many reviews. This means that we shall a one to many relationship on both the user's side and also the books side.</p>
 <p>To begin, we shall create a <code>Review</code> model to hold reviews that users will make on books. To do that, we are going to begin by making one really major change. We shall move all our models inside the <code>src/db</code> directory. Our new folder structure will look like this.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="go">├── alembic.ini</span>
@@ -1380,9 +1404,29 @@ Inside <code>schemas.py</code>, we define two Pydantic models, <code>ReviewModel
 <a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">auth_router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/api/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/auth&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;auth&quot;</span><span class="p">])</span>
 <a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">review_router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/api/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/reviews&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;reviews&quot;</span><span class="p">])</span> <span class="c1">#add this</span>
 </code></pre></div></p>
+<h3 id="testing-review-api-routes">Testing review API Routes</h3>
+<p>Now that we have built the review API routes, let us test them.</p>
+<ol>
+<li>
+<p><strong>Adding a book review</strong>: 
+<a class="glightbox" href="../img/img50.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="add a review to a book" src="../img/img50.png" /></a></p>
+</li>
+<li>
+<p><strong>Get book details with reviews</strong>: 
+<a class="glightbox" href="../img/img51.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="get book reviews" src="../img/img51.png" /></a></p>
+</li>
+<li>
+<p><strong>Get user details with reviews</strong>: 
+<a class="glightbox" href="../img/img52.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="get user reviews" src="../img/img52.png" /></a></p>
+</li>
+<li>
+<p><strong>Get all reviews</strong>: 
+<a class="glightbox" href="../img/img53.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="get all book reviews" src="../img/img53.png" /></a></p>
+</li>
+</ol>
 <h3 id="associate-books-with-tags">Associate Books With Tags</h3>
 <p>All we have been looking at is creating one to many relationships and now let us look at a many to many relationship that we can set up. This is the relationship between books and tags. We want  to use tags to group all books within many categories, we can also be able to search related books, basing on their tags. To begin, let us look at the structure that book tags will have.</p>
-<p><img alt="tags database tables structure" src="../img/img41.png" /></p>
+<p><a class="glightbox" href="../img/img41.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="tags database tables structure" src="../img/img41.png" /></a></p>
 <p>From the structure, it's evident that alongside our existing books table, we've introduced two additional tables: tags and book_tags. We've established a many-to-many relationship between books and tags, facilitated by the book_tags table. This table serves as an association table, linking instances from books to tags. </p>
 <p>The <code>book_tags</code> table functions as an intermediary or association table connecting the <code>books</code> and <code>tags</code> tables in a many-to-many relationship. It consists of two primary columns: <code>book_id</code>, which serves as a foreign key referencing the <code>uid</code> column in the <code>books</code> table to identify the book associated with a tag, and <code>tag_id</code>, a foreign key referencing the uid column in the tags table to identify the tag associated with a book. </p>
 <p>To create the database structure, we we should introduce the <code>Tag</code> and <code>BookTag</code> models. To do that, let us go to <code>src/db/models.py</code> and add the following code.</p>
@@ -1517,92 +1561,88 @@ Apply the revision with;
 <a id="__codelineno-28-35" name="__codelineno-28-35" href="#__codelineno-28-35"></a>        <span class="n">book</span> <span class="o">=</span> <span class="k">await</span> <span class="n">book_service</span><span class="o">.</span><span class="n">get_book</span><span class="p">(</span><span class="n">book_uid</span><span class="o">=</span><span class="n">book_uid</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
 <a id="__codelineno-28-36" name="__codelineno-28-36" href="#__codelineno-28-36"></a>
 <a id="__codelineno-28-37" name="__codelineno-28-37" href="#__codelineno-28-37"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">book</span><span class="p">:</span>
-<a id="__codelineno-28-38" name="__codelineno-28-38" href="#__codelineno-28-38"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
-<a id="__codelineno-28-39" name="__codelineno-28-39" href="#__codelineno-28-39"></a>                <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Book not found&quot;</span><span class="p">,</span>
-<a id="__codelineno-28-40" name="__codelineno-28-40" href="#__codelineno-28-40"></a>                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
-<a id="__codelineno-28-41" name="__codelineno-28-41" href="#__codelineno-28-41"></a>            <span class="p">)</span>
-<a id="__codelineno-28-42" name="__codelineno-28-42" href="#__codelineno-28-42"></a>
-<a id="__codelineno-28-43" name="__codelineno-28-43" href="#__codelineno-28-43"></a>        <span class="k">for</span> <span class="n">tag_item</span> <span class="ow">in</span> <span class="n">tag_data</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
-<a id="__codelineno-28-44" name="__codelineno-28-44" href="#__codelineno-28-44"></a>            <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">select</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">tag_item</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
-<a id="__codelineno-28-45" name="__codelineno-28-45" href="#__codelineno-28-45"></a>
-<a id="__codelineno-28-46" name="__codelineno-28-46" href="#__codelineno-28-46"></a>            <span class="n">tag</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">one_or_none</span><span class="p">()</span>
-<a id="__codelineno-28-47" name="__codelineno-28-47" href="#__codelineno-28-47"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">tag</span><span class="p">:</span>
-<a id="__codelineno-28-48" name="__codelineno-28-48" href="#__codelineno-28-48"></a>                <span class="n">tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">tag_item</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<a id="__codelineno-28-49" name="__codelineno-28-49" href="#__codelineno-28-49"></a>
-<a id="__codelineno-28-50" name="__codelineno-28-50" href="#__codelineno-28-50"></a>            <span class="n">book</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
-<a id="__codelineno-28-51" name="__codelineno-28-51" href="#__codelineno-28-51"></a>        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
-<a id="__codelineno-28-52" name="__codelineno-28-52" href="#__codelineno-28-52"></a>        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<a id="__codelineno-28-53" name="__codelineno-28-53" href="#__codelineno-28-53"></a>        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
-<a id="__codelineno-28-54" name="__codelineno-28-54" href="#__codelineno-28-54"></a>        <span class="k">return</span> <span class="n">book</span>
+<a id="__codelineno-28-38" name="__codelineno-28-38" href="#__codelineno-28-38"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">404</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Book not found&quot;</span><span class="p">)</span>
+<a id="__codelineno-28-39" name="__codelineno-28-39" href="#__codelineno-28-39"></a>
+<a id="__codelineno-28-40" name="__codelineno-28-40" href="#__codelineno-28-40"></a>        <span class="k">for</span> <span class="n">tag_item</span> <span class="ow">in</span> <span class="n">tag_data</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
+<a id="__codelineno-28-41" name="__codelineno-28-41" href="#__codelineno-28-41"></a>            <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span>
+<a id="__codelineno-28-42" name="__codelineno-28-42" href="#__codelineno-28-42"></a>                <span class="n">select</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">tag_item</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a id="__codelineno-28-43" name="__codelineno-28-43" href="#__codelineno-28-43"></a>            <span class="p">)</span>
+<a id="__codelineno-28-44" name="__codelineno-28-44" href="#__codelineno-28-44"></a>
+<a id="__codelineno-28-45" name="__codelineno-28-45" href="#__codelineno-28-45"></a>            <span class="n">tag</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">one_or_none</span><span class="p">()</span>
+<a id="__codelineno-28-46" name="__codelineno-28-46" href="#__codelineno-28-46"></a>            <span class="k">if</span> <span class="ow">not</span> <span class="n">tag</span><span class="p">:</span>
+<a id="__codelineno-28-47" name="__codelineno-28-47" href="#__codelineno-28-47"></a>                <span class="n">tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">tag_item</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a id="__codelineno-28-48" name="__codelineno-28-48" href="#__codelineno-28-48"></a>
+<a id="__codelineno-28-49" name="__codelineno-28-49" href="#__codelineno-28-49"></a>            <span class="n">book</span><span class="o">.</span><span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+<a id="__codelineno-28-50" name="__codelineno-28-50" href="#__codelineno-28-50"></a>        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
+<a id="__codelineno-28-51" name="__codelineno-28-51" href="#__codelineno-28-51"></a>        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-28-52" name="__codelineno-28-52" href="#__codelineno-28-52"></a>        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
+<a id="__codelineno-28-53" name="__codelineno-28-53" href="#__codelineno-28-53"></a>        <span class="k">return</span> <span class="n">book</span>
+<a id="__codelineno-28-54" name="__codelineno-28-54" href="#__codelineno-28-54"></a>
 <a id="__codelineno-28-55" name="__codelineno-28-55" href="#__codelineno-28-55"></a>
-<a id="__codelineno-28-56" name="__codelineno-28-56" href="#__codelineno-28-56"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_tag_by_uid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">):</span>
-<a id="__codelineno-28-57" name="__codelineno-28-57" href="#__codelineno-28-57"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get tag by uid&quot;&quot;&quot;</span>
-<a id="__codelineno-28-58" name="__codelineno-28-58" href="#__codelineno-28-58"></a>
-<a id="__codelineno-28-59" name="__codelineno-28-59" href="#__codelineno-28-59"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Tag</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">tag_uid</span><span class="p">)</span>
-<a id="__codelineno-28-60" name="__codelineno-28-60" href="#__codelineno-28-60"></a>
-<a id="__codelineno-28-61" name="__codelineno-28-61" href="#__codelineno-28-61"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
-<a id="__codelineno-28-62" name="__codelineno-28-62" href="#__codelineno-28-62"></a>
-<a id="__codelineno-28-63" name="__codelineno-28-63" href="#__codelineno-28-63"></a>        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<a id="__codelineno-28-64" name="__codelineno-28-64" href="#__codelineno-28-64"></a>
-<a id="__codelineno-28-65" name="__codelineno-28-65" href="#__codelineno-28-65"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_data</span><span class="p">:</span> <span class="n">TagCreateModel</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">):</span>
-<a id="__codelineno-28-66" name="__codelineno-28-66" href="#__codelineno-28-66"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a tag&quot;&quot;&quot;</span>
-<a id="__codelineno-28-67" name="__codelineno-28-67" href="#__codelineno-28-67"></a>
-<a id="__codelineno-28-68" name="__codelineno-28-68" href="#__codelineno-28-68"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">tag_data</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<a id="__codelineno-28-69" name="__codelineno-28-69" href="#__codelineno-28-69"></a>
-<a id="__codelineno-28-70" name="__codelineno-28-70" href="#__codelineno-28-70"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
-<a id="__codelineno-28-71" name="__codelineno-28-71" href="#__codelineno-28-71"></a>
-<a id="__codelineno-28-72" name="__codelineno-28-72" href="#__codelineno-28-72"></a>        <span class="n">tag</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<a id="__codelineno-28-73" name="__codelineno-28-73" href="#__codelineno-28-73"></a>
-<a id="__codelineno-28-74" name="__codelineno-28-74" href="#__codelineno-28-74"></a>        <span class="k">if</span> <span class="n">tag</span><span class="p">:</span>
-<a id="__codelineno-28-75" name="__codelineno-28-75" href="#__codelineno-28-75"></a>            <span class="k">raise</span> <span class="n">TagAlreadyExists</span><span class="p">()</span>
-<a id="__codelineno-28-76" name="__codelineno-28-76" href="#__codelineno-28-76"></a>        <span class="n">new_tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">tag_data</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<a id="__codelineno-28-77" name="__codelineno-28-77" href="#__codelineno-28-77"></a>
-<a id="__codelineno-28-78" name="__codelineno-28-78" href="#__codelineno-28-78"></a>        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_tag</span><span class="p">)</span>
+<a id="__codelineno-28-56" name="__codelineno-28-56" href="#__codelineno-28-56"></a>
+<a id="__codelineno-28-57" name="__codelineno-28-57" href="#__codelineno-28-57"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">get_tag_by_uid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">):</span>
+<a id="__codelineno-28-58" name="__codelineno-28-58" href="#__codelineno-28-58"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Get tag by uid&quot;&quot;&quot;</span>
+<a id="__codelineno-28-59" name="__codelineno-28-59" href="#__codelineno-28-59"></a>
+<a id="__codelineno-28-60" name="__codelineno-28-60" href="#__codelineno-28-60"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Tag</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">tag_uid</span><span class="p">)</span>
+<a id="__codelineno-28-61" name="__codelineno-28-61" href="#__codelineno-28-61"></a>
+<a id="__codelineno-28-62" name="__codelineno-28-62" href="#__codelineno-28-62"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+<a id="__codelineno-28-63" name="__codelineno-28-63" href="#__codelineno-28-63"></a>
+<a id="__codelineno-28-64" name="__codelineno-28-64" href="#__codelineno-28-64"></a>        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<a id="__codelineno-28-65" name="__codelineno-28-65" href="#__codelineno-28-65"></a>
+<a id="__codelineno-28-66" name="__codelineno-28-66" href="#__codelineno-28-66"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">add_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_data</span><span class="p">:</span> <span class="n">TagCreateModel</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">):</span>
+<a id="__codelineno-28-67" name="__codelineno-28-67" href="#__codelineno-28-67"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a tag&quot;&quot;&quot;</span>
+<a id="__codelineno-28-68" name="__codelineno-28-68" href="#__codelineno-28-68"></a>
+<a id="__codelineno-28-69" name="__codelineno-28-69" href="#__codelineno-28-69"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Tag</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">tag_data</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<a id="__codelineno-28-70" name="__codelineno-28-70" href="#__codelineno-28-70"></a>
+<a id="__codelineno-28-71" name="__codelineno-28-71" href="#__codelineno-28-71"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+<a id="__codelineno-28-72" name="__codelineno-28-72" href="#__codelineno-28-72"></a>
+<a id="__codelineno-28-73" name="__codelineno-28-73" href="#__codelineno-28-73"></a>        <span class="n">tag</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+<a id="__codelineno-28-74" name="__codelineno-28-74" href="#__codelineno-28-74"></a>
+<a id="__codelineno-28-75" name="__codelineno-28-75" href="#__codelineno-28-75"></a>        <span class="k">if</span> <span class="n">tag</span><span class="p">:</span>
+<a id="__codelineno-28-76" name="__codelineno-28-76" href="#__codelineno-28-76"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-28-77" name="__codelineno-28-77" href="#__codelineno-28-77"></a>                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Tag exists&quot;</span>
+<a id="__codelineno-28-78" name="__codelineno-28-78" href="#__codelineno-28-78"></a>            <span class="p">)</span>
 <a id="__codelineno-28-79" name="__codelineno-28-79" href="#__codelineno-28-79"></a>
-<a id="__codelineno-28-80" name="__codelineno-28-80" href="#__codelineno-28-80"></a>        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-28-80" name="__codelineno-28-80" href="#__codelineno-28-80"></a>        <span class="n">new_tag</span> <span class="o">=</span> <span class="n">Tag</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">tag_data</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <a id="__codelineno-28-81" name="__codelineno-28-81" href="#__codelineno-28-81"></a>
-<a id="__codelineno-28-82" name="__codelineno-28-82" href="#__codelineno-28-82"></a>        <span class="k">return</span> <span class="n">new_tag</span>
+<a id="__codelineno-28-82" name="__codelineno-28-82" href="#__codelineno-28-82"></a>        <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_tag</span><span class="p">)</span>
 <a id="__codelineno-28-83" name="__codelineno-28-83" href="#__codelineno-28-83"></a>
-<a id="__codelineno-28-84" name="__codelineno-28-84" href="#__codelineno-28-84"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_tag</span><span class="p">(</span>
-<a id="__codelineno-28-85" name="__codelineno-28-85" href="#__codelineno-28-85"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">tag_uid</span><span class="p">,</span> <span class="n">tag_update_data</span><span class="p">:</span> <span class="n">TagCreateModel</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span>
-<a id="__codelineno-28-86" name="__codelineno-28-86" href="#__codelineno-28-86"></a>    <span class="p">):</span>
-<a id="__codelineno-28-87" name="__codelineno-28-87" href="#__codelineno-28-87"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Update a tag&quot;&quot;&quot;</span>
-<a id="__codelineno-28-88" name="__codelineno-28-88" href="#__codelineno-28-88"></a>
-<a id="__codelineno-28-89" name="__codelineno-28-89" href="#__codelineno-28-89"></a>        <span class="n">tag</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tag_by_uid</span><span class="p">(</span><span class="n">tag_uid</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
-<a id="__codelineno-28-90" name="__codelineno-28-90" href="#__codelineno-28-90"></a>
-<a id="__codelineno-28-91" name="__codelineno-28-91" href="#__codelineno-28-91"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">tag</span><span class="p">:</span>
-<a id="__codelineno-28-92" name="__codelineno-28-92" href="#__codelineno-28-92"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">)</span>
-<a id="__codelineno-28-93" name="__codelineno-28-93" href="#__codelineno-28-93"></a>
-<a id="__codelineno-28-94" name="__codelineno-28-94" href="#__codelineno-28-94"></a>        <span class="n">update_data_dict</span> <span class="o">=</span> <span class="n">tag_update_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-<a id="__codelineno-28-95" name="__codelineno-28-95" href="#__codelineno-28-95"></a>
-<a id="__codelineno-28-96" name="__codelineno-28-96" href="#__codelineno-28-96"></a>        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">update_data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-<a id="__codelineno-28-97" name="__codelineno-28-97" href="#__codelineno-28-97"></a>            <span class="nb">setattr</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-<a id="__codelineno-28-98" name="__codelineno-28-98" href="#__codelineno-28-98"></a>
-<a id="__codelineno-28-99" name="__codelineno-28-99" href="#__codelineno-28-99"></a>            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
-<a id="__codelineno-28-100" name="__codelineno-28-100" href="#__codelineno-28-100"></a>
-<a id="__codelineno-28-101" name="__codelineno-28-101" href="#__codelineno-28-101"></a>            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
-<a id="__codelineno-28-102" name="__codelineno-28-102" href="#__codelineno-28-102"></a>
-<a id="__codelineno-28-103" name="__codelineno-28-103" href="#__codelineno-28-103"></a>        <span class="k">return</span> <span class="n">tag</span>
-<a id="__codelineno-28-104" name="__codelineno-28-104" href="#__codelineno-28-104"></a>
-<a id="__codelineno-28-105" name="__codelineno-28-105" href="#__codelineno-28-105"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">):</span>
-<a id="__codelineno-28-106" name="__codelineno-28-106" href="#__codelineno-28-106"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a tag&quot;&quot;&quot;</span>
-<a id="__codelineno-28-107" name="__codelineno-28-107" href="#__codelineno-28-107"></a>
-<a id="__codelineno-28-108" name="__codelineno-28-108" href="#__codelineno-28-108"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Tag</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Tag</span><span class="o">.</span><span class="n">uid</span> <span class="o">==</span> <span class="n">tag_uid</span><span class="p">)</span>
+<a id="__codelineno-28-84" name="__codelineno-28-84" href="#__codelineno-28-84"></a>        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-28-85" name="__codelineno-28-85" href="#__codelineno-28-85"></a>
+<a id="__codelineno-28-86" name="__codelineno-28-86" href="#__codelineno-28-86"></a>        <span class="k">return</span> <span class="n">new_tag</span>
+<a id="__codelineno-28-87" name="__codelineno-28-87" href="#__codelineno-28-87"></a>
+<a id="__codelineno-28-88" name="__codelineno-28-88" href="#__codelineno-28-88"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_tag</span><span class="p">(</span>
+<a id="__codelineno-28-89" name="__codelineno-28-89" href="#__codelineno-28-89"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">tag_uid</span><span class="p">,</span> <span class="n">tag_update_data</span><span class="p">:</span> <span class="n">TagCreateModel</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span>
+<a id="__codelineno-28-90" name="__codelineno-28-90" href="#__codelineno-28-90"></a>    <span class="p">):</span>
+<a id="__codelineno-28-91" name="__codelineno-28-91" href="#__codelineno-28-91"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Update a tag&quot;&quot;&quot;</span>
+<a id="__codelineno-28-92" name="__codelineno-28-92" href="#__codelineno-28-92"></a>
+<a id="__codelineno-28-93" name="__codelineno-28-93" href="#__codelineno-28-93"></a>        <span class="n">tag</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tag_by_uid</span><span class="p">(</span><span class="n">tag_uid</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-28-94" name="__codelineno-28-94" href="#__codelineno-28-94"></a>
+<a id="__codelineno-28-95" name="__codelineno-28-95" href="#__codelineno-28-95"></a>        <span class="n">update_data_dict</span> <span class="o">=</span> <span class="n">tag_update_data</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+<a id="__codelineno-28-96" name="__codelineno-28-96" href="#__codelineno-28-96"></a>
+<a id="__codelineno-28-97" name="__codelineno-28-97" href="#__codelineno-28-97"></a>        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">update_data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-28-98" name="__codelineno-28-98" href="#__codelineno-28-98"></a>            <span class="nb">setattr</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<a id="__codelineno-28-99" name="__codelineno-28-99" href="#__codelineno-28-99"></a>
+<a id="__codelineno-28-100" name="__codelineno-28-100" href="#__codelineno-28-100"></a>            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-28-101" name="__codelineno-28-101" href="#__codelineno-28-101"></a>
+<a id="__codelineno-28-102" name="__codelineno-28-102" href="#__codelineno-28-102"></a>            <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+<a id="__codelineno-28-103" name="__codelineno-28-103" href="#__codelineno-28-103"></a>
+<a id="__codelineno-28-104" name="__codelineno-28-104" href="#__codelineno-28-104"></a>        <span class="k">return</span> <span class="n">tag</span>
+<a id="__codelineno-28-105" name="__codelineno-28-105" href="#__codelineno-28-105"></a>
+<a id="__codelineno-28-106" name="__codelineno-28-106" href="#__codelineno-28-106"></a>
+<a id="__codelineno-28-107" name="__codelineno-28-107" href="#__codelineno-28-107"></a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">delete_tag</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span><span class="p">):</span>
+<a id="__codelineno-28-108" name="__codelineno-28-108" href="#__codelineno-28-108"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Delete a tag&quot;&quot;&quot;</span>
 <a id="__codelineno-28-109" name="__codelineno-28-109" href="#__codelineno-28-109"></a>
-<a id="__codelineno-28-110" name="__codelineno-28-110" href="#__codelineno-28-110"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+<a id="__codelineno-28-110" name="__codelineno-28-110" href="#__codelineno-28-110"></a>        <span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tag_by_uid</span><span class="p">(</span><span class="n">tag_uid</span><span class="p">,</span><span class="n">session</span><span class="p">)</span>
 <a id="__codelineno-28-111" name="__codelineno-28-111" href="#__codelineno-28-111"></a>
-<a id="__codelineno-28-112" name="__codelineno-28-112" href="#__codelineno-28-112"></a>        <span class="n">tag</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
-<a id="__codelineno-28-113" name="__codelineno-28-113" href="#__codelineno-28-113"></a>
-<a id="__codelineno-28-114" name="__codelineno-28-114" href="#__codelineno-28-114"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">tag</span><span class="p">:</span>
-<a id="__codelineno-28-115" name="__codelineno-28-115" href="#__codelineno-28-115"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
-<a id="__codelineno-28-116" name="__codelineno-28-116" href="#__codelineno-28-116"></a>                <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Tag not found&quot;</span><span class="p">,</span>
-<a id="__codelineno-28-117" name="__codelineno-28-117" href="#__codelineno-28-117"></a>                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span>
-<a id="__codelineno-28-118" name="__codelineno-28-118" href="#__codelineno-28-118"></a>            <span class="p">)</span>
-<a id="__codelineno-28-119" name="__codelineno-28-119" href="#__codelineno-28-119"></a>
-<a id="__codelineno-28-120" name="__codelineno-28-120" href="#__codelineno-28-120"></a>
-<a id="__codelineno-28-121" name="__codelineno-28-121" href="#__codelineno-28-121"></a>        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
-<a id="__codelineno-28-122" name="__codelineno-28-122" href="#__codelineno-28-122"></a>
-<a id="__codelineno-28-123" name="__codelineno-28-123" href="#__codelineno-28-123"></a>        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<a id="__codelineno-28-112" name="__codelineno-28-112" href="#__codelineno-28-112"></a>        <span class="k">if</span> <span class="n">tag</span><span class="p">:</span>
+<a id="__codelineno-28-113" name="__codelineno-28-113" href="#__codelineno-28-113"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-28-114" name="__codelineno-28-114" href="#__codelineno-28-114"></a>                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Tag does not exist&quot;</span>
+<a id="__codelineno-28-115" name="__codelineno-28-115" href="#__codelineno-28-115"></a>            <span class="p">)</span>
+<a id="__codelineno-28-116" name="__codelineno-28-116" href="#__codelineno-28-116"></a>
+<a id="__codelineno-28-117" name="__codelineno-28-117" href="#__codelineno-28-117"></a>        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">tag</span><span class="p">)</span>
+<a id="__codelineno-28-118" name="__codelineno-28-118" href="#__codelineno-28-118"></a>
+<a id="__codelineno-28-119" name="__codelineno-28-119" href="#__codelineno-28-119"></a>        <span class="k">await</span> <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </code></pre></div>
 In <code>src/tags/service.py</code>, we have created the <code>TagService</code> class which will be used to manage tags. It imports necessary modules, including <code>status</code> from FastAPI for HTTP status codes, <code>HTTPException</code> for handling exceptions, and <code>desc</code>, <code>select</code> from <code>sqlmodel</code> for database queries using SQL statements in an asynchronous session. Additionally, it relies on <code>AsyncSession</code> from <code>sqlmodel.ext.asyncio.session</code> for asynchronous database interactions.</p>
 <p>Within the class, an instance of <code>BookService</code> is initialized to facilitate operations related to books. Error handling is streamlined with a predefined <code>server_error</code> <code>HTTPException</code> instance set for <code>500 Internal Server Error</code>.</p>
@@ -1650,61 +1690,129 @@ In <code>src/tags/service.py</code>, we have created the <code>TagService</code>
 <a id="__codelineno-32-13" name="__codelineno-32-13" href="#__codelineno-32-13"></a>
 <a id="__codelineno-32-14" name="__codelineno-32-14" href="#__codelineno-32-14"></a><span class="n">tags_router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
 <a id="__codelineno-32-15" name="__codelineno-32-15" href="#__codelineno-32-15"></a><span class="n">tag_service</span> <span class="o">=</span> <span class="n">TagService</span><span class="p">()</span>
-<a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a><span class="n">role_checker</span> <span class="o">=</span> <span class="n">RoleChecker</span><span class="p">([</span><span class="s1">&#39;&#39;</span><span class="p">])</span>
+<a id="__codelineno-32-16" name="__codelineno-32-16" href="#__codelineno-32-16"></a><span class="n">user_role_checker</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">RoleChecker</span><span class="p">([</span><span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;admin&quot;</span><span class="p">]))</span>
 <a id="__codelineno-32-17" name="__codelineno-32-17" href="#__codelineno-32-17"></a>
 <a id="__codelineno-32-18" name="__codelineno-32-18" href="#__codelineno-32-18"></a>
-<a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a><span class="nd">@tags_router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">List</span><span class="p">[</span><span class="n">TagModel</span><span class="p">])</span>
+<a id="__codelineno-32-19" name="__codelineno-32-19" href="#__codelineno-32-19"></a><span class="nd">@tags_router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">List</span><span class="p">[</span><span class="n">TagModel</span><span class="p">],</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">user_role_checker</span><span class="p">])</span>
 <a id="__codelineno-32-20" name="__codelineno-32-20" href="#__codelineno-32-20"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_all_tags</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)):</span>
 <a id="__codelineno-32-21" name="__codelineno-32-21" href="#__codelineno-32-21"></a>    <span class="n">tags</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tag_service</span><span class="o">.</span><span class="n">get_tags</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
 <a id="__codelineno-32-22" name="__codelineno-32-22" href="#__codelineno-32-22"></a>
 <a id="__codelineno-32-23" name="__codelineno-32-23" href="#__codelineno-32-23"></a>    <span class="k">return</span> <span class="n">tags</span>
 <a id="__codelineno-32-24" name="__codelineno-32-24" href="#__codelineno-32-24"></a>
 <a id="__codelineno-32-25" name="__codelineno-32-25" href="#__codelineno-32-25"></a>
-<a id="__codelineno-32-26" name="__codelineno-32-26" href="#__codelineno-32-26"></a><span class="nd">@tags_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">TagModel</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
-<a id="__codelineno-32-27" name="__codelineno-32-27" href="#__codelineno-32-27"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">add_tag</span><span class="p">(</span>
-<a id="__codelineno-32-28" name="__codelineno-32-28" href="#__codelineno-32-28"></a>    <span class="n">tag_data</span><span class="p">:</span> <span class="n">TagCreateModel</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)</span>
-<a id="__codelineno-32-29" name="__codelineno-32-29" href="#__codelineno-32-29"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TagModel</span><span class="p">:</span>
-<a id="__codelineno-32-30" name="__codelineno-32-30" href="#__codelineno-32-30"></a>
-<a id="__codelineno-32-31" name="__codelineno-32-31" href="#__codelineno-32-31"></a>    <span class="n">tag_added</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tag_service</span><span class="o">.</span><span class="n">add_tag</span><span class="p">(</span><span class="n">tag_data</span><span class="o">=</span><span class="n">tag_data</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
-<a id="__codelineno-32-32" name="__codelineno-32-32" href="#__codelineno-32-32"></a>
-<a id="__codelineno-32-33" name="__codelineno-32-33" href="#__codelineno-32-33"></a>    <span class="k">return</span> <span class="n">tag_added</span>
-<a id="__codelineno-32-34" name="__codelineno-32-34" href="#__codelineno-32-34"></a>
+<a id="__codelineno-32-26" name="__codelineno-32-26" href="#__codelineno-32-26"></a><span class="nd">@tags_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+<a id="__codelineno-32-27" name="__codelineno-32-27" href="#__codelineno-32-27"></a>    <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+<a id="__codelineno-32-28" name="__codelineno-32-28" href="#__codelineno-32-28"></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">TagModel</span><span class="p">,</span>
+<a id="__codelineno-32-29" name="__codelineno-32-29" href="#__codelineno-32-29"></a>    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
+<a id="__codelineno-32-30" name="__codelineno-32-30" href="#__codelineno-32-30"></a>    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">user_role_checker</span><span class="p">],</span>
+<a id="__codelineno-32-31" name="__codelineno-32-31" href="#__codelineno-32-31"></a><span class="p">)</span>
+<a id="__codelineno-32-32" name="__codelineno-32-32" href="#__codelineno-32-32"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">add_tag</span><span class="p">(</span>
+<a id="__codelineno-32-33" name="__codelineno-32-33" href="#__codelineno-32-33"></a>    <span class="n">tag_data</span><span class="p">:</span> <span class="n">TagCreateModel</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)</span>
+<a id="__codelineno-32-34" name="__codelineno-32-34" href="#__codelineno-32-34"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TagModel</span><span class="p">:</span>
 <a id="__codelineno-32-35" name="__codelineno-32-35" href="#__codelineno-32-35"></a>
-<a id="__codelineno-32-36" name="__codelineno-32-36" href="#__codelineno-32-36"></a><span class="nd">@tags_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/book/</span><span class="si">{book_uid}</span><span class="s2">/tags&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
-<a id="__codelineno-32-37" name="__codelineno-32-37" href="#__codelineno-32-37"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">add_tags_to_book</span><span class="p">(</span>
-<a id="__codelineno-32-38" name="__codelineno-32-38" href="#__codelineno-32-38"></a>    <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tag_data</span><span class="p">:</span> <span class="n">TagAddModel</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)</span>
-<a id="__codelineno-32-39" name="__codelineno-32-39" href="#__codelineno-32-39"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Book</span><span class="p">:</span>
+<a id="__codelineno-32-36" name="__codelineno-32-36" href="#__codelineno-32-36"></a>    <span class="n">tag_added</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tag_service</span><span class="o">.</span><span class="n">add_tag</span><span class="p">(</span><span class="n">tag_data</span><span class="o">=</span><span class="n">tag_data</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-32-37" name="__codelineno-32-37" href="#__codelineno-32-37"></a>
+<a id="__codelineno-32-38" name="__codelineno-32-38" href="#__codelineno-32-38"></a>    <span class="k">return</span> <span class="n">tag_added</span>
+<a id="__codelineno-32-39" name="__codelineno-32-39" href="#__codelineno-32-39"></a>
 <a id="__codelineno-32-40" name="__codelineno-32-40" href="#__codelineno-32-40"></a>
-<a id="__codelineno-32-41" name="__codelineno-32-41" href="#__codelineno-32-41"></a>    <span class="n">book_with_tag</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tag_service</span><span class="o">.</span><span class="n">add_tags_to_book</span><span class="p">(</span>
-<a id="__codelineno-32-42" name="__codelineno-32-42" href="#__codelineno-32-42"></a>        <span class="n">book_uid</span><span class="o">=</span><span class="n">book_uid</span><span class="p">,</span> <span class="n">tag_data</span><span class="o">=</span><span class="n">tag_data</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span>
-<a id="__codelineno-32-43" name="__codelineno-32-43" href="#__codelineno-32-43"></a>    <span class="p">)</span>
-<a id="__codelineno-32-44" name="__codelineno-32-44" href="#__codelineno-32-44"></a>
-<a id="__codelineno-32-45" name="__codelineno-32-45" href="#__codelineno-32-45"></a>    <span class="k">return</span> <span class="n">book_with_tag</span>
-<a id="__codelineno-32-46" name="__codelineno-32-46" href="#__codelineno-32-46"></a>
+<a id="__codelineno-32-41" name="__codelineno-32-41" href="#__codelineno-32-41"></a><span class="nd">@tags_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+<a id="__codelineno-32-42" name="__codelineno-32-42" href="#__codelineno-32-42"></a>    <span class="s2">&quot;/book/</span><span class="si">{book_uid}</span><span class="s2">/tags&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">Book</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">user_role_checker</span><span class="p">]</span>
+<a id="__codelineno-32-43" name="__codelineno-32-43" href="#__codelineno-32-43"></a><span class="p">)</span>
+<a id="__codelineno-32-44" name="__codelineno-32-44" href="#__codelineno-32-44"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">add_tags_to_book</span><span class="p">(</span>
+<a id="__codelineno-32-45" name="__codelineno-32-45" href="#__codelineno-32-45"></a>    <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tag_data</span><span class="p">:</span> <span class="n">TagCreateModel</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)</span>
+<a id="__codelineno-32-46" name="__codelineno-32-46" href="#__codelineno-32-46"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Book</span><span class="p">:</span>
 <a id="__codelineno-32-47" name="__codelineno-32-47" href="#__codelineno-32-47"></a>
-<a id="__codelineno-32-48" name="__codelineno-32-48" href="#__codelineno-32-48"></a><span class="nd">@tags_router</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">{tag_uid}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">TagModel</span><span class="p">)</span>
-<a id="__codelineno-32-49" name="__codelineno-32-49" href="#__codelineno-32-49"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">update_tag</span><span class="p">(</span>
-<a id="__codelineno-32-50" name="__codelineno-32-50" href="#__codelineno-32-50"></a>    <span class="n">tag_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-32-51" name="__codelineno-32-51" href="#__codelineno-32-51"></a>    <span class="n">tag_update_data</span><span class="p">:</span> <span class="n">TagCreateModel</span><span class="p">,</span>
-<a id="__codelineno-32-52" name="__codelineno-32-52" href="#__codelineno-32-52"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
-<a id="__codelineno-32-53" name="__codelineno-32-53" href="#__codelineno-32-53"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TagModel</span><span class="p">:</span>
-<a id="__codelineno-32-54" name="__codelineno-32-54" href="#__codelineno-32-54"></a>    <span class="n">updated_tag</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tag_service</span><span class="o">.</span><span class="n">update_tag</span><span class="p">(</span><span class="n">tag_uid</span><span class="p">,</span> <span class="n">tag_update_data</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
-<a id="__codelineno-32-55" name="__codelineno-32-55" href="#__codelineno-32-55"></a>
-<a id="__codelineno-32-56" name="__codelineno-32-56" href="#__codelineno-32-56"></a>    <span class="k">return</span> <span class="n">updated_tag</span>
-<a id="__codelineno-32-57" name="__codelineno-32-57" href="#__codelineno-32-57"></a>
-<a id="__codelineno-32-58" name="__codelineno-32-58" href="#__codelineno-32-58"></a>
-<a id="__codelineno-32-59" name="__codelineno-32-59" href="#__codelineno-32-59"></a><span class="nd">@tags_router</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">{tag_uid}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">)</span>
-<a id="__codelineno-32-60" name="__codelineno-32-60" href="#__codelineno-32-60"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">delete_tag</span><span class="p">(</span>
-<a id="__codelineno-32-61" name="__codelineno-32-61" href="#__codelineno-32-61"></a>    <span class="n">tag_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)</span>
-<a id="__codelineno-32-62" name="__codelineno-32-62" href="#__codelineno-32-62"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-32-63" name="__codelineno-32-63" href="#__codelineno-32-63"></a>    <span class="n">updated_tag</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tag_service</span><span class="o">.</span><span class="n">delete_tag</span><span class="p">(</span><span class="n">tag_uid</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-32-48" name="__codelineno-32-48" href="#__codelineno-32-48"></a>    <span class="n">book_with_tag</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tag_service</span><span class="o">.</span><span class="n">add_tags_to_book</span><span class="p">(</span>
+<a id="__codelineno-32-49" name="__codelineno-32-49" href="#__codelineno-32-49"></a>        <span class="n">book_uid</span><span class="o">=</span><span class="n">book_uid</span><span class="p">,</span> <span class="n">tag_data</span><span class="o">=</span><span class="n">tag_data</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session</span>
+<a id="__codelineno-32-50" name="__codelineno-32-50" href="#__codelineno-32-50"></a>    <span class="p">)</span>
+<a id="__codelineno-32-51" name="__codelineno-32-51" href="#__codelineno-32-51"></a>
+<a id="__codelineno-32-52" name="__codelineno-32-52" href="#__codelineno-32-52"></a>    <span class="k">return</span> <span class="n">book_with_tag</span>
+<a id="__codelineno-32-53" name="__codelineno-32-53" href="#__codelineno-32-53"></a>
+<a id="__codelineno-32-54" name="__codelineno-32-54" href="#__codelineno-32-54"></a>
+<a id="__codelineno-32-55" name="__codelineno-32-55" href="#__codelineno-32-55"></a><span class="nd">@tags_router</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>
+<a id="__codelineno-32-56" name="__codelineno-32-56" href="#__codelineno-32-56"></a>    <span class="s2">&quot;/</span><span class="si">{tag_uid}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">TagModel</span><span class="p">,</span> <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">user_role_checker</span><span class="p">]</span>
+<a id="__codelineno-32-57" name="__codelineno-32-57" href="#__codelineno-32-57"></a><span class="p">)</span>
+<a id="__codelineno-32-58" name="__codelineno-32-58" href="#__codelineno-32-58"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">update_tag</span><span class="p">(</span>
+<a id="__codelineno-32-59" name="__codelineno-32-59" href="#__codelineno-32-59"></a>    <span class="n">tag_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-32-60" name="__codelineno-32-60" href="#__codelineno-32-60"></a>    <span class="n">tag_update_data</span><span class="p">:</span> <span class="n">TagCreateModel</span><span class="p">,</span>
+<a id="__codelineno-32-61" name="__codelineno-32-61" href="#__codelineno-32-61"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
+<a id="__codelineno-32-62" name="__codelineno-32-62" href="#__codelineno-32-62"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TagModel</span><span class="p">:</span>
+<a id="__codelineno-32-63" name="__codelineno-32-63" href="#__codelineno-32-63"></a>    <span class="n">updated_tag</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tag_service</span><span class="o">.</span><span class="n">update_tag</span><span class="p">(</span><span class="n">tag_uid</span><span class="p">,</span> <span class="n">tag_update_data</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
 <a id="__codelineno-32-64" name="__codelineno-32-64" href="#__codelineno-32-64"></a>
 <a id="__codelineno-32-65" name="__codelineno-32-65" href="#__codelineno-32-65"></a>    <span class="k">return</span> <span class="n">updated_tag</span>
+<a id="__codelineno-32-66" name="__codelineno-32-66" href="#__codelineno-32-66"></a>
+<a id="__codelineno-32-67" name="__codelineno-32-67" href="#__codelineno-32-67"></a>
+<a id="__codelineno-32-68" name="__codelineno-32-68" href="#__codelineno-32-68"></a><span class="nd">@tags_router</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span>
+<a id="__codelineno-32-69" name="__codelineno-32-69" href="#__codelineno-32-69"></a>    <span class="s2">&quot;/</span><span class="si">{tag_uid}</span><span class="s2">&quot;</span><span class="p">,</span>
+<a id="__codelineno-32-70" name="__codelineno-32-70" href="#__codelineno-32-70"></a>    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span>
+<a id="__codelineno-32-71" name="__codelineno-32-71" href="#__codelineno-32-71"></a>    <span class="n">dependencies</span><span class="o">=</span><span class="p">[</span><span class="n">user_role_checker</span><span class="p">],</span>
+<a id="__codelineno-32-72" name="__codelineno-32-72" href="#__codelineno-32-72"></a><span class="p">)</span>
+<a id="__codelineno-32-73" name="__codelineno-32-73" href="#__codelineno-32-73"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">delete_tag</span><span class="p">(</span>
+<a id="__codelineno-32-74" name="__codelineno-32-74" href="#__codelineno-32-74"></a>    <span class="n">tag_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)</span>
+<a id="__codelineno-32-75" name="__codelineno-32-75" href="#__codelineno-32-75"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-32-76" name="__codelineno-32-76" href="#__codelineno-32-76"></a>    <span class="n">updated_tag</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tag_service</span><span class="o">.</span><span class="n">delete_tag</span><span class="p">(</span><span class="n">tag_uid</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-32-77" name="__codelineno-32-77" href="#__codelineno-32-77"></a>
+<a id="__codelineno-32-78" name="__codelineno-32-78" href="#__codelineno-32-78"></a>    <span class="k">return</span> <span class="n">updated_tag</span>
 </code></pre></div>
 <p>The <code>tags_router</code> in this code defines several endpoints for managing tags. This router relies on <code>TagService</code> to perform various CRUD operations and utilizes <code>AsyncSession</code> for asynchronous database access. The endpoints handle requests for retrieving all tags, adding new tags, associating tags with books, updating tags, and deleting tags.</p>
 <p>The <code>get_all_tags</code> endpoint fetches all tags from the database, returning a list of tags in the response model <code>TagModel</code>. It uses <code>Depends(get_session)</code> to inject the database session and calls the <code>get_tags</code> method from <code>TagService</code>. The <code>add_tag</code> endpoint creates a new tag, accepting <code>TagCreateModel</code> as input data. The <code>tag_service.add_tag</code> method is called to add the tag to the database, and the newly created tag is returned with a <code>201 Created</code> status.</p>
 <p>For associating tags with books, the <code>add_tags_to_book</code> endpoint takes a book UID and tag data (<code>TagAddModel</code>), adds the tags to the specified book using the <code>add_tags_to_book</code> method of <code>TagService</code>, and returns the updated book information. The <code>update_tag</code> endpoint updates an existing tag identified by its UID with new data provided in <code>TagCreateModel</code>. It calls the <code>update_tag</code> method from <code>TagService</code> and returns the updated tag.</p>
-<p>Lastly, the <code>delete_tag</code> endpoint deletes a tag specified by its UID. It calls the <code>delete_tag</code> method from <code>TagService</code>, which removes the tag from the database and returns a <code>204 No Content</code> status to indicate successful deletion. Each endpoint is designed to handle specific HTTP methods and routes, facilitating efficient tag management within the application.</p>
+<p>Lastly, the <code>delete_tag</code> endpoint deletes a tag specified by its UID. It calls the <code>delete_tag</code> method from <code>TagService</code>, which removes the tag from the database and returns a <code>204 No Content</code> status to indicate successful deletion. </p>
+<p>Let us not forget to add the <code>tag_router</code> to our application by going inside <code>src/__init__.py</code>;
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="kn">from</span> <span class="nn">src.auth.routes</span> <span class="kn">import</span> <span class="n">auth_router</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="kn">from</span> <span class="nn">src.books.routes</span> <span class="kn">import</span> <span class="n">book_router</span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="kn">from</span> <span class="nn">src.reviews.routes</span> <span class="kn">import</span> <span class="n">review_router</span>
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="kn">from</span> <span class="nn">src.tags.routes</span> <span class="kn">import</span> <span class="n">tags_router</span> <span class="c1"># import this</span>
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>
+<a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a><span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;v1&quot;</span>
+<a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>
+<a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span>
+<a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a>    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Bookly&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;A REST API for a book review web service&quot;</span><span class="p">,</span>
+<a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a>    <span class="n">version</span><span class="o">=</span><span class="n">version</span><span class="p">,</span>
+<a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a><span class="p">)</span>
+<a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a>
+<a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">book_router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/api/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/books&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;books&quot;</span><span class="p">])</span>
+<a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">auth_router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/api/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/auth&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;auth&quot;</span><span class="p">])</span>
+<a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">review_router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/api/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/reviews&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;reviews&quot;</span><span class="p">])</span>
+<a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">tags_router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/api/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/tags&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tags&quot;</span><span class="p">])</span> <span class="c1">#add this</span>
+</code></pre></div></p>
+<h3 id="testing-the-tags-api-routes">Testing the tags API Routes</h3>
+<p>Now that our reviews and tags relationships have been set up, let us go ahead and test the different API endpoints we have so far built.</p>
+<ol>
+<li>
+<p><strong>Create tag</strong>
+<a class="glightbox" href="../img/img43.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="create tag" src="../img/img43.png" /></a></p>
+</li>
+<li>
+<p><strong>Create tag that exists</strong>
+<a class="glightbox" href="../img/img44.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="create tag that exists" src="../img/img44.png" /></a></p>
+</li>
+<li>
+<p><strong>Get all tags</strong>
+<a class="glightbox" href="../img/img45.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="get all tags" src="../img/img45.png" /></a></p>
+</li>
+<li>
+<p><strong>Add tags to a book</strong>
+<a class="glightbox" href="../img/img46.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="add tags to book" src="../img/img46.png" /></a></p>
+</li>
+<li>
+<p><strong>Update a tag</strong>
+<a class="glightbox" href="../img/img47.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="update a book" src="../img/img47.png" /></a></p>
+</li>
+<li>
+<p><strong>Delete a tag</strong>
+<a class="glightbox" href="../img/img48.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="delete a tag" src="../img/img48.png" /></a></p>
+</li>
+<li>
+<p><strong>Getting book details with tag</strong>
+<a class="glightbox" href="../img/img49.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Get book with tags" src="../img/img49.png" /></a></p>
+</li>
+</ol>
+<h2 id="conclusion">Conclusion</h2>
+<p>This has been the longest chapter in our series. We've looked at how database models and API schemas can create complex relationships. We set up different relationships between our entities, mainly focusing on one-to-many and many-to-many relationships. We've also made sure these relationships are returned correctly by our API routes when we retrieve data.</p>
 
 
 
@@ -1804,5 +1912,7 @@ In <code>src/tags/service.py</code>, we have created the <code>TagService</code>
       <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
       
     
-  </body>
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
 </html>

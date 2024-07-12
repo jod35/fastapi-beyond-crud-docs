@@ -96,6 +96,8 @@ extra:
     provider: google
     property: G-TCHXJCN975
               
-
+plugins:
+   - glightbox
+   
 repo_name: jod35/fastapi-beyond-CRUD
 repo_url: https://github.com/jod35/fastapi-beyond-CRUD

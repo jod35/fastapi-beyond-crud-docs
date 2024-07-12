@@ -724,6 +724,20 @@ app.include_router(auth_router, prefix=f"/api/{version}/auth", tags=["auth"])
 app.include_router(review_router, prefix=f"/api/{version}/reviews", tags=["reviews"]) #add this
 ```
 
+### Testing review API Routes
+Now that we have built the review API routes, let us test them.
+
+1. **Adding a book review**: 
+![add a review to a book](./img/img50.png)
+
+2. **Get book details with reviews**: 
+![get book reviews](./img/img51.png)
+
+3. **Get user details with reviews**: 
+![get user reviews](./img/img52.png)
+
+2. **Get all reviews**: 
+![get all book reviews](./img/img53.png)
 
 ### Associate Books With Tags
 All we have been looking at is creating one to many relationships and now let us look at a many to many relationship that we can set up. This is the relationship between books and tags. We want  to use tags to group all books within many categories, we can also be able to search related books, basing on their tags. To begin, let us look at the structure that book tags will have.
@@ -887,13 +901,12 @@ class TagService:
         book = await book_service.get_book(book_uid=book_uid, session=session)
 
         if not book:
-            raise HTTPException(
-                detail="Book not found",
-                status_code=status.HTTP_404_NOT_FOUND,
-            )
+            raise HTTPException(status_code=404, detail="Book not found")
 
         for tag_item in tag_data.tags:
-            result = await session.exec(select(Tag).where(Tag.name == tag_item.name))
+            result = await session.exec(
+                select(Tag).where(Tag.name == tag_item.name)
+            )
 
             tag = result.one_or_none()
             if not tag:
@@ -904,6 +917,8 @@ class TagService:
         await session.commit()
         await session.refresh(book)
         return book
+
+
 
     async def get_tag_by_uid(self, tag_uid: str, session: AsyncSession):
         """Get tag by uid"""
@@ -924,7 +939,10 @@ class TagService:
         tag = result.first()
 
         if tag:
-            raise TagAlreadyExists()
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail="Tag exists"
+            )
+
         new_tag = Tag(name=tag_data.name)
 
         session.add(new_tag)
@@ -940,9 +958,6 @@ class TagService:
 
         tag = await self.get_tag_by_uid(tag_uid, session)
 
-        if not tag:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-
         update_data_dict = tag_update_data.model_dump()
 
         for k, v in update_data_dict.items():
@@ -954,21 +969,16 @@ class TagService:
 
         return tag
 
+
     async def delete_tag(self, tag_uid: str, session: AsyncSession):
         """Delete a tag"""
 
-        statement = select(Tag).where(Tag.uid == tag_uid)
+        tag = self.get_tag_by_uid(tag_uid,session)
 
-        result = await session.exec(statement)
-
-        tag = result.first()
-
-        if not tag:
+        if tag:
             raise HTTPException(
-                detail="Tag not found",
-                status_code=status.HTTP_404_NOT_FOUND,
+                status_code=status.HTTP_404_NOT_FOUND, detail="Tag does not exist"
             )
-
 
         await session.delete(tag)
 
@@ -1021,17 +1031,22 @@ from .service import TagService
 
 tags_router = APIRouter()
 tag_service = TagService()
-role_checker = RoleChecker([''])
+user_role_checker = Depends(RoleChecker(["user", "admin"]))
 
 
-@tags_router.get("/", response_model=List[TagModel])
+@tags_router.get("/", response_model=List[TagModel], dependencies=[user_role_checker])
 async def get_all_tags(session: AsyncSession = Depends(get_session)):
     tags = await tag_service.get_tags(session)
 
     return tags
 
 
-@tags_router.post("/", response_model=TagModel, status_code=status.HTTP_201_CREATED)
+@tags_router.post(
+    "/",
+    response_model=TagModel,
+    status_code=status.HTTP_201_CREATED,
+    dependencies=[user_role_checker],
+)
 async def add_tag(
     tag_data: TagCreateModel, session: AsyncSession = Depends(get_session)
 ) -> TagModel:
@@ -1041,9 +1056,11 @@ async def add_tag(
     return tag_added
 
 
-@tags_router.post("/book/{book_uid}/tags", response_model=Book)
+@tags_router.post(
+    "/book/{book_uid}/tags", response_model=Book, dependencies=[user_role_checker]
+)
 async def add_tags_to_book(
-    book_uid: str, tag_data: TagAddModel, session: AsyncSession = Depends(get_session)
+    book_uid: str, tag_data: TagCreateModel, session: AsyncSession = Depends(get_session)
 ) -> Book:
 
     book_with_tag = await tag_service.add_tags_to_book(
@@ -1053,7 +1070,9 @@ async def add_tags_to_book(
     return book_with_tag
 
 
-@tags_router.put("/{tag_uid}", response_model=TagModel)
+@tags_router.put(
+    "/{tag_uid}", response_model=TagModel, dependencies=[user_role_checker]
+)
 async def update_tag(
     tag_uid: str,
     tag_update_data: TagCreateModel,
@@ -1064,7 +1083,11 @@ async def update_tag(
     return updated_tag
 
 
-@tags_router.delete("/{tag_uid}", status_code=status.HTTP_204_NO_CONTENT)
+@tags_router.delete(
+    "/{tag_uid}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[user_role_checker],
+)
 async def delete_tag(
     tag_uid: str, session: AsyncSession = Depends(get_session)
 ) -> None:
@@ -1080,4 +1103,55 @@ The `get_all_tags` endpoint fetches all tags from the database, returning a list
 
 For associating tags with books, the `add_tags_to_book` endpoint takes a book UID and tag data (`TagAddModel`), adds the tags to the specified book using the `add_tags_to_book` method of `TagService`, and returns the updated book information. The `update_tag` endpoint updates an existing tag identified by its UID with new data provided in `TagCreateModel`. It calls the `update_tag` method from `TagService` and returns the updated tag.
 
-Lastly, the `delete_tag` endpoint deletes a tag specified by its UID. It calls the `delete_tag` method from `TagService`, which removes the tag from the database and returns a `204 No Content` status to indicate successful deletion. Each endpoint is designed to handle specific HTTP methods and routes, facilitating efficient tag management within the application.
+Lastly, the `delete_tag` endpoint deletes a tag specified by its UID. It calls the `delete_tag` method from `TagService`, which removes the tag from the database and returns a `204 No Content` status to indicate successful deletion. 
+
+Let us not forget to add the `tag_router` to our application by going inside `src/__init__.py`;
+```python
+from fastapi import FastAPI
+
+from src.auth.routes import auth_router
+from src.books.routes import book_router
+from src.reviews.routes import review_router
+from src.tags.routes import tags_router # import this
+
+version = "v1"
+
+app = FastAPI(
+    title="Bookly",
+    description="A REST API for a book review web service",
+    version=version,
+)
+
+app.include_router(book_router, prefix=f"/api/{version}/books", tags=["books"])
+app.include_router(auth_router, prefix=f"/api/{version}/auth", tags=["auth"])
+app.include_router(review_router, prefix=f"/api/{version}/reviews", tags=["reviews"])
+app.include_router(tags_router, prefix=f"/api/{version}/tags", tags=["tags"]) #add this
+```
+
+
+### Testing the tags API Routes
+Now that our reviews and tags relationships have been set up, let us go ahead and test the different API endpoints we have so far built.
+
+1. **Create tag**
+![create tag](./img/img43.png)
+
+2. **Create tag that exists**
+![create tag that exists](./img/img44.png)
+
+3. **Get all tags**
+![get all tags](./img/img45.png)
+
+4. **Add tags to a book**
+![add tags to book](./img/img46.png)
+
+5. **Update a tag**
+![update a book](./img/img47.png)
+
+5. **Delete a tag**
+![delete a tag](./img/img48.png)
+
+6. **Getting book details with tag**
+![Get book with tags](./img/img49.png)
+
+## Conclusion
+This has been the longest chapter in our series. We've looked at how database models and API schemas can create complex relationships. We set up different relationships between our entities, mainly focusing on one-to-many and many-to-many relationships. We've also made sure these relationships are returned correctly by our API routes when we retrieve data.
