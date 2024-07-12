@@ -1158,12 +1158,6 @@ With changes in place, our current folder structure looks like.
 .
 |-- ├── alembic.ini
 |-- ├── migrations
-|-- │   ├── env.py
-|-- │   ├── README
-|-- │   ├── script.py.mako
-|-- │   └── versions
-|-- │       ├── 10421a0554ed_add_tags_for_books.py
-|-- │       └── 3debd4a9bc7a_add_reviews_table.py
 |-- ├── README.md
 |-- ├── requirements.txt
 `-- └── src/
