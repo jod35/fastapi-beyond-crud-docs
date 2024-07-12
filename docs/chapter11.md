@@ -1153,5 +1153,51 @@ Now that our reviews and tags relationships have been set up, let us go ahead an
 6. **Getting book details with tag**
 ![Get book with tags](./img/img49.png)
 
+With changes in place, our current folder structure looks like.
+```console
+.
+|-- ├── alembic.ini
+|-- ├── migrations
+|-- │   ├── env.py
+|-- │   ├── README
+|-- │   ├── script.py.mako
+|-- │   └── versions
+|-- │       ├── 10421a0554ed_add_tags_for_books.py
+|-- │       └── 3debd4a9bc7a_add_reviews_table.py
+|-- ├── README.md
+|-- ├── requirements.txt
+`-- └── src/
+    |-- ├── auth
+    |-- │   ├── dependencies.py
+    |-- │   ├── __init__.py
+    |-- │   ├── routes.py
+    |-- │   ├── schemas.py
+    |-- │   ├── service.py
+    |-- │   └── utils.py
+    |-- ├── books
+    |-- │   ├── __init__.py
+    |-- │   ├── models.py
+    |-- │   ├── routes.py
+    |-- │   ├── schemas.py
+    |-- │   └── service.py
+    |-- ├── config.py
+    |-- ├── db
+    |-- │   ├── __init__.py
+    |-- │   ├── main.py
+    |-- │   ├── models.py
+    |-- │   └── redis.py
+    |-- ├── __init__.py
+    |-- ├── reviews
+    |-- │   ├── __init__.py
+    |-- │   ├── routes.py
+    |-- │   ├── schemas.py
+    |-- │   └── service.py
+    `-- └── tags/
+        |-- ├── __init__.py
+        |-- ├── routes.py
+        |-- ├── schemas.py
+        `-- └── service.py
+```
+
 ## Conclusion
 This has been the longest chapter in our series. We've looked at how database models and API schemas can create complex relationships. We set up different relationships between our entities, mainly focusing on one-to-many and many-to-many relationships. We've also made sure these relationships are returned correctly by our API routes when we retrieve data.
