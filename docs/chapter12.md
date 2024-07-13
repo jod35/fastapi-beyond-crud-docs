@@ -2,7 +2,7 @@
 
 At this point, you are probably familiar with the concept of error handling as we have used it in previous chapters. We have been using the built-in `HTTPException` class to raise exceptions within our application. While `HTTPException` is useful for general errors, there may be situations where we need to handle errors specific to the functionalities of our application. In such cases, creating custom error classes can provide more specific and easy-to-document error handling. In this chapter, we will explore how to create custom error-handling for our application to manage errors more effectively.
 
-## The FastAPI `HTTPException` Class
+### The FastAPI `HTTPException` Class
 
 The `HTTPException` class in FastAPI is an excellent tool for raising exceptions by creating a JSON response with the appropriate status code and message. It also allows us to provide headers for the response. Here's a simple example of how it works:
 
@@ -112,7 +112,7 @@ Within `create_exception_handler`, we define an inner function called `exception
 
 The outer function, `create_exception_handler`, returns the inner `exception_handler` function. This allows us to easily create specific handlers for different exceptions by calling `create_exception_handler` with the appropriate arguments.
 
-## Registering Error Handlers
+### Registering Error Handlers
 
 To use this function, we can define error handlers for each custom exception by passing the relevant status code and error details. Each handler will return a consistent and informative JSON response, ensuring that each error type is managed properly. We wrap all error handlers in the `register_error_handlers` function which takes in the FastAPI `app` instance we may want to register exception handlers.
 
@@ -289,7 +289,7 @@ app.include_router(tags_router, prefix=f"/api/{version}/tags", tags=["tags"])
 Calling the `register_error_handlers` function enables us to register the created error handlers so that our application makes use of them. We provide the main application instance `app` to make sure the application uses them.
 
 
-# Modifying our code/
+### Modifying our code
 After that, we shall then modify our code to make use of the created exceptions. We shall begin with the authentication dependencies. Let us go to `src/auth/dependencies.py` and add the following code.
 
 ```python title="adding custom errors in auth dependencies"
