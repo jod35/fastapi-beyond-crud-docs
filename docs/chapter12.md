@@ -380,10 +380,10 @@ class RoleChecker:
         raise InsufficientPermission()
 ```
 
-What we have done is to replace every `HTTPException` usage with the necessary custom exception we created for that specific error. 
+What we've accomplished is replacing every instance where we used `HTTPException` with our own custom exceptions designed for each specific type of error. 
 
-To keep this chapter short, I will leave you with the task of modifying the remaining code of our app to have custom error handlers just like we have created. 
-
+To keep this chapter concise, I'll leave you with the task of updating the rest of our application's code to include custom error handlers similar to the ones we've created here.
 
 ## Conclusion
-In this chapter, we have created custom error handlers and how they can give us the ability to return custom errors depending on what went wrong in our application. 
+
+Throughout this chapter, we've explored the creation of custom error handlers. These handlers empower us to provide tailored error messages based on the specific issues encountered within our application. We began by creating custom exception classes to encapsulate different types of errors. Following that, we implemented handlers to manage these exceptions and ensure appropriate responses are sent back to clients. Finally, we concluded by integrating these custom error handlers into our application, thereby enhancing its robustness and user experience.
