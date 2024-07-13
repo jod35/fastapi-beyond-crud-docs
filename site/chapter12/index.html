@@ -562,12 +562,36 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Creating Error Handlers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#registering-error-handlers" class="md-nav__link">
     <span class="md-ellipsis">
       Registering Error Handlers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifying-our-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modifying our code
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
     </span>
   </a>
   
@@ -647,12 +671,36 @@
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
+    <nav class="md-nav" aria-label="Creating Error Handlers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#registering-error-handlers" class="md-nav__link">
     <span class="md-ellipsis">
       Registering Error Handlers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifying-our-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modifying our code
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
     </span>
   </a>
   
@@ -678,7 +726,7 @@
 
 <h1 id="error-handling-in-fastapi">Error Handling in FastAPI</h1>
 <p>At this point, you are probably familiar with the concept of error handling as we have used it in previous chapters. We have been using the built-in <code>HTTPException</code> class to raise exceptions within our application. While <code>HTTPException</code> is useful for general errors, there may be situations where we need to handle errors specific to the functionalities of our application. In such cases, creating custom error classes can provide more specific and easy-to-document error handling. In this chapter, we will explore how to create custom error-handling for our application to manage errors more effectively.</p>
-<h2 id="the-fastapi-httpexception-class">The FastAPI <code>HTTPException</code> Class</h2>
+<h3 id="the-fastapi-httpexception-class">The FastAPI <code>HTTPException</code> Class</h3>
 <p>The <code>HTTPException</code> class in FastAPI is an excellent tool for raising exceptions by creating a JSON response with the appropriate status code and message. It also allows us to provide headers for the response. Here's a simple example of how it works:</p>
 <div class="highlight"><span class="filename">A simple use of the HTTPException</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">if</span> <span class="ow">not</span> <span class="n">tag</span><span class="p">:</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
@@ -812,7 +860,7 @@
 <p>The <code>create_exception_handler</code> function helps us generate custom error handlers quickly. It takes two parameters: <code>status_code</code> and <code>initial_detail</code>. The <code>status_code</code> parameter is the HTTP status code that will be returned when the error occurs. The <code>initial_detail</code> parameter contains the message or content to include in the JSON response.</p>
 <p>Within <code>create_exception_handler</code>, we define an inner function called <code>exception_handler</code>. This function handles our custom exceptions. It takes two parameters: <code>request</code>, which is an instance of <code>Request</code> from FastAPI, and <code>exc</code>, which is the exception instance. The <code>exception_handler</code> function returns a <code>JSONResponse</code> with the specified <code>status_code</code> and <code>initial_detail</code>.</p>
 <p>The outer function, <code>create_exception_handler</code>, returns the inner <code>exception_handler</code> function. This allows us to easily create specific handlers for different exceptions by calling <code>create_exception_handler</code> with the appropriate arguments.</p>
-<h2 id="registering-error-handlers">Registering Error Handlers</h2>
+<h3 id="registering-error-handlers">Registering Error Handlers</h3>
 <p>To use this function, we can define error handlers for each custom exception by passing the relevant status code and error details. Each handler will return a consistent and informative JSON response, ensuring that each error type is managed properly. We wrap all error handlers in the <code>register_error_handlers</code> function which takes in the FastAPI <code>app</code> instance we may want to register exception handlers.</p>
 <p><div class="highlight"><span class="filename">using custom error handlers</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
@@ -980,7 +1028,7 @@ By using the <code>create_exception_handler</code> function, we can maintain a c
 <a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span><span class="n">tags_router</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/api/</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/tags&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;tags&quot;</span><span class="p">])</span>
 </code></pre></div>
 <p>Calling the <code>register_error_handlers</code> function enables us to register the created error handlers so that our application makes use of them. We provide the main application instance <code>app</code> to make sure the application uses them.</p>
-<h1 id="modifying-our-code">Modifying our code/</h1>
+<h3 id="modifying-our-code">Modifying our code</h3>
 <p>After that, we shall then modify our code to make use of the created exceptions. We shall begin with the authentication dependencies. Let us go to <code>src/auth/dependencies.py</code> and add the following code.</p>
 <div class="highlight"><span class="filename">adding custom errors in auth dependencies</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
