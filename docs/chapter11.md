@@ -975,7 +975,7 @@ class TagService:
 
         tag = self.get_tag_by_uid(tag_uid,session)
 
-        if tag:
+        if not tag:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Tag does not exist"
             )

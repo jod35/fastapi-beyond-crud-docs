@@ -18,6 +18,8 @@
         <link rel="prev" href="../chapter10/">
       
       
+        <link rel="next" href="../chapter12/">
+      
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
@@ -620,6 +622,26 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter12/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Error Handling
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1635,7 +1657,7 @@ Apply the revision with;
 <a id="__codelineno-28-109" name="__codelineno-28-109" href="#__codelineno-28-109"></a>
 <a id="__codelineno-28-110" name="__codelineno-28-110" href="#__codelineno-28-110"></a>        <span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tag_by_uid</span><span class="p">(</span><span class="n">tag_uid</span><span class="p">,</span><span class="n">session</span><span class="p">)</span>
 <a id="__codelineno-28-111" name="__codelineno-28-111" href="#__codelineno-28-111"></a>
-<a id="__codelineno-28-112" name="__codelineno-28-112" href="#__codelineno-28-112"></a>        <span class="k">if</span> <span class="n">tag</span><span class="p">:</span>
+<a id="__codelineno-28-112" name="__codelineno-28-112" href="#__codelineno-28-112"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">tag</span><span class="p">:</span>
 <a id="__codelineno-28-113" name="__codelineno-28-113" href="#__codelineno-28-113"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
 <a id="__codelineno-28-114" name="__codelineno-28-114" href="#__codelineno-28-114"></a>                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Tag does not exist&quot;</span>
 <a id="__codelineno-28-115" name="__codelineno-28-115" href="#__codelineno-28-115"></a>            <span class="p">)</span>
@@ -1903,6 +1925,22 @@ In <code>src/tags/service.py</code>, we have created the <code>TagService</code>
             </div>
           </a>
         
+        
+          
+          <a href="../chapter12/" class="md-footer__link md-footer__link--next" aria-label="Next: Error Handling">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Error Handling
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
         
       </nav>
     
