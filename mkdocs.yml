@@ -16,6 +16,7 @@ nav:
   - Role-Based Access Control: chapter10.md
   - Model And Schema Relationships: chapter11.md
   - Error Handling: chapter12.md
+  - Middleware: chapter13.md
 
 markdown_extensions:
   - abbr
