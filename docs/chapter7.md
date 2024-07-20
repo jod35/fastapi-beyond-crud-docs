@@ -176,12 +176,17 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
-from sqlmodel import SQLModel # new change
-from src.auth.models import User # new change
+from sqlmodel import SQLModel
+from src.config import Config
+
+
+database_url = Config.DATABASE_URL
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+config.set_main_option("sqlalchemy.url", database_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -192,12 +197,22 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = SQLModel.metadata # new change
-
+target_metadata = SQLModel.metadata
 ... # the rest of env.py
 ```
 
-In this example, we import the `User` model we created in `/src/auth/models.py`. This is necessary because Alembic will automatically generate changes to the model. Additionally, we import the `SQLModel` class to access the `metadata` object, which Alembic uses to track changes to our database model using SQLModel.
+In this example, we import the `User` model we created in `/src/auth/models.py`. This is necessary because Alembic will automatically generate changes to the model. Additionally, we import the `SQLModel` class to access the `metadata` object, which Alembic uses to track changes to our database model using SQLModel. One other important change we have made is one to enable our `sqlalchemy.url` be read from the `DATABASE_URL` environment variable.
+
+```python title="read sqlalchemy URL from .env"
+database_url = Config.DATABASE_URL
+
+# this is the Alembic Config object, which provides
+# access to the values within the .ini file in use.
+config = context.config
+
+config.set_main_option("sqlalchemy.url", database_url)
+
+```
 
 Next, we edit the `migrations/script.py.mako` file to include SQLModel:
 
@@ -216,21 +231,6 @@ import sqlalchemy as sa
 import sqlmodel # ADD THIS
 
 ...
-```
-
-We then edit `alembic.ini` to specify the URL to the database we want to migrate:
-
-```ini title="alembic.ini"
-# set to 'true' to search source files recursively
-# in each "version_locations" directory
-# new in Alembic version 1.10
-# recursive_version_locations = false
-
-# the output encoding used when revision files
-# are written from script.py.mako
-# output_encoding = utf-8
-
-sqlalchemy.url = postgresql+asyncpg://user:pswd@host/db # use the URL to your database
 ```
 
 Having made these changes, let's create our first database migration. Our database currently contains only the `books` table. We'll create a migration to add the `user_accounts` table:
