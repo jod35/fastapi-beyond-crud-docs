@@ -1,0 +1,1630 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Course webist for the FastAPI Beyond CRUD Course">
+      
+      
+        <meta name="author" content="Ssali Jonathan">
+      
+      
+        <link rel="canonical" href="https://jod35jon.github.io/fastapi-website/site/chapter9/">
+      
+      
+        <link rel="prev" href="../chapter8/">
+      
+      
+        <link rel="next" href="../chapter10/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
+    
+    
+      
+        <title>JWT Authentication - FastAPI Beyond CRUD</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-TCHXJCN975"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-TCHXJCN975",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-TCHXJCN975",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#authentication-using-jwts" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FastAPI Beyond CRUD" class="md-header__button md-logo" aria-label="FastAPI Beyond CRUD" data-md-component="logo">
+      
+  <img src="../img/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FastAPI Beyond CRUD
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              JWT Authentication
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jod35/fastapi-beyond-CRUD" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jod35/fastapi-beyond-CRUD
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FastAPI Beyond CRUD" class="md-nav__button md-logo" aria-label="FastAPI Beyond CRUD" data-md-component="logo">
+      
+  <img src="../img/logo.svg" alt="logo">
+
+    </a>
+    FastAPI Beyond CRUD
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jod35/fastapi-beyond-CRUD" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jod35/fastapi-beyond-CRUD
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation and Project SetUp
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating a Simple Web Server
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Building a CRUD REST API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Large Project Structure Using Routers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Databases with SQLModel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Finishing Up the CRUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating a user authentication model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Account Creation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    JWT Authentication
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    JWT Authentication
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-structure-of-a-jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic structure of a JWT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-jwt-authentication-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How JWT Authentication works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encoding-and-decoding-jwts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Encoding and Decoding JWTs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Encoding and Decoding JWTs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installing-pyjwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing PyJWT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-the-necessary-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the Necessary functions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-the-login-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the Login Endpoint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-bearer-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP Bearer Authentication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#renew-user-access-with-refresh-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Renew User Access with Refresh Tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#revoking-tokens-using-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revoking Tokens Using Redis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter10/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Role-Based Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter11/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model And Schema Relationships
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter12/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Error Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter13/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Middleware
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-structure-of-a-jwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic structure of a JWT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-jwt-authentication-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How JWT Authentication works
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encoding-and-decoding-jwts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Encoding and Decoding JWTs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Encoding and Decoding JWTs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installing-pyjwt" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing PyJWT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-the-necessary-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the Necessary functions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-the-login-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the Login Endpoint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-bearer-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP Bearer Authentication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#renew-user-access-with-refresh-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Renew User Access with Refresh Tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#revoking-tokens-using-redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revoking Tokens Using Redis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="authentication-using-jwts">Authentication using JWTS</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Now that we can create user accounts, let's build on that to allow users to log in and maintain a session in our application. While there are many approaches to authentication, we will focus on JWT (JSON Web Token) authentication in this chapter. JWTs are a mechanism for transferring claims (secret data) between parties. The claims in a JWT are encoded as a JSON object, which is used as a payload that can be signed, integrity protected, or encrypted.</p>
+<h3 id="basic-structure-of-a-jwt">Basic structure of a JWT</h3>
+<p>A JWT shall have the following components;</p>
+<ol>
+<li><strong>Header</strong> : This contains the type of the JWT as well as the signing algorithm being used to create it. It will look like this</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="s2">&quot;alg&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;HS256&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="s2">&quot;typ&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;JWT&quot;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">}</span>
+</code></pre></div>
+<ol>
+<li><strong>Payload</strong>: This part contains the claims which are basically the data that we may want to keep about a specific entity. This can also be any additional data that we may want to encode.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="s2">&quot;sub&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;1234567890&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="s2">&quot;iat&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">1516239022</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
+</code></pre></div>
+<ol>
+<li><strong>Signature</strong>: This part explains how the header, the payload were signed using the signing algorithm and the secret.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nx">HMACSHA256</span><span class="p">(</span><span class="nx">base64UrlEncode</span><span class="p">(</span><span class="nx">header</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">&quot;.&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">base64UrlEncode</span><span class="p">(</span><span class="nx">payload</span><span class="p">),</span><span class="w"> </span><span class="nx">secret</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="how-jwt-authentication-works">How JWT Authentication works</h3>
+<ol>
+<li>
+<p><strong>Client Authentication</strong>: The client shall submit a payload with the user's email or password and when they are valid, the server shall genrate a JWT to send it to the client.</p>
+</li>
+<li>
+<p><strong>Token Storage</strong>: The client will store the token either in local storage or cookies.</p>
+</li>
+<li>
+<p><strong>Subsequent Requests</strong>: The client shall make requests to the server using the token inside the HTTP headers.</p>
+</li>
+<li>
+<p><strong>Token Verification</strong>: The server verifies the token's signature and validates its payload to ensure the token has not been tampered with and is still valid.</p>
+</li>
+<li>
+<p><strong>Authorization</strong>: If the token is valid, the server processes the request; otherwise, it rejects the request.</p>
+</li>
+</ol>
+<p>JWTs are compact, we can pass them in the request body, headers, and also via URLs. In addition, they are self contained and can contain all information we may wish them to have therefor, reducing on the number of times we query the database. They are secure and can also be used across many domains making them ideal for ditributed systems.</p>
+<h3 id="encoding-and-decoding-jwts">Encoding and Decoding JWTs</h3>
+<h4 id="installing-pyjwt">Installing PyJWT</h4>
+<p>To implement JWT authentication, we shall make use of PyJWT, a library for encoding and decoding JWTs using Python. Let us begin by installing it with;</p>
+<div class="highlight"><span class="filename">Installing PyJWT</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="go">pip install pyjwt[crypto]</span>
+</code></pre></div>
+<p>Note how we have included crypto, stading for the cryptography module.</p>
+<h4 id="creating-the-necessary-functions">Creating the Necessary functions</h4>
+<p>Inside our <code>auth</code> directory, we shall create move to the utils file where we create the functions for our password management. Inside <code>utils.py</code>, let us add the following code.</p>
+<div class="highlight"><span class="filename">src/auth/utils.py</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">import</span> <span class="nn">jwt</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kn">from</span> <span class="nn">passlib.context</span> <span class="kn">import</span> <span class="n">CryptContext</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="kn">from</span> <span class="nn">src.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="o">...</span> <span class="c1">#the password functions</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="k">def</span> <span class="nf">create_access_token</span><span class="p">(</span><span class="n">user_data</span><span class="p">:</span> <span class="nb">dict</span> <span class="p">,</span> <span class="n">expiry</span><span class="p">:</span><span class="n">timedelta</span> <span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>        <span class="s1">&#39;user&#39;</span><span class="p">:</span><span class="n">user_data</span><span class="p">,</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>        <span class="s1">&#39;exp&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="n">expiry</span> <span class="k">if</span> <span class="n">expiry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">60</span><span class="p">)),</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>        <span class="s1">&#39;jti&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()),</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>        <span class="s1">&#39;refresh&#39;</span> <span class="p">:</span> <span class="n">refresh</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>    <span class="p">}</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>        <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>        <span class="n">key</span><span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">JWT_SECRET</span><span class="p">,</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>        <span class="n">algorithm</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">JWT_ALGORITHM</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>    <span class="p">)</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>    <span class="k">return</span> <span class="n">token</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="k">def</span> <span class="nf">decode_token</span><span class="p">(</span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>        <span class="n">token_data</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>            <span class="n">jwt</span><span class="o">=</span><span class="n">token</span><span class="p">,</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>            <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="n">Config</span><span class="o">.</span><span class="n">JWT_ALGORITHM</span><span class="p">]</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>        <span class="p">)</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>        <span class="k">return</span> <span class="n">token_data</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>    <span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">PyJWTError</span> <span class="k">as</span> <span class="n">jwte</span><span class="p">:</span>
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">jwte</span><span class="p">)</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>        <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>
+<a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>        <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+<p>We begin by importing necessary objects such as the <code>Config</code> object as well as PyJWT's <code>CryptContext</code>class. We also import PYJWT to allow us accss the functions necessary to encode and decode JWTs. We the create two functions.</p>
+<ol>
+<li>The <code>create_access_token</code> function that shall help us create access or refresh tokens. Access tokens are going to be short lived and for security reasons we shall create long-lived refresh tokens to allow us create new access tokens once they are expired.</li>
+</ol>
+<div class="highlight"><span class="filename">Encoding JWTS</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">def</span> <span class="nf">create_access_token</span><span class="p">(</span><span class="n">user_data</span><span class="p">:</span> <span class="nb">dict</span> <span class="p">,</span> <span class="n">expiry</span><span class="p">:</span><span class="n">timedelta</span> <span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">refresh</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        <span class="s1">&#39;user&#39;</span><span class="p">:</span><span class="n">user_data</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        <span class="s1">&#39;exp&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="n">expiry</span> <span class="k">if</span> <span class="n">expiry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">60</span><span class="p">)),</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>        <span class="s1">&#39;jti&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()),</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="s1">&#39;refresh&#39;</span> <span class="p">:</span> <span class="n">refresh</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="p">}</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>        <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>        <span class="n">key</span><span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">JWT_SECRET</span><span class="p">,</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        <span class="n">algorithm</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">JWT_ALGORITHM</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    <span class="p">)</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    <span class="k">return</span> <span class="n">token</span>
+</code></pre></div>
+<p>The function has parameters, <code>user_data</code>, <code>expiry</code>, and <code>refresh</code>. <code>user_data</code> shall be all the data about the user to whom the token shall be issued. <code>expiry</code> shall be a datetime timedelta object that shall be used to create the expiry date of a token. We also have the <code>refresh</code> boolean that shall be used to mark a token as a refresh token or not.</p>
+<p>We create a dictionary called <code>payload</code> to hold the neccessary claims that we want to encode the token. This contains the data about the user <code>user_data</code>, the expiry <code>exp</code>, the JWT ID <code>jti</code> and the refresh boolean`.</p>
+<p>After doing this, our token shall be created by using the <code>encode</code> function from PyJWT. This function uses the payload, the key and the algoritm to encode the token. Note how we get the two from the <code>Config</code> object. To make these be accessed , we need to first update <code>src/config.py</code> to add the following.</p>
+<div class="highlight"><span class="filename">Update the Config to add JWT secret and algorithm</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">DATABASE_URL</span> <span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">JWT_SECRET</span><span class="p">:</span><span class="nb">str</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">JWT_ALGORITHM</span><span class="p">:</span><span class="nb">str</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        <span class="n">env_file</span><span class="o">=</span><span class="s2">&quot;.env&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="p">)</span>
+</code></pre></div>
+<p>We shall need to also modify our <code>.env</code> to have this</p>
+<div class="highlight"><span class="filename">Adding JWT secret and algorithm to .env</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="go">DATABASE_URL=postgresql+asyncpg://jod35:nathanoj35@localhost:5432/bookly_db</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="go">JWT_SECRET=e698218fbf1d9d46b06a6c1aa41b3124</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="go">JWT_ALGORITHM=HS256</span>
+</code></pre></div>
+<p>Once we have created the token, we shall return it as shown above.</p>
+<ol>
+<li>The <code>decode_token</code> is a function to help us decode the tokens and get the claims or data kept within them. It makes use of PyJWT's <code>decode</code> function to get the claims encoded in a token and handle potential exceptions that might occur during the decoding process.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span> <span class="nf">decode_token</span><span class="p">(</span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>        <span class="n">token_data</span> <span class="o">=</span> <span class="n">jwt</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>            <span class="n">jwt</span><span class="o">=</span><span class="n">token</span><span class="p">,</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>            <span class="n">algorithms</span><span class="o">=</span><span class="p">[</span><span class="n">Config</span><span class="o">.</span><span class="n">JWT_ALGORITHM</span><span class="p">]</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>        <span class="p">)</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>        <span class="k">return</span> <span class="n">token_data</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="k">except</span> <span class="n">jwt</span><span class="o">.</span><span class="n">PyJWTError</span> <span class="k">as</span> <span class="n">jwte</span><span class="p">:</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">jwte</span><span class="p">)</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>        <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>        <span class="k">return</span> <span class="kc">None</span>
+</code></pre></div>
+<p>It takes a JWT as a string <code>token</code> and attempts to decode it with a specified algorithm from the configuration <code>Config.JWT_ALGORITHM</code>. If the decoding process is successful, it returns a dictionary containing the decoded <code>token_data</code>. If a <code>jwt.PyJWTError</code> or any other exception occurs during the decoding process, the function logs the exception using the <code>logging.exception</code> method and returns <code>None</code>.</p>
+<p>This ensures that any errors encountered while decoding the token are captured and logged, helping with debugging and preventing the application from crashing due to unhandled exceptions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using <code>PyJWTError</code> is a very effective way of catching all exceptions that arise from PyJWT since it is the base class from which they are built.</p>
+</div>
+<h3 id="creating-the-login-endpoint">Creating the Login Endpoint</h3>
+<p>Now that we have an idea of how we shall create and decode tokens, let us build on top of this to create the login endpoint. This is going to follow the following steps;</p>
+<ol>
+<li><strong>User Submission</strong>: The user submits an email and password.</li>
+<li><strong>Server Verification</strong>: The server verifies if the user exists and their password matches the stored password hash in the database.</li>
+<li><strong>Token Generation</strong>:</li>
+<li>If the verification is successful, an access token and a refresh token are granted to the user, allowing them to log in.</li>
+<li>If the verification fails, an exception is raised to indicate that the provided credentials are invalid.</li>
+</ol>
+<div class="highlight"><span class="filename">the login endpoint</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># src/auth/routes.py</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">status</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="n">UserLoginModel</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="kn">from</span> <span class="nn">.service</span> <span class="kn">import</span> <span class="n">UserService</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="kn">from</span> <span class="nn">src.db.main</span> <span class="kn">import</span> <span class="n">get_session</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="kn">from</span> <span class="nn">sqlmodel.ext.asyncio.session</span> <span class="kn">import</span> <span class="n">AsyncSession</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="kn">from</span> <span class="nn">fastapi.exceptions</span> <span class="kn">import</span> <span class="n">HTTPException</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">create_access_token</span><span class="p">,</span> <span class="n">verify_password</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="kn">from</span> <span class="nn">fastapi.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="n">auth_router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="n">user_service</span> <span class="o">=</span> <span class="n">UserService</span><span class="p">()</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/login&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">login_users</span><span class="p">(</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>    <span class="n">login_data</span><span class="p">:</span> <span class="n">UserLoginModel</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="p">):</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>    <span class="n">email</span> <span class="o">=</span> <span class="n">login_data</span><span class="o">.</span><span class="n">email</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>    <span class="n">password</span> <span class="o">=</span> <span class="n">login_data</span><span class="o">.</span><span class="n">password</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>    <span class="n">user</span> <span class="o">=</span> <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">get_user_by_email</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>    <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>        <span class="n">password_valid</span> <span class="o">=</span> <span class="n">verify_password</span><span class="p">(</span><span class="n">password</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">password_hash</span><span class="p">)</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>        <span class="k">if</span> <span class="n">password_valid</span><span class="p">:</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>            <span class="n">access_token</span> <span class="o">=</span> <span class="n">create_access_token</span><span class="p">(</span>
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a>                <span class="n">user_data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="s2">&quot;user_uid&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">uid</span><span class="p">)}</span>
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a>            <span class="p">)</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>            <span class="n">refresh_token</span> <span class="o">=</span> <span class="n">create_access_token</span><span class="p">(</span>
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a>                <span class="n">user_data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="s2">&quot;user_uid&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">uid</span><span class="p">)},</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a>                <span class="n">refresh</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a>                <span class="n">expiry</span><span class="o">=</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">REFRESH_TOKEN_EXPIRY</span><span class="p">),</span>
+<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a>            <span class="p">)</span>
+<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a>
+<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a>            <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
+<a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a>                <span class="n">content</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a>                    <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Login successful&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a>                    <span class="s2">&quot;access_token&quot;</span><span class="p">:</span> <span class="n">access_token</span><span class="p">,</span>
+<a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a>                    <span class="s2">&quot;refresh_token&quot;</span><span class="p">:</span> <span class="n">refresh_token</span><span class="p">,</span>
+<a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a>                    <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">,</span> <span class="s2">&quot;uid&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">uid</span><span class="p">)},</span>
+<a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a>                <span class="p">}</span>
+<a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a>            <span class="p">)</span>
+<a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a>
+<a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a>    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a>        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid Email Or Password&quot;</span>
+<a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a>    <span class="p">)</span>
+</code></pre></div>
+<p>This code defines an endpoint for user login. Using the <code>auth_router</code> object, we define the <code>login</code> path which we shall use for logging in users. The <code>login_users</code> function is handles POST requests to the /login endpoint. This function accepts <code>login_data</code>, which includes the user's email and password, and a <code>session</code> dependency session provided by <code>Depends(get_session)</code>.</p>
+<p>Within the <code>login_users</code> function, the user's email and password are extracted from <code>login_data</code> which is an object from <code>UserLoginModel</code>.</p>
+<div class="highlight"><span class="filename">The UserLoginModel</span><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># inside src/auth/routes.py</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">class</span> <span class="nc">UserLoginModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span>  <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">min_length</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+</code></pre></div>
+<p>The <code>user_service.get_user_by_email</code> function is then called to retrieve the user from the database using the provided email. If the user is found, the password provided is verified against the stored password hash using the <code>verify_password function</code>. If the password is valid, an <code>access_token</code> and a <code>refresh_token</code> are generated using the <code>create_access_token function</code>. The tokens and user information are returned in a JSON response indicating a successful login. If the user is not found or the password is invalid, an HTTP 403 Forbidden exception is raised, indicating that the email or password is incorrect.</p>
+<p>Let us test this endpoint in Insomnia. Make a request with correct email and password.
+<a class="glightbox" href="../img/img26.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Successful Login" src="../img/img26.png" /></a></p>
+<p>Giving invalid credentials results into the following.
+<a class="glightbox" href="../img/img27.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Invalid Login" src="../img/img27.png" /></a></p>
+<h3 id="http-bearer-authentication">HTTP Bearer Authentication</h3>
+<p>Now that we can grant access tokens to users, we need to protect our API endpoints such that users require to provide access tokens to access them. This is where <strong>HTTP Bearer Authentication</strong> comes in. HTTP Bearer Authentication is an HTTP authentication scheme that involves security tokens called <strong>Bearer Tokens</strong>. This can be understood as "give accewss to the bearer of the token". Everytime a client is to make a request to a protected endpoint, they must send a string in form of
+<code>Bearer &lt;token&gt;</code> in the request's <code>Authorization</code> header.</p>
+<p>FastAPI comes really packed with many security classes that can allow for the implementation of different forms of Authentication such as Basic Authentication, OAuth2, OpenID Connect and HTTP Bearer. To use HTTPBearer Authentication, we shall make use of FastAPI's <code>HTTPBearer</code> class. THis is its definition.
+<div class="highlight"><span class="filename">The HTTPBearer class</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">...</span> <span class="c1"># the rest of fastapi/security/http.py</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">class</span> <span class="nc">HTTPBearer</span><span class="p">(</span><span class="n">HTTPBase</span><span class="p">):</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>        <span class="bp">self</span><span class="p">,</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>        <span class="o">*</span><span class="p">,</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>        <span class="n">bearerFormat</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Doc</span><span class="p">(</span><span class="s2">&quot;Bearer token format.&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>        <span class="n">scheme_name</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>            <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>            <span class="n">Doc</span><span class="p">(</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="sd">                Security scheme name.</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="sd">                It will be included in the generated OpenAPI (e.g. visible at `/docs`).</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="sd">                &quot;&quot;&quot;</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>            <span class="p">),</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>        <span class="n">description</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>            <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>            <span class="n">Doc</span><span class="p">(</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="sd">                Security scheme description.</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="sd">                It will be included in the generated OpenAPI (e.g. visible at `/docs`).</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="sd">                &quot;&quot;&quot;</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>            <span class="p">),</span>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>        <span class="n">auto_error</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
+<a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>            <span class="nb">bool</span><span class="p">,</span>
+<a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a>            <span class="n">Doc</span><span class="p">(</span>
+<a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a><span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a><span class="sd">                By default, if the HTTP Bearer token not provided (in an</span>
+<a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a><span class="sd">                `Authorization` header), `HTTPBearer` will automatically cancel the</span>
+<a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a><span class="sd">                request and send the client an error.</span>
+<a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>
+<a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a><span class="sd">                If `auto_error` is set to `False`, when the HTTP Bearer token</span>
+<a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a><span class="sd">                is not available, instead of erroring out, the dependency result will</span>
+<a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a><span class="sd">                be `None`.</span>
+<a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>
+<a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a><span class="sd">                This is useful when you want to have optional authentication.</span>
+<a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>
+<a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a><span class="sd">                It is also useful when you want to have authentication that can be</span>
+<a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a><span class="sd">                provided in one of multiple optional ways (for example, in an HTTP</span>
+<a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a><span class="sd">                Bearer token or in a cookie).</span>
+<a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a><span class="sd">                &quot;&quot;&quot;</span>
+<a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a>            <span class="p">),</span>
+<a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a>        <span class="p">]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>    <span class="p">):</span>
+<a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">HTTPBearerModel</span><span class="p">(</span><span class="n">bearerFormat</span><span class="o">=</span><span class="n">bearerFormat</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+<a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">scheme_name</span> <span class="o">=</span> <span class="n">scheme_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+<a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">auto_error</span> <span class="o">=</span> <span class="n">auto_error</span>
+<a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a>
+<a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a>    <span class="k">async</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+<a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span>
+<a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">HTTPAuthorizationCredentials</span><span class="p">]:</span>
+<a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a>        <span class="n">authorization</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Authorization&quot;</span><span class="p">)</span>
+<a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a>        <span class="n">scheme</span><span class="p">,</span> <span class="n">credentials</span> <span class="o">=</span> <span class="n">get_authorization_scheme_param</span><span class="p">(</span><span class="n">authorization</span><span class="p">)</span>
+<a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">authorization</span> <span class="ow">and</span> <span class="n">scheme</span> <span class="ow">and</span> <span class="n">credentials</span><span class="p">):</span>
+<a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_error</span><span class="p">:</span>
+<a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a>                <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a>                    <span class="n">status_code</span><span class="o">=</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Not authenticated&quot;</span>
+<a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a>                <span class="p">)</span>
+<a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a>            <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-11-63" name="__codelineno-11-63" href="#__codelineno-11-63"></a>                <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-11-64" name="__codelineno-11-64" href="#__codelineno-11-64"></a>        <span class="k">if</span> <span class="n">scheme</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">!=</span> <span class="s2">&quot;bearer&quot;</span><span class="p">:</span>
+<a id="__codelineno-11-65" name="__codelineno-11-65" href="#__codelineno-11-65"></a>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_error</span><span class="p">:</span>
+<a id="__codelineno-11-66" name="__codelineno-11-66" href="#__codelineno-11-66"></a>                <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a>                    <span class="n">status_code</span><span class="o">=</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span>
+<a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a>                    <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid authentication credentials&quot;</span><span class="p">,</span>
+<a id="__codelineno-11-69" name="__codelineno-11-69" href="#__codelineno-11-69"></a>                <span class="p">)</span>
+<a id="__codelineno-11-70" name="__codelineno-11-70" href="#__codelineno-11-70"></a>            <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-11-71" name="__codelineno-11-71" href="#__codelineno-11-71"></a>                <span class="k">return</span> <span class="kc">None</span>
+<a id="__codelineno-11-72" name="__codelineno-11-72" href="#__codelineno-11-72"></a>        <span class="k">return</span> <span class="n">HTTPAuthorizationCredentials</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="n">scheme</span><span class="p">,</span> <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">)</span>
+</code></pre></div></p>
+<p>The <code>HTTPBearer</code> class extends <code>HTTPBase</code> to provide HTTP Bearer token authentication. This class allows you to create an instance that can be used as a dependency via <code>Depends()</code>. When invoked, the dependency returns an <code>HTTPAuthorizationCredentials</code> object containing the authentication scheme and credentials. In the constructor, optional parameters such as bearerFormat, scheme_name, description, and auto_error are defined, allowing customization of the bearer token format, security scheme name, and description as shown in the generated OpenAPI documentation. The auto_error parameter determines whether an error is automatically raised if the token is not provided or invalid, enabling optional authentication if set to False.</p>
+<p>The <code>__call__</code> method of the <code>HTTPBearer</code> class processes incoming requests by extracting the <code>Authorization</code> header and validating its content. It parses the header to separate the scheme and credentials, checking if they are present and if the scheme matches "bearer". If the token is missing or invalid, and auto_error is True, an HTTP 403 Forbidden exception is raised. If <code>auto_error</code> is False, the method returns None instead of raising an exception, allowing the endpoint to handle the absence of credentials gracefully. This functionality is particularly useful for endpoints that require optional or multiple methods of authentication.</p>
+<p>Now that we have an understanding of this class, let us extend it to use it to protect  our API endpoints. To begin, we shall create a <code>dependencies.py</code> file inside the auth directory. 
+<div class="highlight"><span class="filename">dependencies.py</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span> <span class="nn">fastapi.security</span> <span class="kn">import</span> <span class="n">HTTPBearer</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="k">class</span> <span class="nc">AccessTokenBearer</span><span class="p">(</span><span class="n">HTTPBearer</span><span class="p">):</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="k">pass</span>
+</code></pre></div></p>
+<p>By doing so, we have created the <code>AccessTokenBearer</code> class we are going to use  to create a dependency that we shall inject inside every path handler function that belongs to any endpoints that need protection. Let us start with the CRUD endpoints we created in the previous chapters.</p>
+<div class="highlight"><span class="filename">src/books/routes.py</span><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">Depends</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="kn">from</span> <span class="nn">fastapi.exceptions</span> <span class="kn">import</span> <span class="n">HTTPException</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="kn">from</span> <span class="nn">src.books.schemas</span> <span class="kn">import</span> <span class="n">Book</span><span class="p">,</span> <span class="n">BookUpdateModel</span><span class="p">,</span> <span class="n">BookCreateModel</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="kn">from</span> <span class="nn">sqlmodel.ext.asyncio.session</span> <span class="kn">import</span> <span class="n">AsyncSession</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="kn">from</span> <span class="nn">src.books.service</span> <span class="kn">import</span> <span class="n">BookService</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="kn">from</span> <span class="nn">src.db.main</span> <span class="kn">import</span> <span class="n">get_session</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="kn">from</span> <span class="nn">src.auth.dependencies</span> <span class="kn">import</span> <span class="n">AccessTokenBearer</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="n">book_router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="n">book_service</span> <span class="o">=</span> <span class="n">BookService</span><span class="p">()</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="n">acccess_token_bearer</span> <span class="o">=</span> <span class="n">AccessTokenBearer</span><span class="p">()</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="nd">@book_router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">List</span><span class="p">[</span><span class="n">Book</span><span class="p">])</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_all_books</span><span class="p">(</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>    <span class="n">token_details</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">acccess_token_bearer</span><span class="p">),</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="p">):</span>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>    <span class="n">books</span> <span class="o">=</span> <span class="k">await</span> <span class="n">book_service</span><span class="o">.</span><span class="n">get_all_books</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>    <span class="k">return</span> <span class="n">books</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="o">...</span> <span class="c1">#rest of the code</span>
+</code></pre></div>
+<p>In the code above, what we have done is to import the <code>AccessTokenBearer</code> class and create an object called <code>access_token_bearer</code> that we provide as a dependency to the path handler via <code>Depends()</code>. By doing that, we have protected an endpoints and made it a requirement for us to access it by using an <code>Authorization</code> Header in the request.</p>
+<p>Making the request without the header being set results into the following. The user wont access the resources because they are not authenticated.
+<a class="glightbox" href="../img/img28.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Making request without Authorization header" src="../img/img28.png" /></a></p>
+<p>Providing the Authorization headers results into a successful response.
+<a class="glightbox" href="../img/img29.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Success request with Authorization  header" src="../img/img29.png" /></a></p>
+<p>While this is enough to add protection to API  endpoints, we may want to customize it by adding our own checks. Let us modify our <code>AccessTokenBearer</code> class to allow for those checks to be made. </p>
+<div class="highlight"><span class="filename">Modified AccessTokenBearer class</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># inside src/auth/dependendencies.py</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">class</span> <span class="nc">AccessTokenBearer</span><span class="p">(</span><span class="n">HTTPBearer</span><span class="p">):</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">auto_error</span><span class="o">=</span><span class="n">auto_error</span><span class="p">)</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="k">async</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HTTPAuthorizationCredentials</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>        <span class="n">creds</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>        <span class="n">token</span> <span class="o">=</span> <span class="n">creds</span><span class="o">.</span><span class="n">credentials</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_valid</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>                    <span class="s2">&quot;error&quot;</span><span class="p">:</span><span class="s2">&quot;This token is invalid or expired&quot;</span><span class="p">,</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>                    <span class="s2">&quot;resolution&quot;</span><span class="p">:</span><span class="s2">&quot;Please get new token&quot;</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>                <span class="p">}</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>            <span class="p">)</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>        <span class="k">return</span> <span class="n">token_data</span>
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>
+<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a>    <span class="k">def</span> <span class="nf">token_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a>
+<a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a>        <span class="n">token_data</span> <span class="o">=</span> <span class="n">decode_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a>
+<a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a>        <span class="k">return</span> <span class="n">token_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> 
+</code></pre></div>
+<p>We begin by initializing the class with the <code>__init__</code> method, which accepts an optional <code>auto_error</code> parameter, defaulting to <code>True</code>, and passes this to the parent <code>HTTPBearer</code> class. The core functionality is in the <code>__call__</code> method, which makes instances of the class callable. This asynchronous method takes a <code>Request</code> object, extracts the authorization credentials by calling the <code>__call__</code> method of the parent class, and retrieves the token from these credentials.</p>
+<p>Once the token is extracted, the <code>token_valid</code> method is invoked to verify the token's validity. This method attempts to decode the token using a <code>decode_token</code> function (that we defined in <code>src/auth/utils.py</code>). If <code>decode_token</code> successfully decodes the token, it returns some <code>token_data</code>; otherwise, it returns <code>None</code>. The <code>token_valid</code> method returns <code>True</code> if <code>token_data</code> is not <code>None</code>, indicating the token is valid, and <code>False</code> otherwise.</p>
+<p>Back in the <code>__call__</code> method, if the token is found to be invalid, an <code>HTTPException</code> is raised with a status code of <code>403 Forbidden</code>, accompanied by a detailed message indicating that the token is invalid or expired and advising the user to obtain a new token. If the token is valid, the decoded token data is returned. This mechanism ensures that only requests with valid tokens are processed further, enhancing the security of the application by preventing unauthorized access.</p>
+<p>We have now protected API Enpoints for CRUD on books so that they can only be accessed by providing a JWT in the Authorization header. Our routes for books should look like this.
+<div class="highlight"><span class="filename">Modified book API endpoints with HTTP Bearer Auth</span><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">Depends</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="kn">from</span> <span class="nn">fastapi.exceptions</span> <span class="kn">import</span> <span class="n">HTTPException</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="kn">from</span> <span class="nn">src.books.schemas</span> <span class="kn">import</span> <span class="n">Book</span><span class="p">,</span> <span class="n">BookUpdateModel</span><span class="p">,</span> <span class="n">BookCreateModel</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="kn">from</span> <span class="nn">sqlmodel.ext.asyncio.session</span> <span class="kn">import</span> <span class="n">AsyncSession</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="kn">from</span> <span class="nn">src.books.service</span> <span class="kn">import</span> <span class="n">BookService</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="kn">from</span> <span class="nn">src.db.main</span> <span class="kn">import</span> <span class="n">get_session</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="kn">from</span> <span class="nn">src.auth.dependencies</span> <span class="kn">import</span> <span class="n">AccessTokenBearer</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="n">book_router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="n">book_service</span> <span class="o">=</span> <span class="n">BookService</span><span class="p">()</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="n">acccess_token_bearer</span> <span class="o">=</span> <span class="n">AccessTokenBearer</span><span class="p">()</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="nd">@book_router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">List</span><span class="p">[</span><span class="n">Book</span><span class="p">])</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_all_books</span><span class="p">(</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>    <span class="n">token_details</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">acccess_token_bearer</span><span class="p">),</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="p">):</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">token_details</span><span class="p">)</span>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>    <span class="n">books</span> <span class="o">=</span> <span class="k">await</span> <span class="n">book_service</span><span class="o">.</span><span class="n">get_all_books</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>    <span class="k">return</span> <span class="n">books</span>
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a><span class="nd">@book_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a>    <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a>    <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
+<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a>    <span class="n">response_model</span><span class="o">=</span><span class="n">Book</span><span class="p">,</span>
+<a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a><span class="p">)</span>
+<a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">create_a_book</span><span class="p">(</span>
+<a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a>    <span class="n">book_data</span><span class="p">:</span> <span class="n">BookCreateModel</span><span class="p">,</span>
+<a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
+<a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a>    <span class="n">token_details</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">acccess_token_bearer</span><span class="p">),</span>
+<a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a>    <span class="n">new_book</span> <span class="o">=</span> <span class="k">await</span> <span class="n">book_service</span><span class="o">.</span><span class="n">create_book</span><span class="p">(</span><span class="n">book_data</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a>    <span class="k">return</span> <span class="n">new_book</span>
+<a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a>
+<a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a>
+<a id="__codelineno-15-41" name="__codelineno-15-41" href="#__codelineno-15-41"></a><span class="nd">@book_router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">{book_uid}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
+<a id="__codelineno-15-42" name="__codelineno-15-42" href="#__codelineno-15-42"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_book</span><span class="p">(</span>
+<a id="__codelineno-15-43" name="__codelineno-15-43" href="#__codelineno-15-43"></a>    <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-15-44" name="__codelineno-15-44" href="#__codelineno-15-44"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
+<a id="__codelineno-15-45" name="__codelineno-15-45" href="#__codelineno-15-45"></a>    <span class="n">token_details</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">acccess_token_bearer</span><span class="p">),</span>
+<a id="__codelineno-15-46" name="__codelineno-15-46" href="#__codelineno-15-46"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-15-47" name="__codelineno-15-47" href="#__codelineno-15-47"></a>    <span class="n">book</span> <span class="o">=</span> <span class="k">await</span> <span class="n">book_service</span><span class="o">.</span><span class="n">get_book</span><span class="p">(</span><span class="n">book_uid</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-15-48" name="__codelineno-15-48" href="#__codelineno-15-48"></a>
+<a id="__codelineno-15-49" name="__codelineno-15-49" href="#__codelineno-15-49"></a>    <span class="k">if</span> <span class="n">book</span><span class="p">:</span>
+<a id="__codelineno-15-50" name="__codelineno-15-50" href="#__codelineno-15-50"></a>        <span class="k">return</span> <span class="n">book</span>
+<a id="__codelineno-15-51" name="__codelineno-15-51" href="#__codelineno-15-51"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-15-52" name="__codelineno-15-52" href="#__codelineno-15-52"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-15-53" name="__codelineno-15-53" href="#__codelineno-15-53"></a>            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Book not found&quot;</span>
+<a id="__codelineno-15-54" name="__codelineno-15-54" href="#__codelineno-15-54"></a>        <span class="p">)</span>
+<a id="__codelineno-15-55" name="__codelineno-15-55" href="#__codelineno-15-55"></a>
+<a id="__codelineno-15-56" name="__codelineno-15-56" href="#__codelineno-15-56"></a>
+<a id="__codelineno-15-57" name="__codelineno-15-57" href="#__codelineno-15-57"></a><span class="nd">@book_router</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">{book_uid}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">Book</span><span class="p">)</span>
+<a id="__codelineno-15-58" name="__codelineno-15-58" href="#__codelineno-15-58"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">update_book</span><span class="p">(</span>
+<a id="__codelineno-15-59" name="__codelineno-15-59" href="#__codelineno-15-59"></a>    <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-15-60" name="__codelineno-15-60" href="#__codelineno-15-60"></a>    <span class="n">book_update_data</span><span class="p">:</span> <span class="n">BookUpdateModel</span><span class="p">,</span>
+<a id="__codelineno-15-61" name="__codelineno-15-61" href="#__codelineno-15-61"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
+<a id="__codelineno-15-62" name="__codelineno-15-62" href="#__codelineno-15-62"></a>    <span class="n">token_details</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">acccess_token_bearer</span><span class="p">),</span>
+<a id="__codelineno-15-63" name="__codelineno-15-63" href="#__codelineno-15-63"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-15-64" name="__codelineno-15-64" href="#__codelineno-15-64"></a>
+<a id="__codelineno-15-65" name="__codelineno-15-65" href="#__codelineno-15-65"></a>    <span class="n">updated_book</span> <span class="o">=</span> <span class="k">await</span> <span class="n">book_service</span><span class="o">.</span><span class="n">update_book</span><span class="p">(</span><span class="n">book_uid</span><span class="p">,</span> <span class="n">book_update_data</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-15-66" name="__codelineno-15-66" href="#__codelineno-15-66"></a>
+<a id="__codelineno-15-67" name="__codelineno-15-67" href="#__codelineno-15-67"></a>    <span class="k">if</span> <span class="n">updated_book</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-15-68" name="__codelineno-15-68" href="#__codelineno-15-68"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-15-69" name="__codelineno-15-69" href="#__codelineno-15-69"></a>            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Book not found&quot;</span>
+<a id="__codelineno-15-70" name="__codelineno-15-70" href="#__codelineno-15-70"></a>        <span class="p">)</span>
+<a id="__codelineno-15-71" name="__codelineno-15-71" href="#__codelineno-15-71"></a>
+<a id="__codelineno-15-72" name="__codelineno-15-72" href="#__codelineno-15-72"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-15-73" name="__codelineno-15-73" href="#__codelineno-15-73"></a>        <span class="k">return</span> <span class="n">updated_book</span>
+<a id="__codelineno-15-74" name="__codelineno-15-74" href="#__codelineno-15-74"></a>
+<a id="__codelineno-15-75" name="__codelineno-15-75" href="#__codelineno-15-75"></a>
+<a id="__codelineno-15-76" name="__codelineno-15-76" href="#__codelineno-15-76"></a><span class="nd">@book_router</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;/</span><span class="si">{book_uid}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">)</span>
+<a id="__codelineno-15-77" name="__codelineno-15-77" href="#__codelineno-15-77"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">delete_book</span><span class="p">(</span>
+<a id="__codelineno-15-78" name="__codelineno-15-78" href="#__codelineno-15-78"></a>    <span class="n">book_uid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-15-79" name="__codelineno-15-79" href="#__codelineno-15-79"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
+<a id="__codelineno-15-80" name="__codelineno-15-80" href="#__codelineno-15-80"></a>    <span class="n">token_details</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">acccess_token_bearer</span><span class="p">),</span>
+<a id="__codelineno-15-81" name="__codelineno-15-81" href="#__codelineno-15-81"></a><span class="p">):</span>
+<a id="__codelineno-15-82" name="__codelineno-15-82" href="#__codelineno-15-82"></a>    <span class="n">book_to_delete</span> <span class="o">=</span> <span class="k">await</span> <span class="n">book_service</span><span class="o">.</span><span class="n">delete_book</span><span class="p">(</span><span class="n">book_uid</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-15-83" name="__codelineno-15-83" href="#__codelineno-15-83"></a>
+<a id="__codelineno-15-84" name="__codelineno-15-84" href="#__codelineno-15-84"></a>    <span class="k">if</span> <span class="n">book_to_delete</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-15-85" name="__codelineno-15-85" href="#__codelineno-15-85"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-15-86" name="__codelineno-15-86" href="#__codelineno-15-86"></a>            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_404_NOT_FOUND</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Book not found&quot;</span>
+<a id="__codelineno-15-87" name="__codelineno-15-87" href="#__codelineno-15-87"></a>        <span class="p">)</span>
+<a id="__codelineno-15-88" name="__codelineno-15-88" href="#__codelineno-15-88"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-15-89" name="__codelineno-15-89" href="#__codelineno-15-89"></a>
+<a id="__codelineno-15-90" name="__codelineno-15-90" href="#__codelineno-15-90"></a>        <span class="k">return</span> <span class="p">{}</span>
+</code></pre></div></p>
+<h3 id="renew-user-access-with-refresh-tokens">Renew User Access with Refresh Tokens</h3>
+<p>Now that we have implemented protection for our routes, we need to handle renewing user access by using refresh tokens. Refresh tokens are designed to be long-lived tokens that enable users to obtain new access tokens. Let's implement this functionality. To begin, we are going to refactor our dependencies so that we allow validation even for acess tokens.</p>
+<div class="highlight"><span class="filename">modified dependencies</span><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">Request</span><span class="p">,</span> <span class="n">status</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">from</span> <span class="nn">fastapi.security</span> <span class="kn">import</span> <span class="n">HTTPBearer</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="kn">from</span> <span class="nn">fastapi.security.http</span> <span class="kn">import</span> <span class="n">HTTPAuthorizationCredentials</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">decode_token</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="kn">from</span> <span class="nn">fastapi.exceptions</span> <span class="kn">import</span> <span class="n">HTTPException</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="k">class</span> <span class="nc">TokenBearer</span><span class="p">(</span><span class="n">HTTPBearer</span><span class="p">):</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">auto_error</span><span class="o">=</span><span class="n">auto_error</span><span class="p">)</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>    <span class="k">async</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HTTPAuthorizationCredentials</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>        <span class="n">creds</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>        <span class="n">token</span> <span class="o">=</span> <span class="n">creds</span><span class="o">.</span><span class="n">credentials</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>        <span class="n">token_data</span> <span class="o">=</span> <span class="n">decode_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_valid</span><span class="p">(</span><span class="n">token</span><span class="p">):</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>                    <span class="s2">&quot;error&quot;</span><span class="p">:</span><span class="s2">&quot;This token is invalid or expired&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>                    <span class="s2">&quot;resolution&quot;</span><span class="p">:</span><span class="s2">&quot;Please get new token&quot;</span>
+<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>                <span class="p">}</span>
+<a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>            <span class="p">)</span>
+<a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a>
+<a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a>
+<a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">verify_token_data</span><span class="p">(</span><span class="n">token_data</span><span class="p">)</span>
+<a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a>
+<a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a>        <span class="k">return</span> <span class="n">token_data</span>
+<a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a>
+<a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>    <span class="k">def</span> <span class="nf">token_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a>
+<a id="__codelineno-16-35" name="__codelineno-16-35" href="#__codelineno-16-35"></a>        <span class="n">token_data</span> <span class="o">=</span> <span class="n">decode_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-16-36" name="__codelineno-16-36" href="#__codelineno-16-36"></a>
+<a id="__codelineno-16-37" name="__codelineno-16-37" href="#__codelineno-16-37"></a>        <span class="k">return</span> <span class="n">token_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> 
+<a id="__codelineno-16-38" name="__codelineno-16-38" href="#__codelineno-16-38"></a>
+<a id="__codelineno-16-39" name="__codelineno-16-39" href="#__codelineno-16-39"></a>    <span class="k">def</span> <span class="nf">verify_token_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token_data</span><span class="p">):</span>
+<a id="__codelineno-16-40" name="__codelineno-16-40" href="#__codelineno-16-40"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Please Override this method in child classes&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-41" name="__codelineno-16-41" href="#__codelineno-16-41"></a>
+<a id="__codelineno-16-42" name="__codelineno-16-42" href="#__codelineno-16-42"></a>
+<a id="__codelineno-16-43" name="__codelineno-16-43" href="#__codelineno-16-43"></a><span class="k">class</span> <span class="nc">AccessTokenBearer</span><span class="p">(</span><span class="n">TokenBearer</span><span class="p">):</span>
+<a id="__codelineno-16-44" name="__codelineno-16-44" href="#__codelineno-16-44"></a>
+<a id="__codelineno-16-45" name="__codelineno-16-45" href="#__codelineno-16-45"></a>    <span class="k">def</span> <span class="nf">verify_token_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-16-46" name="__codelineno-16-46" href="#__codelineno-16-46"></a>        <span class="k">if</span> <span class="n">token_data</span> <span class="ow">and</span> <span class="n">token_data</span><span class="p">[</span><span class="s2">&quot;refresh&quot;</span><span class="p">]:</span>
+<a id="__codelineno-16-47" name="__codelineno-16-47" href="#__codelineno-16-47"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-16-48" name="__codelineno-16-48" href="#__codelineno-16-48"></a>                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span>
+<a id="__codelineno-16-49" name="__codelineno-16-49" href="#__codelineno-16-49"></a>                <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Please provide an access token&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-50" name="__codelineno-16-50" href="#__codelineno-16-50"></a>            <span class="p">)</span>
+<a id="__codelineno-16-51" name="__codelineno-16-51" href="#__codelineno-16-51"></a>
+<a id="__codelineno-16-52" name="__codelineno-16-52" href="#__codelineno-16-52"></a>
+<a id="__codelineno-16-53" name="__codelineno-16-53" href="#__codelineno-16-53"></a><span class="k">class</span> <span class="nc">RefreshTokenBearer</span><span class="p">(</span><span class="n">TokenBearer</span><span class="p">):</span>
+<a id="__codelineno-16-54" name="__codelineno-16-54" href="#__codelineno-16-54"></a>    <span class="k">def</span> <span class="nf">verify_token_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-16-55" name="__codelineno-16-55" href="#__codelineno-16-55"></a>        <span class="k">if</span> <span class="n">token_data</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">token_data</span><span class="p">[</span><span class="s2">&quot;refresh&quot;</span><span class="p">]:</span>
+<a id="__codelineno-16-56" name="__codelineno-16-56" href="#__codelineno-16-56"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-16-57" name="__codelineno-16-57" href="#__codelineno-16-57"></a>                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span>
+<a id="__codelineno-16-58" name="__codelineno-16-58" href="#__codelineno-16-58"></a>                <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Please provide a refresh token&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-59" name="__codelineno-16-59" href="#__codelineno-16-59"></a>            <span class="p">)</span>
+</code></pre></div>
+<p>This code establishes a system for managing both access and refresh token authentication in a FastAPI application. It begins with the <code>TokenBearer</code> class, which extends the <code>HTTPBearer</code> class. The <code>TokenBearer</code> class overrides the <code>__call__</code> method to extract the token from incoming requests and decode it using the <code>decode_token</code> function. If the token is invalid, indicated by a failed decode, it raises an <code>HTTPException</code> with a <code>403 Forbidden</code> status. Additionally, the <code>verify_token_data</code> method is designed to be overridden by subclasses, enabling specific checks on the token data to ensure the token's purpose aligns with the request's requirements.</p>
+<p>The system is further refined with two subclasses: <code>AccessTokenBearer</code> and <code>RefreshTokenBearer</code>. The <code>AccessTokenBearer</code> subclass overrides the <code>verify_token_data</code> method to ensure that the provided token is an access token. It does this by checking if the <code>refresh</code> field in the token data is <code>False</code>, raising an exception if it is a refresh token. On the other hand, the <code>RefreshTokenBearer</code> subclass ensures that the token is a refresh token by checking if the <code>refresh</code> field is <code>True</code>, raising an exception if it is not. This dual approach allows the application to handle authentication using both access and refresh tokens effectively, ensuring appropriate validation and error handling for each token type. </p>
+<p>With that out of the way, we can now creat the endpoint that will be used to generate new access tokens when a user provides a refresh token. Inside <code>src/auth/routes.py</code>, let us add the following code.
+<div class="highlight"><span class="filename">API path for creating new access tokens with a refresh token</span><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/refresh_token&quot;</span><span class="p">)</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">get_new_access_token</span><span class="p">(</span><span class="n">token_details</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">RefreshTokenBearer</span><span class="p">())):</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">expiry_timestamp</span> <span class="o">=</span> <span class="n">token_details</span><span class="p">[</span><span class="s2">&quot;exp&quot;</span><span class="p">]</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="k">if</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">expiry_timestamp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">():</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>        <span class="n">new_access_token</span> <span class="o">=</span> <span class="n">create_access_token</span><span class="p">(</span><span class="n">user_data</span><span class="o">=</span><span class="n">token_details</span><span class="p">[</span><span class="s2">&quot;user&quot;</span><span class="p">])</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>        <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;access_token&quot;</span><span class="p">:</span> <span class="n">new_access_token</span><span class="p">})</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid Or expired token&quot;</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    <span class="p">)</span>
+</code></pre></div></p>
+<p>This code defines an endpoint for obtaining a new access token using a refresh token in a FastAPI application. The endpoint is created at <code>/refresh_token</code> and is handled by the asynchronous function <code>get_new_access_token</code>. This function utilizes dependency injection with <code>Depends(RefreshTokenBearer())</code> to ensure that the request contains a valid refresh token. The <code>RefreshTokenBearer</code> class checks the token and returns its decoded data as <code>token_details</code>. Inside the function, the expiry timestamp is extracted from the token details, and a check is performed to determine if the refresh token is still valid by comparing the current time with the expiry timestamp. If the token is valid, a new access token is created using the <code>create_access_token</code> function, which takes user data from the refresh token, and a JSON response is returned containing the new access token.</p>
+<p>If the refresh token is found to be invalid or expired, an <code>HTTPException</code> is raised with a status code of <code>400 Bad Request</code> and an appropriate error message. This endpoint ensures that users can obtain fresh access tokens without needing to re-authenticate, thereby maintaining secure user sessions. By validating the refresh token and generating a new access token only if the refresh token is valid and not expired, the application enhances security and user experience. This mechanism helps streamline the process of renewing user access while preventing unauthorized access with expired or invalid tokens.</p>
+<h3 id="revoking-tokens-using-redis">Revoking Tokens Using Redis</h3>
+<p>Now that we have granted users access using access tokens, we also need a way to invalidate these tokens when users log out. We will implement this using a token blocklist. A token blocklist will store information about revoked JWTs, ensuring that they cannot be used to access protected endpoints. </p>
+<p>There are many options available, but in our case, we will use Redis for this purpose. Redis will provide us with a key-value store that will be sufficient for implementing this functionality.</p>
+<p>To use Redis with FastAPI, we are going to use Aioredis which is an asyncio based Python client for Redis. Through it, we shall get access to methods allowing us to interact with Redis using Python. So let us begin by installing it with;</p>
+<div class="highlight"><span class="filename">Installing aioredis</span><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="go">pip install aioredis</span>
+</code></pre></div>
+<p>Once Aioredis has been installed, we are going to add this code to a new file called <code>src/db/redis.py</code>
+<div class="highlight"><span class="filename">Functions to handle token revoking</span><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># inside src/db/redis.py</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="kn">import</span> <span class="nn">aioredis</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="kn">from</span> <span class="nn">src.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="n">JTI_EXPIRY</span> <span class="o">=</span> <span class="mi">3600</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="n">token_blocklist</span> <span class="o">=</span> <span class="n">aioredis</span><span class="o">.</span><span class="n">StrictRedis</span><span class="p">(</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>    <span class="n">host</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">REDIS_HOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">REDIS_PORT</span><span class="p">,</span> <span class="n">db</span><span class="o">=</span><span class="mi">0</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="p">)</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">add_jti_to_blocklist</span><span class="p">(</span><span class="n">jti</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>    <span class="k">await</span> <span class="n">token_blocklist</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">jti</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">ex</span><span class="o">=</span><span class="n">JTI_EXPIRY</span><span class="p">)</span>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">token_in_blocklist</span><span class="p">(</span><span class="n">jti</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>   <span class="n">jti</span> <span class="o">=</span>  <span class="k">await</span> <span class="n">token_blocklist</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">jti</span><span class="p">)</span>
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a>   <span class="k">return</span> <span class="n">jti</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</code></pre></div></p>
+<p>This code snippet sets up a token blocklist using Redis. It begins by importing the aioredis library, and configuration settings from the project's config module. A constant JTI_EXPIRY is defined to set the expiration time for blocklist entries to 3600 seconds (1 hour). The Redis client token_blocklist is initialized using aioredis.StrictRedis, connecting to the Redis server with the specified host, port, and database number (db=0).</p>
+<p>The <code>add_jti_to_blocklist</code> function asynchronously adds a JWT ID (JTI) to the Redis blocklist, setting an expiration time for the entry. The <code>token_in_blocklist</code> function checks if a given JTI is in the blocklist by attempting to retrieve it from Redis; it returns <code>True</code> if the JTI is found and <code>False</code> otherwise. </p>
+<p>Once we have created these, we need to update our <code>TokenBearer</code> function to accomodate the checks for a token being in the token blocklist. </p>
+<div class="highlight"><span class="filename">Updated __call__ method</span><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">from</span> <span class="nn">src.db.redis</span> <span class="kn">import</span> <span class="n">token_in_blocklist</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="k">class</span> <span class="nc">TokenBearer</span><span class="p">(</span><span class="n">HTTPBearer</span><span class="p">):</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto_error</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">auto_error</span><span class="o">=</span><span class="n">auto_error</span><span class="p">)</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>    <span class="k">async</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">HTTPAuthorizationCredentials</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>        <span class="n">creds</span> <span class="o">=</span> <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>        <span class="n">token</span> <span class="o">=</span> <span class="n">creds</span><span class="o">.</span><span class="n">credentials</span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a>        <span class="n">token_data</span> <span class="o">=</span> <span class="n">decode_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a>        <span class="c1"># add this </span>
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a>        <span class="k">if</span> <span class="k">await</span> <span class="n">token_in_blocklist</span><span class="p">(</span><span class="n">token_data</span><span class="p">[</span><span class="s1">&#39;jti&#39;</span><span class="p">]):</span>
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a>            <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a>                <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a>                    <span class="s2">&quot;error&quot;</span><span class="p">:</span><span class="s2">&quot;This token is invalid or has been revoked&quot;</span><span class="p">,</span>
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a>                    <span class="s2">&quot;resolution&quot;</span><span class="p">:</span><span class="s2">&quot;Please get new token&quot;</span>
+<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a>                <span class="p">}</span>
+<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a>            <span class="p">)</span>
+</code></pre></div>
+<p>To implement the logout functionality by adding the token to the blocklist, we'll create the logout endpoint. This endpoint will ensure the token is not already in the blocklist before proceeding to block it.</p>
+<p><div class="highlight"><span class="filename">the logout endpoint</span><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">APIRouter</span><span class="p">,</span> <span class="n">Depends</span><span class="p">,</span> <span class="n">status</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="n">UserCreateModel</span><span class="p">,</span> <span class="n">UserModel</span><span class="p">,</span> <span class="n">UserLoginModel</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="kn">from</span> <span class="nn">.service</span> <span class="kn">import</span> <span class="n">UserService</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="kn">from</span> <span class="nn">src.db.main</span> <span class="kn">import</span> <span class="n">get_session</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="kn">from</span> <span class="nn">sqlmodel.ext.asyncio.session</span> <span class="kn">import</span> <span class="n">AsyncSession</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="kn">from</span> <span class="nn">fastapi.exceptions</span> <span class="kn">import</span> <span class="n">HTTPException</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">create_access_token</span><span class="p">,</span> <span class="n">verify_password</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="kn">from</span> <span class="nn">fastapi.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">datetime</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="kn">from</span> <span class="nn">.dependencies</span> <span class="kn">import</span> <span class="n">RefreshTokenBearer</span><span class="p">,</span><span class="n">AccessTokenBearer</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="kn">from</span> <span class="nn">src.db.redis</span> <span class="kn">import</span> <span class="n">add_jti_to_blocklist</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="n">auth_router</span> <span class="o">=</span> <span class="n">APIRouter</span><span class="p">()</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="n">user_service</span> <span class="o">=</span> <span class="n">UserService</span><span class="p">()</span>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a>
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a>
+<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a><span class="o">...</span> <span class="c1">#the rest of the code in src/auth/routes.py</span>
+<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a>
+<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a>
+<a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/logout&#39;</span><span class="p">)</span>
+<a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">revoke_token</span><span class="p">(</span><span class="n">token_details</span><span class="p">:</span><span class="nb">dict</span><span class="o">=</span><span class="n">Depends</span><span class="p">(</span><span class="n">AccessTokenBearer</span><span class="p">())):</span>
+<a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a>
+<a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a>    <span class="n">jti</span> <span class="o">=</span> <span class="n">token_details</span><span class="p">[</span><span class="s1">&#39;jti&#39;</span><span class="p">]</span>
+<a id="__codelineno-21-24" name="__codelineno-21-24" href="#__codelineno-21-24"></a>
+<a id="__codelineno-21-25" name="__codelineno-21-25" href="#__codelineno-21-25"></a>    <span class="k">await</span> <span class="n">add_jti_to_blocklist</span><span class="p">(</span><span class="n">jti</span><span class="p">)</span>
+<a id="__codelineno-21-26" name="__codelineno-21-26" href="#__codelineno-21-26"></a>
+<a id="__codelineno-21-27" name="__codelineno-21-27" href="#__codelineno-21-27"></a>    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
+<a id="__codelineno-21-28" name="__codelineno-21-28" href="#__codelineno-21-28"></a>        <span class="n">content</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-21-29" name="__codelineno-21-29" href="#__codelineno-21-29"></a>            <span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;Logged Out Successfully&quot;</span>
+<a id="__codelineno-21-30" name="__codelineno-21-30" href="#__codelineno-21-30"></a>        <span class="p">},</span>
+<a id="__codelineno-21-31" name="__codelineno-21-31" href="#__codelineno-21-31"></a>        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span>
+<a id="__codelineno-21-32" name="__codelineno-21-32" href="#__codelineno-21-32"></a>    <span class="p">)</span>
+</code></pre></div>
+The logout endpoint will be found on the <code>/logout</code> path. It is secured by the <code>AccessTokenBearer</code> class, which requires a valid access token for access. Upon receiving the token, we retrieve the relevant details <code>token_details</code> from the dependency and extract the token's JTI (JWT ID). We then call the <code>add_jti_to_blocklist</code> function to add this JTI to the blocklist in Redis. After successfully adding the JTI to the blocklist, we return a response indicating the success of the operation.</p>
+<p>Let us test this out in the client. Let us begin by get a new token pair from the Login endpoint,
+<a class="glightbox" href="../img/img30.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Logging In to get new token" src="../img/img30.png" /></a></p>
+<p>Using the new access token, let us try to access the endpoint for listing all books.
+<a class="glightbox" href="../img/img31.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Listing all books with the new token" src="../img/img31.png" /></a></p>
+<p>Let us now revoke this token by accessing the token by using the logging endpoint.
+<a class="glightbox" href="../img/img32.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Logging Out" src="../img/img32.png" /></a></p>
+<p>Notice how this token cannot be used to list all books again. So this shows how revoked access tokens can not be used to access a protected endpoint.
+<a class="glightbox" href="../img/img33.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Protected endpoint" src="../img/img33.png" /></a></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>At this point, we have covered several key aspects of implementing JWT authentication in a FastAPI application. We started by granting users access using access tokens. We then explored protecting endpoints with HTTP Bearer Authentication, ensuring that users can only access them with valid tokens. Additionally, we implemented a way for users to renew their access tokens using refresh tokens when their current tokens expire. Finally, we demonstrated how to revoke tokens using Redis, preventing them from being used to access protected endpoints.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../chapter8/" class="md-footer__link md-footer__link--prev" aria-label="Previous: User Account Creation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                User Account Creation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../chapter10/" class="md-footer__link md-footer__link--next" aria-label="Next: Role-Based Access Control">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Role-Based Access Control
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/jod35" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.footer", "navigation.instant", "navigation.top", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>

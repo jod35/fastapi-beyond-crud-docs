@@ -1,0 +1,1458 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Course webist for the FastAPI Beyond CRUD Course">
+      
+      
+        <meta name="author" content="Ssali Jonathan">
+      
+      
+        <link rel="canonical" href="https://jod35jon.github.io/fastapi-website/site/chapter5/">
+      
+      
+        <link rel="prev" href="../chapter4/">
+      
+      
+        <link rel="next" href="../chapter6/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
+    
+    
+      
+        <title>Databases with SQLModel - FastAPI Beyond CRUD</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-TCHXJCN975"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-TCHXJCN975",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-TCHXJCN975",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#databases-with-sqlmodel" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FastAPI Beyond CRUD" class="md-header__button md-logo" aria-label="FastAPI Beyond CRUD" data-md-component="logo">
+      
+  <img src="../img/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FastAPI Beyond CRUD
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Databases with SQLModel
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jod35/fastapi-beyond-CRUD" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jod35/fastapi-beyond-CRUD
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FastAPI Beyond CRUD" class="md-nav__button md-logo" aria-label="FastAPI Beyond CRUD" data-md-component="logo">
+      
+  <img src="../img/logo.svg" alt="logo">
+
+    </a>
+    FastAPI Beyond CRUD
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jod35/fastapi-beyond-CRUD" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jod35/fastapi-beyond-CRUD
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation and Project SetUp
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating a Simple Web Server
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Building a CRUD REST API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Large Project Structure Using Routers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Databases with SQLModel
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Databases with SQLModel
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-database-for-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing a Database for FastAPI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explaining-an-object-relational-mapper-orm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explaining an Object-Relational Mapper (ORM)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Explaining an Object-Relational Mapper (ORM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it Works:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Database
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#settings-management-with-pydantic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Settings Management With Pydantic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-database-models-with-sqlmodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating database models with SQLModel
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating database models with SQLModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connecting-to-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connecting to databases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connecting to databases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifespan-events-in-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lifespan events in FastAPI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lifespan events in FastAPI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-database-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating database tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating database tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Finishing Up the CRUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating a user authentication model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Account Creation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JWT Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter10/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Role-Based Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter11/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model And Schema Relationships
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter12/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Error Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter13/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Middleware
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#choosing-a-database-for-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choosing a Database for FastAPI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#explaining-an-object-relational-mapper-orm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explaining an Object-Relational Mapper (ORM)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Explaining an Object-Relational Mapper (ORM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How it Works:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Database
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a Database">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#settings-management-with-pydantic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Settings Management With Pydantic
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#explanation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-database-models-with-sqlmodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating database models with SQLModel
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating database models with SQLModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connecting-to-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connecting to databases
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connecting to databases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifespan-events-in-fastapi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lifespan events in FastAPI
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Lifespan events in FastAPI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#explanation_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Explanation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-database-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating database tables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating database tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="databases-with-sqlmodel">Databases with SQLModel</h1>
+<p>In the preceding chapter, we developed a functional CRUD API that operated on a simple in-memory database, represented by a Python list. However, in real-world applications, it's essential to use a persistent database to store all necessary data.</p>
+<h2 id="choosing-a-database-for-fastapi">Choosing a Database for FastAPI</h2>
+<p>FastAPI supports various types of databases, including relational/SQL databases and non-relational/NoSQL databases. Depending on your specific requirements, you can opt for either type.</p>
+<p>For this series, we'll focus on using a relational database, specifically PostgreSQL. PostgreSQL is a widely used free and open-source relational database management system, offering numerous benefits:</p>
+<p>While using PostgreSQL, we shall need to choose a way to interact with the database using the Python Language. That introduces us to the concept of an <a href="https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping">Object Relational mapper</a>.</p>
+<h2 id="explaining-an-object-relational-mapper-orm">Explaining an Object-Relational Mapper (ORM)</h2>
+<p>An Object-Relational Mapper (ORM) serves as a translator between a programming language, such as Python, and a database, like PostgreSQL or MySQL.</p>
+<p>In simpler terms, think of an ORM as an interpreter in a conversation where one person speaks English (Python) and the other speaks French (database). The ORM understands both languages, allowing you to interact with the database using familiar Python code without needing to understand the intricacies of how the database works internally.</p>
+<h3 id="how-it-works">How it Works:</h3>
+<ol>
+<li>
+<p><strong>Mapping Objects to Tables</strong>: You create Python classes to represent tables in the database. Each object of these classes corresponds to a row in the database table.</p>
+</li>
+<li>
+<p><strong>Interacting with Data</strong>: You can then interact with these Python objects as if they were regular objects in your code, like setting attributes and calling methods.</p>
+</li>
+<li>
+<p><strong>Behind the Scenes</strong>: When you perform operations on these objects, like saving or deleting, the ORM translates these actions into the appropriate SQL queries that the database understands.</p>
+</li>
+<li>
+<p><strong>Data Conversion</strong>: The ORM handles converting Python data types into database-specific types and vice versa, ensuring compatibility between the two.</p>
+</li>
+</ol>
+<p>An ORM simplifies the process of working with databases by allowing you to focus on your application's logic in Python, rather than getting bogged down in SQL queries and database management details. It acts as a bridge between the object-oriented world of programming and the relational world of databases.</p>
+<p>There are several different ORM solutions available for Python, but the most popular is <a href="https://sqlalchemy.org">SQLAlchemy</a>. SQLAlchemy simplifies database access and manipulation by providing an ORM for mapping Python objects to database tables and offering a high-level SQL expression language for querying databases. While SQLAlchemy is a powerful tool on its own, there's an ORM solution that seamlessly integrates SQLAlchemy with Pydantic, the data validation library discussed in previous chapters.</p>
+<h2 id="creating-a-database">Creating a Database</h2>
+<p>In this series, we will make use of <a href="https://sqlmodel.tiangolo.com/">SQLModel</a>, a library tailored for FastAPI. Interestingly, it was developed by the same individual who created FastAPI.</p>
+<p>Let's initiate the database setup. Setting up a database can be intricate, often involving multiple steps. Fortunately, numerous options are available that simplify the database creation process without extensive configuration.</p>
+<p>Throughout this course, I'll utilize <a href="https://neon.tech/">Neon</a>, a free fully managed PostgreSQL database with a generous free tier. With Neon, we can swiftly create a database and get started without delay.</p>
+<p><a class="glightbox" href="../img/neon.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="image of Neon" src="../img/neon.png" /></a></p>
+<p>Once you have created your free account on Neon, you can create a new project and in it, you will also create your new database.</p>
+<p><a class="glightbox" href="../img/neon2.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Create a new project and database" src="../img/neon2.png" /></a></p>
+<p>Once you have created your database, you can then go ahead and copy your connection details. 
+<a class="glightbox" href="../img/neon3.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Copy your connection details" src="../img/neon3.png" /></a></p>
+<p>After, Create a file called <code>.env</code> in which we shall store our project configurations as secrets. (This file is important and should not be added to version control) In your <code>.env</code> file, paste the database connection URL you have obtained from Neon. We are going to create an environment variable called <code>DATABASE_URL</code> with the value of our URL.</p>
+<div class="highlight"><span class="filename">Adding the DATABASE URL environment variable</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">DATABASE_URL</span><span class="o">=</span>postgresql://bookdb_owner:w8JK2sCASYBc@ep-rough-block-a554nxl6.us-east-2.aws.neon.tech/bookdb?sslmode<span class="o">=</span>require
+</code></pre></div>
+<p>At this point, your folder structure needs to look something like this:
+<div class="highlight"><span class="filename">Current Project Structure</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="go">|__ .env</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="go">├── env/</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="go">├── main.py</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="go">├── requirements.txt</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="go">└── schemas.py</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="go">└── src/</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="go">|-- └── __init__.py</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="go">`-- └── books/</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="go">    |-- └── __init__.py</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="go">    |-- └── routes.py</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="go">    |-- └── schemas.py</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="go">    `-- └── book_data.py</span>
+</code></pre></div></p>
+<h3 id="settings-management-with-pydantic">Settings Management With Pydantic</h3>
+<p>With that in place, we can now set up our configurations so that we can read them out from anywhere within our application. Let us begin by creating a <code>config.py</code> file that contains the configuration variables that will be used in this series.</p>
+<p>We are going to rely on Pydantic to read our environment variables. Pydantic alone will not help us; we shall need to install <code>pydantic-settings</code>, a library that is based on Pydantic to help us with the specific role of reading environment variables from our <code>.env</code> file. </p>
+<p>So let us start by installing </p>
+<p><div class="highlight"><span class="filename">Install Pydantic settings</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pydantic-settings
+</code></pre></div>
+After installing <code>pydantic-settings</code>, let us now go ahead and create a file called <code>config.py</code> at the root of our project. Inside that file, add the following code.</p>
+<div class="highlight"><span class="filename">src/config.py</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># inside src/config.py</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span> <span class="nn">pydantic_settings</span> <span class="kn">import</span> <span class="n">BaseSettings</span><span class="p">,</span> <span class="n">SettingsConfigDict</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span> 
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        <span class="n">env_file</span><span class="o">=</span><span class="s2">&quot;.env&quot;</span><span class="p">,</span> 
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="p">)</span>
+</code></pre></div>
+<h3 id="explanation">Explanation:</h3>
+<p>In the provided code snippet, we've performed the following actions:</p>
+<ol>
+<li>We are importing the <code>BaseSettings</code> class from <code>pydantic_settings</code>.</li>
+<li>Creating a subclass called <code>Settings</code>, inheriting from <code>BaseSettings</code>.</li>
+<li>Defining an attribute named <code>DATABASE_URL</code> with a type annotation of <code>str</code>.</li>
+<li>To modify our configuration to read from the <code>.env</code> file, we modified the <code>model_config</code> attribute of the <code>Settings</code> class which is one to help us with modifying the configuration of any pydantic model class. This is set to an instance of the <code>SettingsConfigDict</code> class which enables us to read the configuration from the <code>.env</code> file. This is by simply setting the <code>env_file</code> argument to the name of the <code>.env</code> file. We have also added the <code>extra</code> argument and given it a value of <code>ignore</code> as we may want to ignore any extra attributes provided within our <code>Settings</code> class.</li>
+</ol>
+<p>This configuration allows us to read the <code>DATABASE_URL</code> from the environment variables. 
+Let's observe how this configuration operates. We'll initiate a Python interpreter shell for testing:</p>
+<div class="highlight"><span class="filename">Reading environment variable from .env</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>python3
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Python<span class="w"> </span><span class="m">3</span>.10.12<span class="w"> </span><span class="o">(</span>main,<span class="w"> </span>Nov<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="m">2023</span>,<span class="w"> </span><span class="m">15</span>:14:05<span class="o">)</span><span class="w"> </span><span class="o">[</span>GCC<span class="w"> </span><span class="m">11</span>.4.0<span class="o">]</span><span class="w"> </span>on<span class="w"> </span>linux
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Type<span class="w"> </span><span class="s2">&quot;help&quot;</span>,<span class="w"> </span><span class="s2">&quot;copyright&quot;</span>,<span class="w"> </span><span class="s2">&quot;credits&quot;</span><span class="w"> </span>or<span class="w"> </span><span class="s2">&quot;license&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>more<span class="w"> </span>information.
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>&gt;&gt;&gt;<span class="w"> </span>from<span class="w"> </span>config<span class="w"> </span>import<span class="w"> </span>Settings
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>&gt;&gt;&gt;<span class="w"> </span><span class="nv">settings</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>Settings<span class="o">()</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>&gt;&gt;&gt;<span class="w"> </span>settings.DATABASE_URL
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="s1">&#39;postgresql://bookdb_owner:w8JK2sCASYBc@ep-rough-block-a554nxl6.us-east-2.aws.neon.tech/bookdb?sslmode&#39;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>&gt;&gt;&gt;<span class="w"> </span>
+</code></pre></div>
+<p>In the above demonstration, we start by importing the <code>Settings</code> class from the <code>config.py</code> file. Subsequently, we instantiate a <code>settings</code> object. Utilizing this <code>settings</code> object, we access and retrieve the <code>DATABASE_URL</code> setting. Upon calling it, our database URL will be displayed in the console. Note that this shall work because we currently have the <code>DATABASE_URL</code> setting in our <code>.env</code> file.</p>
+<p>Once this has been implemented, let us then add the following line to <code>config.py</code>.
+<div class="highlight"><span class="filename">Create a Config object</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span> <span class="nn">pydantic_settings</span> <span class="kn">import</span> <span class="n">BaseSettings</span><span class="p">,</span> <span class="n">SettingsConfigDict</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="n">DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span> 
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="n">env_file</span><span class="o">=</span><span class="s2">&quot;.env&quot;</span><span class="p">,</span> 
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="p">)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="c1"># add this line    </span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="n">Config</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+</code></pre></div>
+We add this line so that we don't have to create a new instance of our <code>Settings</code> class whenever we shall need to access environment variables. From now on, we shall shall just have to import the <code>Config</code> variable and use it.</p>
+<h2 id="creating-database-models-with-sqlmodel">Creating database models with SQLModel</h2>
+<p>Alright, let us now connect to our database and also create our table in it. Let us install <code>sqlmodel</code>.
+<div class="highlight"><span class="filename">Installing SQLModel</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>sqlmodel
+</code></pre></div></p>
+<p>Once we have <code>sqlmodel</code> installed, let us now create a database model using it. to start, we will create a file named models.py inside the <code>books</code> directory.</p>
+<p><div class="highlight"><span class="filename">New folder structure with models.py</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="go">|__ .env</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="go">├── env/</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="go">├── main.py</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="go">├── requirements.txt</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="go">└── schemas.py</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="go">└── src/</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="go">|-- └── __init__.py</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="go">`-- └── books/</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="go">    |-- └── __init__.py</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="go">    |-- └── routes.py</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="go">    |-- |__ models.py</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="go">    |-- └── schemas.py</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="go">    `-- └── book_data.py</span>
+</code></pre></div>
+Inside <code>models.py</code>, add the following code. 
+<div class="highlight"><span class="filename">Creating the book database model in src/books/models.py</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">SQLModel</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Column</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">import</span> <span class="nn">sqlalchemy.dialects.postgresql</span> <span class="k">as</span> <span class="nn">pg</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="kn">import</span> <span class="nn">uuid</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">SQLModel</span> <span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s2">&quot;books&quot;</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">uid</span><span class="p">:</span><span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>        <span class="n">sa_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>            <span class="n">pg</span><span class="o">.</span><span class="n">UUID</span><span class="p">,</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>            <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>            <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>            <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>        <span class="p">)</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>    <span class="p">)</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>    <span class="n">author</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>    <span class="n">publisher</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>    <span class="n">published_date</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>    <span class="n">page_count</span><span class="p">:</span> <span class="nb">int</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>    <span class="n">language</span><span class="p">:</span><span class="nb">str</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>    <span class="n">created_at</span><span class="p">:</span> <span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">sa_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">))</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>    <span class="n">updated_at</span><span class="p">:</span><span class="n">datetime</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">sa_column</span><span class="o">=</span><span class="n">Column</span><span class="p">(</span><span class="n">pg</span><span class="o">.</span><span class="n">TIMESTAMP</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">))</span>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Book </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+</code></pre></div></p>
+<h3 id="explanation_1">Explanation</h3>
+<p>IN the above code, we have defined a database model using <code>SQLModel</code>. Here are the steps we took. 
+1. We imported the <code>SQLModel</code>, <code>Field</code>, <code>Column</code> from sqlmodel.
+2. We import <code>sqlalchemy.dialects.postgresql</code>as <code>pg</code> to allow us access the PostgreSQL-specific column types.
+3. In the model definition, we create a <code>Book</code> class that inherits from <code>SQLModel</code>, we then also add the <code>table</code> parameter to the class and set it to <code>True</code>to inidicate that the class is going to represent a database table.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All SQLModel models are pydantic tables and therefore can be used for data validation.</p>
+</div>
+<ol>
+<li>Inside the class, several attributes are defined:<ul>
+<li><code>uid</code>: A universally unique identifier (UUID) for each book. We use the <code>Field</code> function, to add some details or attributes to it. It's also specified as the primary key column <code>(primary_key=True)</code>, with a default value generated by <code>uuid.uuid4()</code>, and it's unique and not nullable.</li>
+</ul>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To make our primary key store UUIDs, we have chosen to use the PostgreSQL UUID type and we achive this by using the sa_column argument in the Field function. Using SQLALchemy's Column class we then specify the type of the field.</p>
+</div>
+<ul>
+<li>
+<p><code>title</code>, <code>author</code>, <code>publisher</code>, <code>published_date</code>, <code>page_count</code>, <code>language</code>: These attributes represent various properties of a book, such as title, author, publisher, etc. They are all specified as strings (str) or integers (int) and will be columns in the database table.</p>
+</li>
+<li>
+<p><code>created_at</code> and <code>updated_at</code> represent timestamps at which a book record was created or updated. Note that we are also going in detail about defining the PostgreSQL column types as <code>pg.TIMESTAMP</code>. We also specify that we want to keep track of the </p>
+</li>
+<li>
+<p>def <strong>repr</strong>(self) -&gt; str: This is a special method that defines how instances of the <code>Book</code> class are represented as strings. In this case, it returns a string containing the title of the book, enclosed in angle brackets and preceded by <code>Book</code>.</p>
+</li>
+</ul>
+<h2 id="connecting-to-databases">Connecting to databases</h2>
+<p>Let us add a directory in our <code>src</code> folder and call it <code>db</code> (short for database). we shall make it a normal Python package by adding the <code>__init__.py</code> file. After, we shall go ahead and add a Python file called <code>main.py</code> and we shall then add the following code.</p>
+<div class="highlight"><span class="filename">src/db/main.py</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">text</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span> <span class="nn">sqlalchemy.ext.asyncio</span> <span class="kn">import</span> <span class="n">AsyncEngine</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">from</span> <span class="nn">src.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">engine</span> <span class="o">=</span> <span class="n">AsyncEngine</span><span class="p">(</span><span class="n">create_engine</span><span class="p">(</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">url</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">DATABASE_URL</span><span class="p">,</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">echo</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="p">))</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">initdb</span><span class="p">():</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;create a connection to our db&quot;&quot;&quot;</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>    <span class="k">async</span> <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>        <span class="n">statement</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="s2">&quot;select &#39;Hello World&#39;&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>        <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="explanation_2">Explanation</h3>
+<ol>
+<li>
+<p>We begin by importing the necessary objects from the libraries they belong to.</p>
+<p><div class="highlight"><span class="filename">Importing necessary objects</span><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">text</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span> <span class="nn">sqlalchemy.ext.asyncio</span> <span class="kn">import</span> <span class="n">AsyncEngine</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="kn">from</span> <span class="nn">src.config</span> <span class="kn">import</span> <span class="n">Config</span>
+</code></pre></div>
+<code>create_engine</code> is a function that enables to connect to a database when we need. <code>text</code> is a function that helps us generate plain text SQL statements that we can run against a database when we connect to it. <code>AsyncEngine</code> is a class for creating asynchronous engine objects. We shall look at how we shall use it in a moment. <code>Config</code> is the settings objects we created above. This will allow us access our configurations.</p>
+</li>
+<li>
+<p>We then create the <code>engine</code> object. This will allow us to connect to the database when we need to. (We will look at how we will use it later.)
+    <div class="highlight"><span class="filename">Creating the engine object</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">engine</span> <span class="o">=</span> <span class="n">AsyncEngine</span><span class="p">(</span><span class="n">create_engine</span><span class="p">(</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">url</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">DATABASE_URL</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">echo</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">))</span>
+</code></pre></div>
+    This object is created by calling the <code>create_engine()</code> function. In the function call, we also add two important argumnents. The first argument is the <code>url</code> to the database to connect to. In this case, we shall use the <code>DATABASE_URL</code> value from the configuration we set up above. This is accessed on the <code>Config</code> object created in our settings.</p>
+<p>The second argument is the <code>echo</code> argument, this allows us to log SQL statements that will be executed in the database everytime they are executed. We finally create this object inside the <code>AsyncEngine</code> class because we want to be able to interact with the database using an asynchronous DBAPI. </p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A DBAPI (Database Application Programming Interface) is simply a medium through which the Python programming language can connect to the database server.</p>
+</div>
+<ol>
+<li>
+<p>Finally, we create a function called <code>initdb</code> which is responsible for connecting to the database and executing a simple SQL statement. </p>
+<div class="highlight"><span class="filename">Connecting to the database and running an SQL Query</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">initdb</span><span class="p">():</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;create a connection to our db&quot;&quot;&quot;</span><span class="err">`</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="k">async</span> <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">statement</span> <span class="o">=</span> <span class="n">text</span><span class="p">(</span><span class="s2">&quot;select &#39;Hello World&#39;&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">all</span><span class="p">())</span><span class="err">`</span>
+</code></pre></div>
+<p>Inside the <code>initdb</code> function, we begin by creating a connection object <code>conn</code> using an async context manager. (created with <code>async with engine.begin()</code>). We then create a plain text SQL statement and call the <code>text</code> function.</p>
+<p>The result of the statement is what we access through the <code>result</code> object which we finally print to our terminal when we call the <code>all</code> method on it.</p>
+</li>
+</ol>
+<h2 id="lifespan-events-in-fastapi">Lifespan events in FastAPI</h2>
+<p>In FastAPI, we have the flexibility to specify operations to execute prior to the application receiving requests, as well as when it concludes receiving them. This capability is crucial in situations where executing such operations may be resource-intensive and potentially degrade user experience. Examples of such operations include establishing database connections and loading AI models. For our demonstration, we'll focus on establishing a database connection before the application starts. If this concept isn't clear, let's start by examining a brief example.</p>
+<p>In the <code>__init__.py</code> file at the root of the <code>src</code> directory, let us modify the code as shown below.</p>
+<div class="highlight"><span class="filename">src/__init__.py</span><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="kn">from</span> <span class="nn">src.books.routes</span> <span class="kn">import</span> <span class="n">book_router</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">asynccontextmanager</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="c1">#the lifespan event</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="nd">@asynccontextmanager</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>    
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Server is starting...&quot;</span><span class="p">)</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>    <span class="k">yield</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;server is stopping&quot;</span><span class="p">)</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>    <span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span> <span class="c1"># add the lifespan event to our application</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="p">)</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="n">app</span><span class="o">.</span><span class="n">include_router</span><span class="p">(</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>    <span class="n">book_router</span><span class="p">,</span>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>    <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;/books&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>    <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;books&#39;</span><span class="p">]</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="explanation_3">Explanation</h3>
+<p>Let's create an async function called lifespan. This function will be decorated with asynccontextmanager from the contextlib module in Python. Inside this function, there will be two print statements, separated by a <code>yield</code> statement.</p>
+<p>The code before the <code>yield</code> statement will execute first (when the server starts), followed by the code after the <code>yield</code> statement, which will execute last (when the server stops).</p>
+<p>This function is a <strong>lifespan event</strong> because it runs once before the application starts and then continues throughout the application's lifespan.</p>
+<p>Now, if we stop the server by pressing <em>CTRL+C</em> and then restart it, the following output will be logged in the terminal.
+<div class="highlight"><span class="filename">Demo of executing tasks on server starting</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="gp">$ </span>python3<span class="w"> </span>run.py<span class="w"> </span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="go">INFO:     Will watch for changes in these directories: [&#39;/home/jod35/Documents/fastapi-beyond-CRUD&#39;]</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="go">INFO:     Uvicorn running on http://127.0.0.1:8000 (Press *CTRL+C* to quit)</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="go">INFO:     Started reloader process [18506] using WatchFiles</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="go">INFO:     Started server process [18508]</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="go">INFO:     Waiting for application startup.</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="go">server is starting...</span>
+</code></pre></div>
+At the server's start, you'll observe the text <code>server is starting</code> printed in the terminal. After halting the server using <em>Ctrl+C</em>, you should see the subsequent output
+<div class="highlight"><span class="filename">Demo of executing tasks on server being stopped</span><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="go">INFO:     Application startup complete.</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="go">^CINFO:     Shutting down</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="go">INFO:     Waiting for application shutdown.</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="go">server is stopping</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="go">INFO:     Application shutdown complete.</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="go">INFO:     Finished server process [18669]</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="gp">$</span>
+</code></pre></div></p>
+<p>Now that we grasp how lifespan events function, let's integrate our <code>init_db</code> function to establish a connection to the PostgreSQL database.</p>
+<p>Update the lifespan function in <code>src/__init__.py</code> to include the following code.</p>
+<p><div class="highlight"><span class="filename">Connecting to the database using the lifespan function</span><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="o">...</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">from</span> <span class="nn">src.db.main</span> <span class="kn">import</span> <span class="n">initdb</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="nd">@asynccontextmanager</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>    
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="k">await</span> <span class="n">initdb</span><span class="p">()</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>    <span class="k">yield</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;server is stopping&quot;</span><span class="p">)</span>
+</code></pre></div>
+Upon saving, you'll observe the following output in your terminal.</p>
+<p><div class="highlight"><span class="filename">Executing the select query</span><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="go">INFO:     Started server process [21034]</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="go">INFO:     Waiting for application startup.</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="go">2024-05-06 11:50:41,802 INFO sqlalchemy.engine.Engine BEGIN (implicit)</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="go">2024-05-06 11:50:41,803 INFO sqlalchemy.engine.Engine select &#39;Hello World&#39;</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="go">2024-05-06 11:50:41,803 INFO sqlalchemy.engine.Engine [generated in 0.00015s] ()</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="go">[(&#39;Hello World&#39;,)]</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="go">2024-05-06 11:50:41,803 INFO sqlalchemy.engine.Engine COMMIT</span>
+</code></pre></div>
+This code establishes a connection to the database and executes a SELECT statement, which will return the string "Hello World" as demonstrated in the provided output.</p>
+<h2 id="creating-database-tables">Creating database tables</h2>
+<p>Let's update the code in <code>src/db/main.py</code> to incorporate our custom lifespan event into the database model, utilizing the <code>Book</code> model. We'll then utilize SQLmodel to generate the necessary database tables based on this model.</p>
+<div class="highlight"><span class="filename">Creating the database table using SQLModel</span><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Inside src/db/main.py</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">create_engine</span><span class="p">,</span> <span class="n">text</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="kn">from</span> <span class="nn">sqlalchemy.ext.asyncio</span> <span class="kn">import</span> <span class="n">AsyncEngine</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="kn">from</span> <span class="nn">src.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="kn">from</span> <span class="nn">sqlmodel</span> <span class="kn">import</span> <span class="n">SQLModel</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="kn">from</span> <span class="nn">src.books.models</span> <span class="kn">import</span> <span class="n">Book</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="n">engine</span> <span class="o">=</span> <span class="n">AsyncEngine</span><span class="p">(</span><span class="n">create_engine</span><span class="p">(</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>    <span class="n">url</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">DATABASE_URL</span><span class="p">,</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>    <span class="n">echo</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="p">))</span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">initdb</span><span class="p">():</span>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;create our database models in the database&quot;&quot;&quot;</span>
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>
+<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>    <span class="k">async</span> <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>        <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">run_sync</span><span class="p">(</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">)</span>
+</code></pre></div>
+<p>In the above code, we began with importing the <code>Book</code> model from <code>src/books/models</code>. After, we then modify the <code>initdb()</code> function by adding the following:
+<div class="highlight"><span class="filename">using SQLModel to create all tables in our database</span><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">async</span> <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">run_sync</span><span class="p">(</span><span class="n">SQLModel</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">create_all</span><span class="p">)</span>
+</code></pre></div></p>
+<p>In this code snippet, we utilize an asynchronous context manager with <code>engine.begin()</code>, enabling us to create a transactional context to interact with our database. Within this context, we execute <code>conn.run_sync(SQLModel.metadata.create_all()</code>.</p>
+<p>Here, <code>SQLModel.metadata</code> encompasses all the metadata linked with SQLModel. By invoking the <code>create_all()</code> method on this metadata object, any tables present in the metadata but absent in the database will be created.</p>
+<p><strong>Note</strong> 
+- <code>conn.run_sync()</code> is an asynchronous function that we utilize to run synchronous functions such as <code>SQLModel.metadata.create_all()</code>.</p>
+<p>With that said, let us save the file and have a look at our terminal output. 
+<div class="highlight"><span class="filename">SQL running to create our database table from the defined model</span><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="go">INFO:     Waiting for application startup.</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="go">2024-05-06 12:13:21,042 INFO sqlalchemy.engine.Engine BEGIN (implicit)</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="go">2024-05-06 12:13:21,042 INFO sqlalchemy.engine.Engine PRAGMA main.table_info(&quot;books&quot;)</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="go">2024-05-06 12:13:21,042 INFO sqlalchemy.engine.Engine [raw sql] ()</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="go">2024-05-06 12:13:21,043 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info(&quot;books&quot;)</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="go">2024-05-06 12:13:21,043 INFO sqlalchemy.engine.Engine [raw sql] ()</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="go">2024-05-06 12:13:21,044 INFO sqlalchemy.engine.Engine </span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="go">CREATE TABLE books (</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="go">        uid UUID NOT NULL, </span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="go">        title VARCHAR NOT NULL, </span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="go">        author VARCHAR NOT NULL, </span>
+<a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="go">        publisher VARCHAR NOT NULL, </span>
+<a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="go">        published_date VARCHAR NOT NULL, </span>
+<a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="go">        page_count INTEGER NOT NULL, </span>
+<a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="go">        language VARCHAR NOT NULL, </span>
+<a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="go">        created_at TIMESTAMP, </span>
+<a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a><span class="go">        updated_at TIMESTAMP, </span>
+<a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="go">        PRIMARY KEY (uid), </span>
+<a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="go">        UNIQUE (uid)</span>
+<a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="go">)</span>
+<a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a>
+<a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a>
+<a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a><span class="go">2024-05-06 12:13:21,044 INFO sqlalchemy.engine.Engine [no key 0.00014s] ()</span>
+<a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="go">2024-05-06 12:13:21,086 INFO sqlalchemy.engine.Engine COMMIT</span>
+</code></pre></div>
+Running the code above shall allow us to create the table in the database also logging the SQL query in the terminal as shown above. </p>
+<h3 id="conclusion">Conclusion</h3>
+<p>In this chapter, we've introduced persistence to our data by employing a relational database management system (PostgreSQL). Additionally, we've explored the utilization of Pydantic for configuration settings. We've also examined SQLModel, an ORM that combines Pydantic and SQLAlchemy to manage relational databases effectively. Our database, which stores book data, is now operational. Looking ahead, I've outlined the CRUD actions for our persistent database in the following chapter.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../chapter4/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Large Project Structure Using Routers">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Large Project Structure Using Routers
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../chapter6/" class="md-footer__link md-footer__link--next" aria-label="Next: Finishing Up the CRUD">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Finishing Up the CRUD
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/jod35" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.footer", "navigation.instant", "navigation.top", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>
