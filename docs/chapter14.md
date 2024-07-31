@@ -267,9 +267,237 @@ def decode_url_safe_token(token:str):
         logging.error(str(e))
         
 ```
-In the above code, we begin by importing the `URLSafeTimedSerializer` class that will allow us to create the `serializer` object we shall use to serialize the user's email address. We configure it using the `secret_key` that comes from the same secret key we used to create our access tokens and provide a `salt` which we keep to the string of "email-verification".
 
-After that, we then create two functions `create_url_safe_token` and `decode_url_safe_token` . The first function is responsible for serializing the `data` dictionary into a `token`.
+In the code above, we start by importing the `URLSafeTimedSerializer` class, which we use to create the `serializer` object. This object is essential for serializing the user's email address. We configure the serializer with a `secret_key` (the same one used for creating access tokens) and a `salt`, which we've set to the string "email-verification."
 
-The second function allows us to deserialize a token so that we get the data, also catching any errors that may occur.
+Next, we define two functions: `create_url_safe_token` and `decode_url_safe_token`. The `create_url_safe_token` function serializes a `data` dictionary into a token. The `decode_url_safe_token` function deserializes the token, extracting the data while handling any potential errors.
+
+With these functions in place, we can verify user emails during signup. The process flow is as follows:
+1. A user creates an account with a valid email address.
+2. An email verification link is sent to the user's email.
+3. The user clicks the verification link.
+4. The user is redirected to our app upon successful email verification, and we send them a success response.
+
+
+### Sending the verification Email
+To make this work, we are going to add the following code to `src/auth/routes.py`
+```python title="Email verification on user signup"
+... # many imports here
+from .schemas import (
+    ... # more imports
+    UserCreateModel,
+)
+from .service import UserService
+from .utils import (
+    ... # more imports
+    create_url_safe_token,
+    decode_url_safe_token,
+)
+from src.mail import mail, create_message
+
+... # rest of the code
+
+@auth_router.post("/signup", status_code=status.HTTP_201_CREATED)
+async def create_user_Account(
+    user_data: UserCreateModel, session: AsyncSession = Depends(get_session)
+):
+    if user_exists:
+        raise UserAlreadyExists()
+
+    new_user = await user_service.create_user(user_data, session)
+
+    token = create_url_safe_token({"email": email})
+
+    link = f"http://{Config.DOMAIN}/api/v1/auth/verify/{token}"
+
+    html_message = f"""
+    <h1>Verify your Email</h1>
+    <p>Please click this <a href="{link}">link</a> to verify your email</p>
+    """
+
+    message = create_message(
+        recipients=[email], subject="Verify your email", body=html_message
+    )
+
+    await mail.send_message(message)
+
+    return {
+        "message": "Account Created! Check email to verify your account",
+        "user": new_user,
+    }
+
+
+```
+
+First we import both functions `create_url_safe_token` and `decode_url_safe_token`. After doing that we use pretty much the same approach we used to send a sample email to send the verification link.
+
+```python title="creating the verification link"
+token = create_url_safe_token({"email": email})
+
+link = f"http://{Config.DOMAIN}/api/v1/auth/verify/{token}"
+
+html_message = f"""
+<h1>Verify your Email</h1>
+<p>Please click this <a href="{link}">link</a> to verify your email</p>
+"""
+
+message = create_message(
+    recipients=[email], subject="Verify your email", body=html_message
+)
+
+await mail.send_message(message)
+```
+
+We start by creating the token using `create_url_safe_token`. We then use the `DOMAIN`and the token to create the verification link `link`. We create the `message` by combining the `html_message`, `subject`, and `link`. To send the `message`, we shall use the `mail.send_message` function finally send the email.
+
+
+Let us test this 
+
+![send verification email](./img/img59.png)
+
+We can confirm that the email has been sent 
+
+![confirm if email has been sent](./img/img60.png)
+
+Clicking the link, we shall see that we are going to be redirected back to the app as whown below.
+
+![email verification URL not found](./img/img61.png)
+
+
+### Verifying Emails
+Having sent the vetrification link, we now need to verify the user accounts of users when they click the verification link.
+
+Just below the the signup endpoint, let us add the following code.
+
+```python title="Verifying the user account"
+from .schemas import (
+    ... # more imports
+    UserCreateModel,
+)
+from .service import UserService
+from .utils import (
+    ... # more imports
+    create_url_safe_token,
+    decode_url_safe_token,
+)
+from src.mail import mail, create_message
+
+
+@auth_router.get("/verify/{token}")
+async def verify_user_account(token: str, session: AsyncSession = Depends(get_session)):
+
+    token_data = decode_url_safe_token(token)
+
+    user_email = token_data.get("email")
+
+    if user_email:
+        user = await user_service.get_user_by_email(user_email, session)
+
+        if not user:
+            raise UserNotFound()
+
+        await user_service.update_user(user, {"is_verified": True}, session)
+
+        return JSONResponse(
+            content={"message": "Account verified successfully"},
+            status_code=status.HTTP_200_OK,
+        )
+
+    return JSONResponse(
+        content={"message": "Error occured during verification"},
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    )
+
+```
+
+What we have done is to create the path `/verify` that will use a `token` path parameter. This path will be accessed via the GET method. Its path handler `verify_user_account` will take in the `token` path param as well as the `session` dependency. Once we get the token, we deserialize it with the `decode_url_safe_token` function.
+
+Having got the `token_data`, we obtain the user's email, check if the email is not None and if not, we obtain the user account and update the `is_verified`  field on the account to `True`. We then raise an exception in case the email was not obtained. 
+
+
+Let us make the verification link expire after a certain time by modifying the `decode_url_safe_token` function of `src/auth/utils` to the following.
+
+```python title="create a expirable token"
+def decode_url_safe_token(token:str):
+    try:
+        token_data = serializer.loads(token, max_age=60)
+
+        return token_data
+    
+    except Exception as e:
+        logging.error(str(e))
+
+```
+
+Note that we have added `max_age` to the `serializer` object and have given it an integer value of 60 seconds.
+
+Let us try to verify a user account again. With different creadentials, I will create a new user account as shown below.
+
+Creating a user account sends an email successfully.
+
+![creating a user account with different credentials](./img/img62.png)
+
+The verification will be sent successfully and the link will be sent as shown below.
+
+![verification email sent successfully](./img/img63.png)
+
+![Account Verifed Successfully](./img/img64.png)
+
+So we have successfully verified the user account. Let us complete the user verification by adding a check to the authentication dependencies to only allow users with verified accounts to access any exnpoints. We shall do so by first of all adding a custom exception class to be raised only when a user who is not verified tries to access an API endpoint.
+
+Let add this inside `src/errors.py`.
+```python title="error class and handler for verification check"
+
+class AccountNotVerified(Exception):
+    """Account not yet verified"""
+    pass
+
+
+... # there is some code here (create_exception_handler)
+
+def register_all_errors(app: FastAPI):
+    ... # other errors registered here
+
+    app.add_exception_handler(
+        AccountNotVerified,
+        create_exception_handler(
+            status_code=status.HTTP_403_FORBIDDEN,
+            initial_detail={
+                "message": "Account Not verified",
+                "error_code": "account_not_verified",
+                "resolution":"Please check your email for verification details"
+            },
+        ),
+    )
+
+```
+
+What we have done is create the error class `AccountNotVerified` which is to be raised when an unverified user account tries to access a protected endpoint. To finally add this check, we shall edit the `RoleChecker` dependency in `src/auth/dependencies.py`.
+
+```python title="check if a user is verified"
+class RoleChecker:
+    def __init__(self, allowed_roles: List[str]) -> None:
+        self.allowed_roles = allowed_roles
+
+    def __call__(self, current_user: User = Depends(get_current_user)) -> Any:
+        if not current_user.is_verified:
+            raise AccountNotVerified()
+        if current_user.role in self.allowed_roles:
+            return True
+
+        raise InsufficientPermission()
+
+```
+
+Before we check if the user has the right role, we shall first check if the user is verified and if not, we shall raise an exception `AccountNotVerified`. To test this, we shall create a user account with a very vague email address.
+
+![creating user account with vague email](./img/img65.png)
+
+After obtaining authentication credentials for the user (access and refresh tokens), Let us use them to access a protect endpoint such as that to get all books. 
+
+![getting userr credentials](./img/img66.png)
+
+![get all books](./img/img67.png)
+
+And like that, we have built the user account verification.
 
