@@ -662,6 +662,24 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#sending-the-verification-email" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sending the verification Email
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying-emails" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying Emails
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -757,6 +775,24 @@
   <a href="#itsdangerous" class="md-nav__link">
     <span class="md-ellipsis">
       ItsDangerous
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sending-the-verification-email" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sending the verification Email
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#verifying-emails" class="md-nav__link">
+    <span class="md-ellipsis">
+      Verifying Emails
     </span>
   </a>
   
@@ -1012,7 +1048,7 @@ links.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>itsdangerous
 </code></pre></div></p>
 <p>To set it up, let us navigate to <code>src/auth/utils.py</code> and add the following code.</p>
-<p><div class="highlight"><span class="filename">serializing and deserializing user's email address</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">...</span> <span class="c1">#rest of the imports</span>
+<div class="highlight"><span class="filename">serializing and deserializing user's email address</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">...</span> <span class="c1">#rest of the imports</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">from</span> <span class="nn">itsdangerous</span> <span class="kn">import</span> <span class="n">URLSafeTimedSerializer</span>
 <a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
@@ -1039,9 +1075,185 @@ links.</p>
 <a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 <a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 </code></pre></div>
-In the above code, we begin by importing the <code>URLSafeTimedSerializer</code> class that will allow us to create the <code>serializer</code> object we shall use to serialize the user's email address. We configure it using the <code>secret_key</code> that comes from the same secret key we used to create our access tokens and provide a <code>salt</code> which we keep to the string of "email-verification".</p>
-<p>After that, we then create two functions <code>create_url_safe_token</code> and <code>decode_url_safe_token</code> . The first function is responsible for serializing the <code>data</code> dictionary into a <code>token</code>.</p>
-<p>The second function allows us to deserialize a token so that we get the data, also catching any errors that may occur.</p>
+<p>In the code above, we start by importing the <code>URLSafeTimedSerializer</code> class, which we use to create the <code>serializer</code> object. This object is essential for serializing the user's email address. We configure the serializer with a <code>secret_key</code> (the same one used for creating access tokens) and a <code>salt</code>, which we've set to the string "email-verification."</p>
+<p>Next, we define two functions: <code>create_url_safe_token</code> and <code>decode_url_safe_token</code>. The <code>create_url_safe_token</code> function serializes a <code>data</code> dictionary into a token. The <code>decode_url_safe_token</code> function deserializes the token, extracting the data while handling any potential errors.</p>
+<p>With these functions in place, we can verify user emails during signup. The process flow is as follows:
+1. A user creates an account with a valid email address.
+2. An email verification link is sent to the user's email.
+3. The user clicks the verification link.
+4. The user is redirected to our app upon successful email verification, and we send them a success response.</p>
+<h3 id="sending-the-verification-email">Sending the verification Email</h3>
+<p>To make this work, we are going to add the following code to <code>src/auth/routes.py</code>
+<div class="highlight"><span class="filename">Email verification on user signup</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="o">...</span> <span class="c1"># many imports here</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="o">...</span> <span class="c1"># more imports</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">UserCreateModel</span><span class="p">,</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="p">)</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="kn">from</span> <span class="nn">.service</span> <span class="kn">import</span> <span class="n">UserService</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    <span class="o">...</span> <span class="c1"># more imports</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>    <span class="n">create_url_safe_token</span><span class="p">,</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>    <span class="n">decode_url_safe_token</span><span class="p">,</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="p">)</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="kn">from</span> <span class="nn">src.mail</span> <span class="kn">import</span> <span class="n">mail</span><span class="p">,</span> <span class="n">create_message</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="o">...</span> <span class="c1"># rest of the code</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/signup&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">create_user_Account</span><span class="p">(</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>    <span class="n">user_data</span><span class="p">:</span> <span class="n">UserCreateModel</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="p">):</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>    <span class="k">if</span> <span class="n">user_exists</span><span class="p">:</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>        <span class="k">raise</span> <span class="n">UserAlreadyExists</span><span class="p">()</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>    <span class="n">new_user</span> <span class="o">=</span> <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">user_data</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">create_url_safe_token</span><span class="p">({</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">})</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>    <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">Config</span><span class="o">.</span><span class="n">DOMAIN</span><span class="si">}</span><span class="s2">/api/v1/auth/verify/</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>    <span class="n">html_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="s2">    &lt;h1&gt;Verify your Email&lt;/h1&gt;</span>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a><span class="s2">    &lt;p&gt;Please click this &lt;a href=&quot;</span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2">&quot;&gt;link&lt;/a&gt; to verify your email&lt;/p&gt;</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a><span class="s2">    &quot;&quot;&quot;</span>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>    <span class="n">message</span> <span class="o">=</span> <span class="n">create_message</span><span class="p">(</span>
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>        <span class="n">recipients</span><span class="o">=</span><span class="p">[</span><span class="n">email</span><span class="p">],</span> <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Verify your email&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">html_message</span>
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>    <span class="p">)</span>
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>    <span class="k">await</span> <span class="n">mail</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>
+<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a>        <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Account Created! Check email to verify your account&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">new_user</span><span class="p">,</span>
+<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a>    <span class="p">}</span>
+</code></pre></div></p>
+<p>First we import both functions <code>create_url_safe_token</code> and <code>decode_url_safe_token</code>. After doing that we use pretty much the same approach we used to send a sample email to send the verification link.</p>
+<div class="highlight"><span class="filename">creating the verification link</span><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">token</span> <span class="o">=</span> <span class="n">create_url_safe_token</span><span class="p">({</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">})</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">Config</span><span class="o">.</span><span class="n">DOMAIN</span><span class="si">}</span><span class="s2">/api/v1/auth/verify/</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">html_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="s2">&lt;h1&gt;Verify your Email&lt;/h1&gt;</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="s2">&lt;p&gt;Please click this &lt;a href=&quot;</span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2">&quot;&gt;link&lt;/a&gt; to verify your email&lt;/p&gt;</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="n">message</span> <span class="o">=</span> <span class="n">create_message</span><span class="p">(</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    <span class="n">recipients</span><span class="o">=</span><span class="p">[</span><span class="n">email</span><span class="p">],</span> <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Verify your email&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">html_message</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="p">)</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="k">await</span> <span class="n">mail</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</code></pre></div>
+<p>We start by creating the token using <code>create_url_safe_token</code>. We then use the <code>DOMAIN</code>and the token to create the verification link <code>link</code>. We create the <code>message</code> by combining the <code>html_message</code>, <code>subject</code>, and <code>link</code>. To send the <code>message</code>, we shall use the <code>mail.send_message</code> function finally send the email.</p>
+<p>Let us test this </p>
+<p><a class="glightbox" href="../img/img59.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="send verification email" src="../img/img59.png" /></a></p>
+<p>We can confirm that the email has been sent </p>
+<p><a class="glightbox" href="../img/img60.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="confirm if email has been sent" src="../img/img60.png" /></a></p>
+<p>Clicking the link, we shall see that we are going to be redirected back to the app as whown below.</p>
+<p><a class="glightbox" href="../img/img61.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="email verification URL not found" src="../img/img61.png" /></a></p>
+<h3 id="verifying-emails">Verifying Emails</h3>
+<p>Having sent the vetrification link, we now need to verify the user accounts of users when they click the verification link.</p>
+<p>Just below the the signup endpoint, let us add the following code.</p>
+<div class="highlight"><span class="filename">Verifying the user account</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kn">from</span> <span class="nn">.schemas</span> <span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="o">...</span> <span class="c1"># more imports</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">UserCreateModel</span><span class="p">,</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="p">)</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="kn">from</span> <span class="nn">.service</span> <span class="kn">import</span> <span class="n">UserService</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="o">...</span> <span class="c1"># more imports</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">create_url_safe_token</span><span class="p">,</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    <span class="n">decode_url_safe_token</span><span class="p">,</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="p">)</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="kn">from</span> <span class="nn">src.mail</span> <span class="kn">import</span> <span class="n">mail</span><span class="p">,</span> <span class="n">create_message</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/verify/</span><span class="si">{token}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">verify_user_account</span><span class="p">(</span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">)):</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>    <span class="n">token_data</span> <span class="o">=</span> <span class="n">decode_url_safe_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>    <span class="n">user_email</span> <span class="o">=</span> <span class="n">token_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">)</span>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>    <span class="k">if</span> <span class="n">user_email</span><span class="p">:</span>
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>        <span class="n">user</span> <span class="o">=</span> <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">get_user_by_email</span><span class="p">(</span><span class="n">user_email</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a>
+<a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="p">:</span>
+<a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a>            <span class="k">raise</span> <span class="n">UserNotFound</span><span class="p">()</span>
+<a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a>
+<a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a>        <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">update_user</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;is_verified&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a>
+<a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a>        <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
+<a id="__codelineno-14-30" name="__codelineno-14-30" href="#__codelineno-14-30"></a>            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Account verified successfully&quot;</span><span class="p">},</span>
+<a id="__codelineno-14-31" name="__codelineno-14-31" href="#__codelineno-14-31"></a>            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<a id="__codelineno-14-32" name="__codelineno-14-32" href="#__codelineno-14-32"></a>        <span class="p">)</span>
+<a id="__codelineno-14-33" name="__codelineno-14-33" href="#__codelineno-14-33"></a>
+<a id="__codelineno-14-34" name="__codelineno-14-34" href="#__codelineno-14-34"></a>    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
+<a id="__codelineno-14-35" name="__codelineno-14-35" href="#__codelineno-14-35"></a>        <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Error occured during verification&quot;</span><span class="p">},</span>
+<a id="__codelineno-14-36" name="__codelineno-14-36" href="#__codelineno-14-36"></a>        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+<a id="__codelineno-14-37" name="__codelineno-14-37" href="#__codelineno-14-37"></a>    <span class="p">)</span>
+</code></pre></div>
+<p>What we have done is to create the path <code>/verify</code> that will use a <code>token</code> path parameter. This path will be accessed via the GET method. Its path handler <code>verify_user_account</code> will take in the <code>token</code> path param as well as the <code>session</code> dependency. Once we get the token, we deserialize it with the <code>decode_url_safe_token</code> function.</p>
+<p>Having got the <code>token_data</code>, we obtain the user's email, check if the email is not None and if not, we obtain the user account and update the <code>is_verified</code>  field on the account to <code>True</code>. We then raise an exception in case the email was not obtained. </p>
+<p>Let us make the verification link expire after a certain time by modifying the <code>decode_url_safe_token</code> function of <code>src/auth/utils</code> to the following.</p>
+<div class="highlight"><span class="filename">create a expirable token</span><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span> <span class="nf">decode_url_safe_token</span><span class="p">(</span><span class="n">token</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>        <span class="n">token_data</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">max_age</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="k">return</span> <span class="n">token_data</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</code></pre></div>
+<p>Note that we have added <code>max_age</code> to the <code>serializer</code> object and have given it an integer value of 60 seconds.</p>
+<p>Let us try to verify a user account again. With different creadentials, I will create a new user account as shown below.</p>
+<p>Creating a user account sends an email successfully.</p>
+<p><a class="glightbox" href="../img/img62.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="creating a user account with different credentials" src="../img/img62.png" /></a></p>
+<p>The verification will be sent successfully and the link will be sent as shown below.</p>
+<p><a class="glightbox" href="../img/img63.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="verification email sent successfully" src="../img/img63.png" /></a></p>
+<p><a class="glightbox" href="../img/img64.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Account Verifed Successfully" src="../img/img64.png" /></a></p>
+<p>So we have successfully verified the user account. Let us complete the user verification by adding a check to the authentication dependencies to only allow users with verified accounts to access any exnpoints. We shall do so by first of all adding a custom exception class to be raised only when a user who is not verified tries to access an API endpoint.</p>
+<p>Let add this inside <code>src/errors.py</code>.
+<div class="highlight"><span class="filename">error class and handler for verification check</span><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">class</span> <span class="nc">AccountNotVerified</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Account not yet verified&quot;&quot;&quot;</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="k">pass</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="o">...</span> <span class="c1"># there is some code here (create_exception_handler)</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="k">def</span> <span class="nf">register_all_errors</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="o">...</span> <span class="c1"># other errors registered here</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>    <span class="n">app</span><span class="o">.</span><span class="n">add_exception_handler</span><span class="p">(</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>        <span class="n">AccountNotVerified</span><span class="p">,</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>        <span class="n">create_exception_handler</span><span class="p">(</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>            <span class="n">initial_detail</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Account Not verified&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>                <span class="s2">&quot;error_code&quot;</span><span class="p">:</span> <span class="s2">&quot;account_not_verified&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>                <span class="s2">&quot;resolution&quot;</span><span class="p">:</span><span class="s2">&quot;Please check your email for verification details&quot;</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>            <span class="p">},</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>        <span class="p">),</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>    <span class="p">)</span>
+</code></pre></div></p>
+<p>What we have done is create the error class <code>AccountNotVerified</code> which is to be raised when an unverified user account tries to access a protected endpoint. To finally add this check, we shall edit the <code>RoleChecker</code> dependency in <code>src/auth/dependencies.py</code>.</p>
+<div class="highlight"><span class="filename">check if a user is verified</span><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">class</span> <span class="nc">RoleChecker</span><span class="p">:</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">allowed_roles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">allowed_roles</span> <span class="o">=</span> <span class="n">allowed_roles</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_user</span><span class="p">:</span> <span class="n">User</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_current_user</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_verified</span><span class="p">:</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>            <span class="k">raise</span> <span class="n">AccountNotVerified</span><span class="p">()</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>        <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">role</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_roles</span><span class="p">:</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>            <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>        <span class="k">raise</span> <span class="n">InsufficientPermission</span><span class="p">()</span>
+</code></pre></div>
+<p>Before we check if the user has the right role, we shall first check if the user is verified and if not, we shall raise an exception <code>AccountNotVerified</code>. To test this, we shall create a user account with a very vague email address.</p>
+<p><a class="glightbox" href="../img/img65.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="creating user account with vague email" src="../img/img65.png" /></a></p>
+<p>After obtaining authentication credentials for the user (access and refresh tokens), Let us use them to access a protect endpoint such as that to get all books. </p>
+<p><a class="glightbox" href="../img/img66.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="getting userr credentials" src="../img/img66.png" /></a></p>
+<p><a class="glightbox" href="../img/img67.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="get all books" src="../img/img67.png" /></a></p>
+<p>And like that, we have built the user account verification.</p>
 
 
 
