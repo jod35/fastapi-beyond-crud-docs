@@ -643,6 +643,30 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#user-account-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Account Verification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User Account Verification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#itsdangerous" class="md-nav__link">
+    <span class="md-ellipsis">
+      ItsDangerous
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -709,6 +733,30 @@
   <a href="#sending-our-first-email" class="md-nav__link">
     <span class="md-ellipsis">
       Sending Our First Email
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user-account-verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Account Verification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="User Account Verification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#itsdangerous" class="md-nav__link">
+    <span class="md-ellipsis">
+      ItsDangerous
     </span>
   </a>
   
@@ -912,9 +960,9 @@
 </code></pre></div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>The <code>DOMAIN</code> environment variable shall be set to help us when we create the verification and password reset
 links.</p>
+</div>
 <h3 id="sending-our-first-email">Sending Our First Email</h3>
 <p>To send an email, all we shall have to do is to call the <code>send_message</code> method on the <code>mail</code> object. Let us do that in <code>src/auth/routes.py</code>.</p>
 <div class="highlight"><span class="filename">sending emails</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="o">....</span> <span class="c1"># rest of the imports</span>
@@ -944,7 +992,56 @@ links.</p>
 <div class="highlight"><span class="filename">pydantic model for getting recipient email addresses</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">class</span> <span class="nc">EmailModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="n">addresses</span> <span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
 </code></pre></div>
-<p>Let us test this</p>
+<p>Here’s the revised text with improved grammar and language:</p>
+<hr />
+<p>Let us test this. Accessing the endpoint and making a request results in the following response:</p>
+<p><a class="glightbox" href="../img/img57.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Successful email is sent" src="../img/img57.png" /></a></p>
+<p>To confirm if our email has been sent:</p>
+<p><a class="glightbox" href="../img/img58.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Confirming if the email is sent" src="../img/img58.png" /></a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You may notice a slight delay between the sending of the emails and the response indicating that an email has been successfully sent. This is because, to send the email, we are making another request to the SMTP server we use. We will explore an approach to speed this up in a later chapter.</p>
+</div>
+<h2 id="user-account-verification">User Account Verification</h2>
+<p>If you have followed this series from the beginning, you will notice that we created a user authentication database model called <code>User</code>. In this model, we defined the <code>is_verified</code> field to handle the activation of user accounts. We will start by implementing this verification process using the email address provided by the user during signup.</p>
+<p>User account verification is important as it prevents the creation of fake accounts. It also allows us to collect user email addresses for communications and other purposes.</p>
+<h3 id="itsdangerous">ItsDangerous</h3>
+<p>To safely move data from our server to an untrusted environment, we will use <a href="https://itsdangerous.palletsprojects.com/en/2.2.x/">ItsDangerous</a>. ItsDangerous is a Python package that allows us to cryptographically sign data and hand it over to someone else, ensuring that the data has not been tampered with when we receive it. The recipient of the data can receive and read it but cannot modify it unless they have the sender's secret key.</p>
+<p>This package will be crucial as it will enable us to create URL-safe tokens that we will include in the user verification links we send via email.</p>
+<p>To install it we shall run
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>itsdangerous
+</code></pre></div></p>
+<p>To set it up, let us navigate to <code>src/auth/utils.py</code> and add the following code.</p>
+<p><div class="highlight"><span class="filename">serializing and deserializing user's email address</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">...</span> <span class="c1">#rest of the imports</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">from</span> <span class="nn">itsdangerous</span> <span class="kn">import</span> <span class="n">URLSafeTimedSerializer</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="o">...</span> <span class="c1"># rest of the code </span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="n">serializer</span> <span class="o">=</span> <span class="n">URLSafeTimedSerializer</span><span class="p">(</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="n">secret_key</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">JWT_SECRET</span><span class="p">,</span> <span class="n">salt</span><span class="o">=</span><span class="s2">&quot;email-configuration&quot;</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="p">)</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="k">def</span> <span class="nf">create_url_safe_token</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Serialize a dict into a URLSafe token&quot;&quot;&quot;</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>    <span class="k">return</span> <span class="n">token</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="k">def</span> <span class="nf">decode_url_safe_token</span><span class="p">(</span><span class="n">token</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Deserialize a URLSafe token to get data&quot;&quot;&quot;</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>        <span class="n">token_data</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>        <span class="k">return</span> <span class="n">token_data</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</code></pre></div>
+In the above code, we begin by importing the <code>URLSafeTimedSerializer</code> class that will allow us to create the <code>serializer</code> object we shall use to serialize the user's email address. We configure it using the <code>secret_key</code> that comes from the same secret key we used to create our access tokens and provide a <code>salt</code> which we keep to the string of "email-verification".</p>
+<p>After that, we then create two functions <code>create_url_safe_token</code> and <code>decode_url_safe_token</code> . The first function is responsible for serializing the <code>data</code> dictionary into a <code>token</code>.</p>
+<p>The second function allows us to deserialize a token so that we get the data, also catching any errors that may occur.</p>
 
 
 
