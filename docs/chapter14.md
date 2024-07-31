@@ -273,9 +273,13 @@ In the code above, we start by importing the `URLSafeTimedSerializer` class, whi
 Next, we define two functions: `create_url_safe_token` and `decode_url_safe_token`. The `create_url_safe_token` function serializes a `data` dictionary into a token. The `decode_url_safe_token` function deserializes the token, extracting the data while handling any potential errors.
 
 With these functions in place, we can verify user emails during signup. The process flow is as follows:
+
 1. A user creates an account with a valid email address.
+
 2. An email verification link is sent to the user's email.
+
 3. The user clicks the verification link.
+
 4. The user is redirected to our app upon successful email verification, and we send them a success response.
 
 
