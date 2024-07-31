@@ -161,8 +161,8 @@ DOMAIN=localhost:8000
 ```
 
 !!! Note
-The `DOMAIN` environment variable shall be set to help us when we create the verification and password reset
-links.
+    The `DOMAIN` environment variable shall be set to help us when we create the verification and password reset
+    links.
 
 ### Sending Our First Email
 
@@ -206,5 +206,70 @@ class EmailModel(BaseModel):
 ```
 
 
-Let us test this
+Here’s the revised text with improved grammar and language:
+
+---
+
+Let us test this. Accessing the endpoint and making a request results in the following response:
+
+![Successful email is sent](./img/img57.png)
+
+To confirm if our email has been sent:
+
+![Confirming if the email is sent](./img/img58.png)
+
+!!! Note
+    You may notice a slight delay between the sending of the emails and the response indicating that an email has been successfully sent. This is because, to send the email, we are making another request to the SMTP server we use. We will explore an approach to speed this up in a later chapter.
+
+## User Account Verification
+If you have followed this series from the beginning, you will notice that we created a user authentication database model called `User`. In this model, we defined the `is_verified` field to handle the activation of user accounts. We will start by implementing this verification process using the email address provided by the user during signup.
+
+User account verification is important as it prevents the creation of fake accounts. It also allows us to collect user email addresses for communications and other purposes.
+
+### ItsDangerous
+To safely move data from our server to an untrusted environment, we will use [ItsDangerous](https://itsdangerous.palletsprojects.com/en/2.2.x/). ItsDangerous is a Python package that allows us to cryptographically sign data and hand it over to someone else, ensuring that the data has not been tampered with when we receive it. The recipient of the data can receive and read it but cannot modify it unless they have the sender's secret key.
+
+This package will be crucial as it will enable us to create URL-safe tokens that we will include in the user verification links we send via email.
+
+To install it we shall run
+```console
+$ pip install itsdangerous
+```
+
+To set it up, let us navigate to `src/auth/utils.py` and add the following code.
+
+```python title="serializing and deserializing user's email address"
+... #rest of the imports
+
+from itsdangerous import URLSafeTimedSerializer
+
+... # rest of the code 
+
+serializer = URLSafeTimedSerializer(
+    secret_key=Config.JWT_SECRET, salt="email-configuration"
+)
+
+def create_url_safe_token(data: dict):
+    """Serialize a dict into a URLSafe token"""
+
+    token = serializer.dumps(data)
+
+    return token
+
+def decode_url_safe_token(token:str):
+    """Deserialize a URLSafe token to get data"""
+    try:
+        token_data = serializer.loads(token)
+
+        return token_data
+    
+    except Exception as e:
+        logging.error(str(e))
+        
+```
+In the above code, we begin by importing the `URLSafeTimedSerializer` class that will allow us to create the `serializer` object we shall use to serialize the user's email address. We configure it using the `secret_key` that comes from the same secret key we used to create our access tokens and provide a `salt` which we keep to the string of "email-verification".
+
+After that, we then create two functions `create_url_safe_token` and `decode_url_safe_token` . The first function is responsible for serializing the `data` dictionary into a `token`.
+
+The second function allows us to deserialize a token so that we get the data, also catching any errors that may occur.
 
