@@ -1,12 +1,12 @@
 # Email Support
 
-We've built many features in our application, but we intentionally skipped some that require sending emails. This allows us to dedicate a chapter to exploring email functionality in detail. Sending emails is crucial for communicating with users, verifying identities, and enabling password resets.
+We've developed numerous features in our application but deliberately skipped those involving email functionality. This allows us to dedicate an entire chapter to thoroughly exploring this topic. Sending emails is essential for user communication, identity verification, and password resets.
 
 ## FastAPI-Mail
 
-If you're familiar with Flask, the most popular extension for adding email support is [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/). Flask-Mail allows emails to be sent with a straightforward setup. The FastAPI equivalent is [FastAPI-Mail](https://sabuhish.github.io/fastapi-mail/), which has a similar configuration process but also supports asynchronous operations and Pydantic models.
+If you've worked with Flask, you're probably familiar with [Flask-Mail](https://flask-mail.readthedocs.io/en/latest/), the most popular extension for adding email functionality. Flask-Mail offers a simple setup for sending emails. In FastAPI, the equivalent is [FastAPI-Mail](https://sabuhish.github.io/fastapi-mail/), which not only provides a similar configuration process but also supports asynchronous operations and Pydantic models.
 
-Let's begin by installing FastAPI-Mail. In your terminal, within the active virtual environment, install it with:
+To get started, let's install FastAPI-Mail. In your terminal, within the active virtual environment, run:
 
 ```console
 $ pip install fastapi-mail
@@ -14,7 +14,8 @@ $ pip install fastapi-mail
 
 ## Configuring FastAPI-Mail
 
-Let's create a file to set up FastAPI-Mail and centralize all email-sending logic. Inside the `src/` directory, create a file called `mail.py` and add the following code:
+
+Let's create a file to set up FastAPI-Mail and centralize all email-sending logic. Inside the src/ directory, create a file called mail.py and add the following code:
 
 ```python
 from fastapi_mail import FastMail, ConnectionConfig, MessageSchema, MessageType
@@ -54,7 +55,7 @@ def create_message(recipients: list[str], subject: str, body: str):
 
 ### Explanation
 
-We begin by importing `FastMail`, `ConnectionConfig`, `MessageSchema`, and `MessageType`.
+The code snippet includes the following imports and their purposes:
 
 ```python title="The imports"
 from fastapi_mail import FastMail, ConnectionConfig, MessageSchema, MessageType
@@ -62,14 +63,14 @@ from src.config import Config
 from pathlib import Path
 ```
 
-- `FastMail`: Creates the `mail` object for accessing email-sending methods.
+- `FastMail`: Creates the `mail` object, allowing access to email-sending methods.
 - `ConnectionConfig`: Sets up the email configuration for FastAPI-Mail.
-- `MessageSchema`: Structures an email before sending.
-- `MessageType`: Specifies the type of content to send via email (e.g., HTML).
+- `MessageSchema`: Structures an email before sending it.
+- `MessageType`: Specifies the type of content to send via email, such as HTML.
 - `Config`: Imports application-specific configurations, including email settings.
-- `Path`: Used to create paths, particularly for determining the location of the templates folder.
+- `Path`: Helps create paths, particularly for determining the location of the templates folder.
 
-We then proceed to configure FastAPI-Mail using values we get from our `Config` object.
+Next, we'll configure FastAPI-Mail using the values from our `Config` object:
 
 ```python title="email config"
 mail_config = ConnectionConfig(
@@ -92,22 +93,22 @@ mail_config = ConnectionConfig(
 | `MAIL_USERNAME`   | The username of the email address sending the emails. Set via an environment variable.                                                                                                                      |
 | `MAIL_PASSWORD`   | The password for the SMTP server. For Gmail, this is an [app-specific password](https://support.google.com/mail/thread/205453566/how-to-generate-an-app-password?hl=en). Set via an environment variable.   |
 | `MAIL_FROM`       | The email address of the sender. Set via an environment variable.                                                                                                                                           |
-| `MAIL_PORT`       | The port used to connect to the SMTP server (usually 587 for TLS). Set via an environment variable.                                                                                                         |
-| `MAIL_SERVER`     | The SMTP server used to send emails (e.g., smtp.gmail.com). Set via an environment variable.                                                                                                                |
-| `MAIL_FROM_NAME`  | The name displayed as the sender of the email. Set via an environment variable.                                                                                                                             |
-| `MAIL_STARTTLS`   | Enables the STARTTLS command, which upgrades the connection to a secure TLS/SSL connection. Set to True.                                                                                                    |
+| `MAIL_PORT`       | The port used to connect to the SMTP server (usually 587 for TLS).                                                                                                                                          |
+| `MAIL_SERVER`     | The SMTP server used to send emails (e.g., smtp.gmail.com).                                                                                                                                                |
+| `MAIL_FROM_NAME`  | The name displayed as the sender of the email.                                                                                                                                                              |
+| `MAIL_STARTTLS`   | Enables the STARTTLS command, which upgrades the connection to a secure TLS/SSL connection.                                                                                                                 |
 | `MAIL_SSL_TLS`    | Indicates whether to use SSL/TLS for the connection from the start. Set to False if `MAIL_STARTTLS` is True.                                                                                                |
-| `USE_CREDENTIALS` | Specifies whether to use credentials (username and password) to authenticate with the SMTP server. Set to True.                                                                                             |
-| `VALIDATE_CERTS`  | Specifies whether to validate the server's SSL certificates. Set to True.                                                                                                                                   |
-| `TEMPLATE_FOLDER` | Specifies the folder containing email templates, useful for sending HTML emails with Jinja templates. we set this up to make use of `BASE_DIR` to point to a `templates` folder we should have in our `src` |
+| `USE_CREDENTIALS` | Specifies whether to use credentials (username and password) to authenticate with the SMTP server.                                                                                                          |
+| `VALIDATE_CERTS`  | Specifies whether to validate the server's SSL certificates.                                                                                                                                               |
+| `TEMPLATE_FOLDER` | Specifies the folder containing email templates, useful for sending HTML emails with Jinja templates. This is set using `BASE_DIR` to point to a `templates` folder in our `src` directory.                 |
 
-The `mail` object is created using the `FastMail` class and is configured with `mail_config`:
+The `mail` object is created using the `FastMail` class and configured with `mail_config`.
 
 ```python
 mail = FastMail(config=mail_config)
 ```
 
-A function `create_message` is defined to create an email message. It takes `recipients`, `subject`, and `body` as parameters and returns a `MessageSchema` object:
+A function create_message is defined to create an email message. It takes recipients, subject, and body as parameters and returns a MessageSchema object:
 
 ```python
 def create_message(recipients: list[str], subject: str, body: str):
@@ -116,6 +117,10 @@ def create_message(recipients: list[str], subject: str, body: str):
     )
     return message
 ```
+
+- `recipients`: A list of email addresses to send the email to.
+- `subject`: The subject line of the email.
+- `body`: The body content of the email, which can be plain text or HTML.
 
 In the `Settings` class located in `src.config.py`, email-related configuration variables are added. These variables are used to configure the email sending settings:
 
@@ -166,7 +171,8 @@ DOMAIN=localhost:8000
 
 ### Sending Our First Email
 
-To send an email, all we shall have to do is to call the `send_message` method on the `mail` object. Let us do that in `src/auth/routes.py
+
+To send an email, we simply call the send_message method on the mail object. Let's implement this in src/auth/routes.py:
 `.
 
 ```python title="sending emails"
@@ -191,13 +197,11 @@ async def send_mail(emails: EmailModel):
     return {"message": "Email sent successfully"}
 ```
 
-To send an email, we'll utilize the `send_message` method within the `mail` object. This code will reside in the `src/auth/routes.py` file.
+We’ve set up an API endpoint accessible at the `/auth/send_mail` path, with its handler function named `send_mail`. This function accepts an `EmailModel` object as input, which contains a list of email addresses intended for the email.
 
-We've constructed an API endpoint accessible at the `/auth/send_mail` path. Its corresponding handler function is named `send_mail`. This function accepts an `EmailModel` object as input, which contains a list of email addresses intended for the email. 
+In the handler function, we first extract these email addresses from the `EmailModel` object. We then define a basic HTML structure (`html`) and a `subject` line for the email content. Next, we use the `create_message` function to generate a `MessageSchema` object by providing it with the recipient email addresses, subject, and HTML content. This message object is then passed to the `mail.send_message` method to dispatch the email. Finally, the function returns a success message to indicate that the email was sent successfully.
 
-We extract these addresses from the `EmailModel` object. A basic HTML structure  `html` and a `subject` line are defined for the email content. Subsequently, the `create_message` function is invoked, providing the `recipient` `email` `addresses`, subject, and HTML content. This function generates a message object which is then passed to the mail.send_message method to dispatch the email. A success message is returned to indicate successful email transmission.
-
-The `EmailModel` class, located in `src/auth/schemas.py`, is a Pydantic model designed to validate the incoming email addresses. It mandates a list of email strings within the addresses field.
+The `EmailModel` class, found in `src/auth/schemas.py`, is a Pydantic model designed to validate incoming email addresses. It requires a list of email strings within the `addresses` field.
 
 ```python title="pydantic model for getting recipient email addresses"
 class EmailModel(BaseModel):
@@ -205,10 +209,6 @@ class EmailModel(BaseModel):
 
 ```
 
-
-Here’s the revised text with improved grammar and language:
-
----
 
 Let us test this. Accessing the endpoint and making a request results in the following response:
 
@@ -222,14 +222,14 @@ To confirm if our email has been sent:
     You may notice a slight delay between the sending of the emails and the response indicating that an email has been successfully sent. This is because, to send the email, we are making another request to the SMTP server we use. We will explore an approach to speed this up in a later chapter.
 
 ## User Account Verification
-If you have followed this series from the beginning, you will notice that we created a user authentication database model called `User`. In this model, we defined the `is_verified` field to handle the activation of user accounts. We will start by implementing this verification process using the email address provided by the user during signup.
+If you’ve been following this series from the beginning, you’ll recall that we created a `User` authentication database model. In this model, we included an `is_verified` field to manage the activation of user accounts. We’ll now begin implementing the verification process using the email address provided by the user during signup.
 
-User account verification is important as it prevents the creation of fake accounts. It also allows us to collect user email addresses for communications and other purposes.
+User account verification is crucial because it helps prevent the creation of fake accounts. Additionally, it allows us to collect user email addresses for communication and other purposes.
 
 ### ItsDangerous
-To safely move data from our server to an untrusted environment, we will use [ItsDangerous](https://itsdangerous.palletsprojects.com/en/2.2.x/). ItsDangerous is a Python package that allows us to cryptographically sign data and hand it over to someone else, ensuring that the data has not been tampered with when we receive it. The recipient of the data can receive and read it but cannot modify it unless they have the sender's secret key.
+To securely transfer data from our server to an untrusted environment, we will use [ItsDangerous](https://itsdangerous.palletsprojects.com/en/2.2.x/). ItsDangerous is a Python package that enables us to cryptographically sign data, ensuring that it has not been tampered with when received. The recipient can read the data but cannot modify it without access to the sender’s secret key.
 
-This package will be crucial as it will enable us to create URL-safe tokens that we will include in the user verification links we send via email.
+This package will be essential for creating URL-safe tokens that we will include in the user verification links sent via email.
 
 To install it we shall run
 ```console
@@ -268,19 +268,16 @@ def decode_url_safe_token(token:str):
         
 ```
 
-In the code above, we start by importing the `URLSafeTimedSerializer` class, which we use to create the `serializer` object. This object is essential for serializing the user's email address. We configure the serializer with a `secret_key` (the same one used for creating access tokens) and a `salt`, which we've set to the string "email-verification."
+In the code provided, we begin by importing the `URLSafeTimedSerializer` class, which is used to create the `serializer` object. This object is crucial for serializing the user’s email address. We configure the serializer with a `secret_key` (the same key used for creating access tokens) and a `salt`, which we set to the string "email-verification."
 
-Next, we define two functions: `create_url_safe_token` and `decode_url_safe_token`. The `create_url_safe_token` function serializes a `data` dictionary into a token. The `decode_url_safe_token` function deserializes the token, extracting the data while handling any potential errors.
+We then define two functions: `create_url_safe_token` and `decode_url_safe_token`. The `create_url_safe_token` function serializes a `data` dictionary into a token, while the `decode_url_safe_token` function deserializes the token, extracting the data and handling any potential errors.
 
-With these functions in place, we can verify user emails during signup. The process flow is as follows:
+With these functions, we can manage user email verification during signup. Here’s the process flow:
 
 1. A user creates an account with a valid email address.
-
-2. An email verification link is sent to the user's email.
-
+2. An email verification link is sent to the user’s email.
 3. The user clicks the verification link.
-
-4. The user is redirected to our app upon successful email verification, and we send them a success response.
+4. The user is redirected to our app, and upon successful verification, we send them a success response.
 
 
 ### Sending the verification Email
@@ -333,7 +330,7 @@ async def create_user_Account(
 
 ```
 
-First we import both functions `create_url_safe_token` and `decode_url_safe_token`. After doing that we use pretty much the same approach we used to send a sample email to send the verification link.
+First, we import the `create_url_safe_token` and `decode_url_safe_token` functions. We then follow a similar approach to sending a sample email to send the email verification link.
 
 ```python title="creating the verification link"
 token = create_url_safe_token({"email": email})
@@ -352,8 +349,8 @@ message = create_message(
 await mail.send_message(message)
 ```
 
-We start by creating the token using `create_url_safe_token`. We then use the `DOMAIN`and the token to create the verification link `link`. We create the `message` by combining the `html_message`, `subject`, and `link`. To send the `message`, we shall use the `mail.send_message` function finally send the email.
 
+We start by creating the token using the `create_url_safe_token` function. Next, we construct the verification link by combining the `DOMAIN` and the `token`. We then create the message by including the `html_message`, `subject`, and the verification link. Finally, we use the `mail.send_message` function to send the email.
 
 Let us test this 
 
@@ -363,15 +360,15 @@ We can confirm that the email has been sent
 
 ![confirm if email has been sent](./img/img60.png)
 
-Clicking the link, we shall see that we are going to be redirected back to the app as whown below.
+Clicking the verification link will redirect the user back to the app, where the verification process is completed.
+
 
 ![email verification URL not found](./img/img61.png)
 
 
 ### Verifying Emails
-Having sent the vetrification link, we now need to verify the user accounts of users when they click the verification link.
 
-Just below the the signup endpoint, let us add the following code.
+To handle user account verification when users click the verification link, add the following code just below the signup endpoint:
 
 ```python title="Verifying the user account"
 from .schemas import (
@@ -419,23 +416,41 @@ What we have done is to create the path `/verify` that will use a `token` path p
 Having got the `token_data`, we obtain the user's email, check if the email is not None and if not, we obtain the user account and update the `is_verified`  field on the account to `True`. We then raise an exception in case the email was not obtained. 
 
 
-Let us make the verification link expire after a certain time by modifying the `decode_url_safe_token` function of `src/auth/utils` to the following.
+To ensure the verification link expires after a certain time, we'll modify the `decode_url_safe_token` function. This function will be updated to handle token expiration, ensuring that tokens are only valid for a specified duration.
 
-```python title="create a expirable token"
-def decode_url_safe_token(token:str):
+First, we'll update the `decode_url_safe_token` function in src/auth/utils. We use the `URLSafeTimedSerializer` from the itsdangerous package to create tokens with expiration times. In the updated function, we'll include logic to check whether the token has expired based on the time it was created.
+
+```python title ="update create_url_safe_token"
+
+def create_url_safe_token(data: dict, expiration=3600) -> str:
+    """
+    Create a URL-safe token with an expiration time.
+    """
+    return serializer.dumps(data, salt=salt, expires_in=expiration)
+
+def decode_url_safe_token(token: str, max_age=3600) -> dict:
+    """
+    Decode a URL-safe token and check for expiration.
+    """
     try:
-        token_data = serializer.loads(token, max_age=60)
-
-        return token_data
-    
-    except Exception as e:
-        logging.error(str(e))
-
+        # Deserialize the token and check if it's expired
+        data = serializer.loads(token, salt=salt, max_age=max_age)
+        return data
+    except SignatureExpired:
+        raise HTTPException(status_code=400, detail="Token has expired")
+    except BadSignature:
+        raise HTTPException(status_code=400, detail="Invalid token")
 ```
 
-Note that we have added `max_age` to the `serializer` object and have given it an integer value of 60 seconds.
+The serializer's `dumps` method accepts an `expires_in` parameter, which specifies how long the token should be valid (in seconds). For example, a token might be valid for 1 hour (3600 seconds).
 
-Let us try to verify a user account again. With different creadentials, I will create a new user account as shown below.
+The `decode_url_safe_token` function will handle token decoding and check if the token is still valid. If the token is expired, it raises a `SignatureExpired` exception. If the token is invalid for any other reason, it raises a `BadSignature` exception. These exceptions will be used to provide appropriate error messages to the user.
+
+With these changes, the token will be checked for expiration when a user attempts to verify their email. If the token is no longer valid, the user will receive a message indicating that the token has expired or is invalid.
+
+Next, we update the `/verify` endpoint to use the modified `decode_url_safe_token` function. This endpoint receives the token as a path parameter, decodes it, and validates the email contained within. If the email is valid and the token is not expired, the user’s account is marked as verified. If the token is invalid or expired, the endpoint raises an HTTP exception with an appropriate error message.
+
+Let us try to verify a user account again. With different credentials, I will create a new user account as shown below.
 
 Creating a user account sends an email successfully.
 
@@ -447,38 +462,54 @@ The verification will be sent successfully and the link will be sent as shown be
 
 ![Account Verifed Successfully](./img/img64.png)
 
-So we have successfully verified the user account. Let us complete the user verification by adding a check to the authentication dependencies to only allow users with verified accounts to access any exnpoints. We shall do so by first of all adding a custom exception class to be raised only when a user who is not verified tries to access an API endpoint.
 
-Let add this inside `src/errors.py`.
-```python title="error class and handler for verification check"
+### Custom Exception Class for Unverified Accounts
+
+We shall create a custom exception class, `AccountNotVerified`, to handle cases where a user who hasn't verified their account tries to access a protected endpoint. This exception class will help provide clear feedback when an unverified user attempts to access restricted parts of your application.
+
+Here’s the implementation in `src/errors.py`:
+
+```python
+# src/errors.py
+from fastapi import FastAPI, status
+from fastapi.exceptions import RequestValidationError
+from typing import Any
+from fastapi.responses import JSONResponse
 
 class AccountNotVerified(Exception):
-    """Account not yet verified"""
+    """Exception raised when the user account is not verified."""
     pass
 
-
-... # there is some code here (create_exception_handler)
+... # create_exception_handler code
 
 def register_all_errors(app: FastAPI):
-    ... # other errors registered here
-
     app.add_exception_handler(
         AccountNotVerified,
         create_exception_handler(
             status_code=status.HTTP_403_FORBIDDEN,
             initial_detail={
-                "message": "Account Not verified",
+                "message": "Account Not Verified",
                 "error_code": "account_not_verified",
-                "resolution":"Please check your email for verification details"
+                "resolution": "Please check your email for verification details"
             },
         ),
     )
 
+    # Register other exception handlers as needed
 ```
 
-What we have done is create the error class `AccountNotVerified` which is to be raised when an unverified user account tries to access a protected endpoint. To finally add this check, we shall edit the `RoleChecker` dependency in `src/auth/dependencies.py`.
+### RoleChecker Dependency with Verification Check
 
-```python title="check if a user is verified"
+You updated the `RoleChecker` dependency in `src/auth/dependencies.py` to first check if the user account is verified before checking their role. Here’s how you integrated this check:
+
+```python
+# src/auth/dependencies.py
+from typing import List, Any
+from fastapi import Depends
+from src.auth.models import User
+from src.auth.utils import get_current_user
+from src.errors import AccountNotVerified
+
 class RoleChecker:
     def __init__(self, allowed_roles: List[str]) -> None:
         self.allowed_roles = allowed_roles
@@ -488,20 +519,127 @@ class RoleChecker:
             raise AccountNotVerified()
         if current_user.role in self.allowed_roles:
             return True
-
         raise InsufficientPermission()
-
 ```
 
-Before we check if the user has the right role, we shall first check if the user is verified and if not, we shall raise an exception `AccountNotVerified`. To test this, we shall create a user account with a very vague email address.
+In this setup:
+- **Verification Check**: Before checking if the user’s role is allowed, the `RoleChecker` verifies if the user’s account is marked as verified. If the user is not verified, the `AccountNotVerified` exception is raised.
+- **Role Check**: If the user is verified, the system then checks if the user has the necessary role to access the endpoint.
+
+### Testing the Implementation
+
+To test the implementation:
+1. **Create a New User Account**: Create a new user account with a vague email address and ensure that the verification email is sent.
+2. **Verify the Account**: Click on the verification link in the email to mark the account as verified.
+3. **Access Protected Endpoints**: Try accessing protected endpoints with both verified and unverified accounts to ensure that only verified accounts are allowed access.
+
+By following these steps, you can verify that the implementation correctly restricts access based on the user’s verification status. This ensures that only users with verified accounts can access protected resources in your application.
 
 ![creating user account with vague email](./img/img65.png)
 
 After obtaining authentication credentials for the user (access and refresh tokens), Let us use them to access a protect endpoint such as that to get all books. 
 
-![getting userr credentials](./img/img66.png)
+![getting user credentials](./img/img66.png)
 
 ![get all books](./img/img67.png)
 
 And like that, we have built the user account verification.
+
+
+### Password Reset 
+Now that we have verified user emails, we shall proceed to allow users reset their passwords once they have forgotten them. Now the approcah for sending and decoding user details 1n the emails is the same we shall use.
+
+Let us begin by creating the schemas for the password resets in `src/auth/routes.py`.
+
+```python title="password reset schemas"
+
+... #the rest of the code
+class PasswordResetRequestModel(BaseModel):
+    email: str
+
+
+class PasswordResetConfirmModel(BaseModel):
+    new_password: str
+    confirm_new_password: str
+```
+
+We have created the `PasswordResetRequestSchema` which shall allow users to provide their email address to which an email verification link shall be sent.
+
+In addition to that is the `PasswordResetConfirmModel` which we shall use to to set a new password.
+
+Let us now add the endpoints for requesting a password reset and resetting a password respectively.
+
+```python title="password reset endpoints"
+@auth_router.post("/password-reset-request")
+async def password_reset_request(email_data: PasswordResetRequestModel):
+    email = email_data.email
+
+    token = create_url_safe_token({"email": email})
+
+    link = f"http://{Config.DOMAIN}/api/v1/auth/password-reset-confirm/{token}"
+
+    html_message = f"""
+    <h1>Reset Your Password</h1>
+    <p>Please click this <a href="{link}">link</a> to Reset Your Password</p>
+    """
+    subject = "Reset Your Password"
+
+    send_email.delay([email], subject, html_message)
+    return JSONResponse(
+        content={
+            "message": "Please check your email for instructions to reset your password",
+        },
+        status_code=status.HTTP_200_OK,
+    )
+
+
+@auth_router.post("/password-reset-confirm/{token}")
+async def reset_account_password(
+    token: str,
+    passwords: PasswordResetConfirmModel,
+    session: AsyncSession = Depends(get_session),
+):
+    new_password = passwords.new_password
+    confirm_password = passwords.confirm_new_password
+
+    if new_password != confirm_password:
+        raise HTTPException(
+            detail="Passwords do not match", status_code=status.HTTP_400_BAD_REQUEST
+        )
+
+    token_data = decode_url_safe_token(token)
+
+    user_email = token_data.get("email")
+
+    if user_email:
+        user = await user_service.get_user_by_email(user_email, session)
+
+        if not user:
+            raise UserNotFound()
+
+        passwd_hash = generate_passwd_hash(new_password)
+        await user_service.update_user(user, {"password_hash": passwd_hash}, session)
+
+        return JSONResponse(
+            content={"message": "Password reset Successfully"},
+            status_code=status.HTTP_200_OK,
+        )
+
+    return JSONResponse(
+        content={"message": "Error occured during password reset."},
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    )
+
+```
+
+The first endpoint `/password-reset-request` will get a user's emailvia a POST request and send a password reset link via the provided email address.
+
+The second one will receive the `new_password` and the `confirm_new_password` and `token` sent in the verification link. From the `token`, the user's email shall be got and then the user account related to that email address shall be retrieved. 
+
+If it exists, the user password shall be updated with the hash of the provided new password else a `UserNotFound` exception shall be raised.
+
+
+## Conclusion
+In this chapter, we have added email support to our application using FastAPI-Mail. We have also looked at how we can securely transfer data from our application to other unsafe environment such as where we sent emails. Using such, we have built the email verification and password reset functionality.
+
 
