@@ -681,6 +681,15 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#custom-exception-class-for-unverified-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Exception Class for Unverified Accounts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#rolechecker-dependency-with-verification-check" class="md-nav__link">
     <span class="md-ellipsis">
       RoleChecker Dependency with Verification Check
@@ -829,6 +838,15 @@
   <a href="#verifying-emails" class="md-nav__link">
     <span class="md-ellipsis">
       Verifying Emails
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-exception-class-for-unverified-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Exception Class for Unverified Accounts
     </span>
   </a>
   
@@ -1272,98 +1290,84 @@ links.</p>
 <p>Having got the <code>token_data</code>, we obtain the user's email, check if the email is not None and if not, we obtain the user account and update the <code>is_verified</code>  field on the account to <code>True</code>. We then raise an exception in case the email was not obtained. </p>
 <p>To ensure the verification link expires after a certain time, we'll modify the <code>decode_url_safe_token</code> function. This function will be updated to handle token expiration, ensuring that tokens are only valid for a specified duration.</p>
 <p>First, we'll update the <code>decode_url_safe_token</code> function in src/auth/utils. We use the <code>URLSafeTimedSerializer</code> from the itsdangerous package to create tokens with expiration times. In the updated function, we'll include logic to check whether the token has expired based on the time it was created.</p>
-<p>```python title ="update create_url_safe_token"</p>
-<p>def create_url_safe_token(data: dict, expiration=3600) -&gt; str:
-    """
-    Create a URL-safe token with an expiration time.
-    """
-    return serializer.dumps(data, salt=salt, expires_in=expiration)</p>
-<p>def decode_url_safe_token(token: str, max_age=3600) -&gt; dict:
-    """
-    Decode a URL-safe token and check for expiration.
-    """
-    try:
-        # Deserialize the token and check if it's expired
-        data = serializer.loads(token, salt=salt, max_age=max_age)
-        return data
-    except SignatureExpired:
-        raise HTTPException(status_code=400, detail="Token has expired")
-    except BadSignature:
-        raise HTTPException(status_code=400, detail="Invalid token")
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>The serializer&#39;s `dumps` method accepts an `expires_in` parameter, which specifies how long the token should be valid (in seconds). For example, a token might be valid for 1 hour (3600 seconds).
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
-<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>The `decode_url_safe_token` function will handle token decoding and check if the token is still valid. If the token is expired, it raises a `SignatureExpired` exception. If the token is invalid for any other reason, it raises a `BadSignature` exception. These exceptions will be used to provide appropriate error messages to the user.
-<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
-<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>With these changes, the token will be checked for expiration when a user attempts to verify their email. If the token is no longer valid, the user will receive a message indicating that the token has expired or is invalid.
+<div class="highlight"><span class="filename">update create_url_safe_token</span><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span> <span class="nf">create_url_safe_token</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">expiration</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="sd">    Create a URL-safe token with an expiration time.</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="k">return</span> <span class="n">serializer</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">salt</span><span class="o">=</span><span class="n">salt</span><span class="p">,</span> <span class="n">expires_in</span><span class="o">=</span><span class="n">expiration</span><span class="p">)</span>
 <a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
-<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>Next, we update the `/verify` endpoint to use the modified `decode_url_safe_token` function. This endpoint receives the token as a path parameter, decodes it, and validates the email contained within. If the email is valid and the token is not expired, the user’s account is marked as verified. If the token is invalid or expired, the endpoint raises an HTTP exception with an appropriate error message.
-<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
-<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>Let us try to verify a user account again. With different credentials, I will create a new user account as shown below.
-<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>
-<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>Creating a user account sends an email successfully.
-<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>
-<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>![creating a user account with different credentials](./img/img62.png)
-<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>
-<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>The verification will be sent successfully and the link will be sent as shown below.
-<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>
-<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>![verification email sent successfully](./img/img63.png)
-<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>
-<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>![Account Verifed Successfully](./img/img64.png)
-<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>
-<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>
-<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>### Custom Exception Class for Unverified Accounts
-<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>
-<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>We shall create a custom exception class, `AccountNotVerified`, to handle cases where a user who hasn&#39;t verified their account tries to access a protected endpoint. This exception class will help provide clear feedback when an unverified user attempts to access restricted parts of your application.
-<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>
-<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>Here’s the implementation in `src/errors.py`:
-<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a>
-<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a>```python
-<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a># src/errors.py
-<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a>from fastapi import FastAPI, status
-<a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a>from fastapi.exceptions import RequestValidationError
-<a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a>from typing import Any
-<a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a>from fastapi.responses import JSONResponse
-<a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a>
-<a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a>class AccountNotVerified(Exception):
-<a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a>    &quot;&quot;&quot;Exception raised when the user account is not verified.&quot;&quot;&quot;
-<a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a>    pass
-<a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a>
-<a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a>... # create_exception_handler code
-<a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a>
-<a id="__codelineno-15-41" name="__codelineno-15-41" href="#__codelineno-15-41"></a>def register_all_errors(app: FastAPI):
-<a id="__codelineno-15-42" name="__codelineno-15-42" href="#__codelineno-15-42"></a>    app.add_exception_handler(
-<a id="__codelineno-15-43" name="__codelineno-15-43" href="#__codelineno-15-43"></a>        AccountNotVerified,
-<a id="__codelineno-15-44" name="__codelineno-15-44" href="#__codelineno-15-44"></a>        create_exception_handler(
-<a id="__codelineno-15-45" name="__codelineno-15-45" href="#__codelineno-15-45"></a>            status_code=status.HTTP_403_FORBIDDEN,
-<a id="__codelineno-15-46" name="__codelineno-15-46" href="#__codelineno-15-46"></a>            initial_detail={
-<a id="__codelineno-15-47" name="__codelineno-15-47" href="#__codelineno-15-47"></a>                &quot;message&quot;: &quot;Account Not Verified&quot;,
-<a id="__codelineno-15-48" name="__codelineno-15-48" href="#__codelineno-15-48"></a>                &quot;error_code&quot;: &quot;account_not_verified&quot;,
-<a id="__codelineno-15-49" name="__codelineno-15-49" href="#__codelineno-15-49"></a>                &quot;resolution&quot;: &quot;Please check your email for verification details&quot;
-<a id="__codelineno-15-50" name="__codelineno-15-50" href="#__codelineno-15-50"></a>            },
-<a id="__codelineno-15-51" name="__codelineno-15-51" href="#__codelineno-15-51"></a>        ),
-<a id="__codelineno-15-52" name="__codelineno-15-52" href="#__codelineno-15-52"></a>    )
-<a id="__codelineno-15-53" name="__codelineno-15-53" href="#__codelineno-15-53"></a>
-<a id="__codelineno-15-54" name="__codelineno-15-54" href="#__codelineno-15-54"></a>    # Register other exception handlers as needed
-</code></pre></div></p>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="k">def</span> <span class="nf">decode_url_safe_token</span><span class="p">(</span><span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">max_age</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="sd">    Decode a URL-safe token and check for expiration.</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>        <span class="c1"># Deserialize the token and check if it&#39;s expired</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">salt</span><span class="o">=</span><span class="n">salt</span><span class="p">,</span> <span class="n">max_age</span><span class="o">=</span><span class="n">max_age</span><span class="p">)</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>        <span class="k">return</span> <span class="n">data</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>    <span class="k">except</span> <span class="n">SignatureExpired</span><span class="p">:</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Token has expired&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>    <span class="k">except</span> <span class="n">BadSignature</span><span class="p">:</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Invalid token&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>The serializer's <code>dumps</code> method accepts an <code>expires_in</code> parameter, which specifies how long the token should be valid (in seconds). For example, a token might be valid for 1 hour (3600 seconds).</p>
+<p>The <code>decode_url_safe_token</code> function will handle token decoding and check if the token is still valid. If the token is expired, it raises a <code>SignatureExpired</code> exception. If the token is invalid for any other reason, it raises a <code>BadSignature</code> exception. These exceptions will be used to provide appropriate error messages to the user.</p>
+<p>With these changes, the token will be checked for expiration when a user attempts to verify their email. If the token is no longer valid, the user will receive a message indicating that the token has expired or is invalid.</p>
+<p>Next, we update the <code>/verify</code> endpoint to use the modified <code>decode_url_safe_token</code> function. This endpoint receives the token as a path parameter, decodes it, and validates the email contained within. If the email is valid and the token is not expired, the user’s account is marked as verified. If the token is invalid or expired, the endpoint raises an HTTP exception with an appropriate error message.</p>
+<p>Let us try to verify a user account again. With different credentials, I will create a new user account as shown below.</p>
+<p>Creating a user account sends an email successfully.</p>
+<p><a class="glightbox" href="../img/img62.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="creating a user account with different credentials" src="../img/img62.png" /></a></p>
+<p>The verification will be sent successfully and the link will be sent as shown below.</p>
+<p><a class="glightbox" href="../img/img63.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="verification email sent successfully" src="../img/img63.png" /></a></p>
+<p><a class="glightbox" href="../img/img64.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Account Verifed Successfully" src="../img/img64.png" /></a></p>
+<h3 id="custom-exception-class-for-unverified-accounts">Custom Exception Class for Unverified Accounts</h3>
+<p>We shall create a custom exception class, <code>AccountNotVerified</code>, to handle cases where a user who hasn't verified their account tries to access a protected endpoint. This exception class will help provide clear feedback when an unverified user attempts to access restricted parts of your application.</p>
+<p>Here’s the implementation in <code>src/errors.py</code>:</p>
+<div class="highlight"><span class="filename">account not verified custom exception</span><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># src/errors.py</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">status</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="kn">from</span> <span class="nn">fastapi.exceptions</span> <span class="kn">import</span> <span class="n">RequestValidationError</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="kn">from</span> <span class="nn">fastapi.responses</span> <span class="kn">import</span> <span class="n">JSONResponse</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="k">class</span> <span class="nc">AccountNotVerified</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised when the user account is not verified.&quot;&quot;&quot;</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="k">pass</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="o">...</span> <span class="c1"># create_exception_handler code</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="k">def</span> <span class="nf">register_all_errors</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>    <span class="n">app</span><span class="o">.</span><span class="n">add_exception_handler</span><span class="p">(</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>        <span class="n">AccountNotVerified</span><span class="p">,</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>        <span class="n">create_exception_handler</span><span class="p">(</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_403_FORBIDDEN</span><span class="p">,</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>            <span class="n">initial_detail</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>                <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Account Not Verified&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>                <span class="s2">&quot;error_code&quot;</span><span class="p">:</span> <span class="s2">&quot;account_not_verified&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>                <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="s2">&quot;Please check your email for verification details&quot;</span>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>            <span class="p">},</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>        <span class="p">),</span>
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>    <span class="p">)</span>
+<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>
+<a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>    <span class="c1"># Register other exception handlers as needed</span>
+</code></pre></div>
 <h3 id="rolechecker-dependency-with-verification-check">RoleChecker Dependency with Verification Check</h3>
 <p>You updated the <code>RoleChecker</code> dependency in <code>src/auth/dependencies.py</code> to first check if the user account is verified before checking their role. Here’s how you integrated this check:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># src/auth/dependencies.py</span>
-<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span>
-<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">Depends</span>
-<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="kn">from</span> <span class="nn">src.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
-<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="kn">from</span> <span class="nn">src.auth.utils</span> <span class="kn">import</span> <span class="n">get_current_user</span>
-<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="kn">from</span> <span class="nn">src.errors</span> <span class="kn">import</span> <span class="n">AccountNotVerified</span>
-<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
-<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="k">class</span> <span class="nc">RoleChecker</span><span class="p">:</span>
-<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">allowed_roles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">allowed_roles</span> <span class="o">=</span> <span class="n">allowed_roles</span>
-<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>
-<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_user</span><span class="p">:</span> <span class="n">User</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_current_user</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_verified</span><span class="p">:</span>
-<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>            <span class="k">raise</span> <span class="n">AccountNotVerified</span><span class="p">()</span>
-<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>        <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">role</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_roles</span><span class="p">:</span>
-<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>            <span class="k">return</span> <span class="kc">True</span>
-<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>        <span class="k">raise</span> <span class="n">InsufficientPermission</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># src/auth/dependencies.py</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">Depends</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="kn">from</span> <span class="nn">src.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="kn">from</span> <span class="nn">src.auth.utils</span> <span class="kn">import</span> <span class="n">get_current_user</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="kn">from</span> <span class="nn">src.errors</span> <span class="kn">import</span> <span class="n">AccountNotVerified</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="k">class</span> <span class="nc">RoleChecker</span><span class="p">:</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">allowed_roles</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">allowed_roles</span> <span class="o">=</span> <span class="n">allowed_roles</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_user</span><span class="p">:</span> <span class="n">User</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_current_user</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">current_user</span><span class="o">.</span><span class="n">is_verified</span><span class="p">:</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>            <span class="k">raise</span> <span class="n">AccountNotVerified</span><span class="p">()</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>        <span class="k">if</span> <span class="n">current_user</span><span class="o">.</span><span class="n">role</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_roles</span><span class="p">:</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>            <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>        <span class="k">raise</span> <span class="n">InsufficientPermission</span><span class="p">()</span>
 </code></pre></div>
 <p>In this setup:
 - <strong>Verification Check</strong>: Before checking if the user’s role is allowed, the <code>RoleChecker</code> verifies if the user’s account is marked as verified. If the user is not verified, the <code>AccountNotVerified</code> exception is raised.
@@ -1382,77 +1386,77 @@ links.</p>
 <h3 id="password-reset">Password Reset</h3>
 <p>Now that we have verified user emails, we shall proceed to allow users reset their passwords once they have forgotten them. Now the approcah for sending and decoding user details 1n the emails is the same we shall use.</p>
 <p>Let us begin by creating the schemas for the password resets in <code>src/auth/routes.py</code>.</p>
-<div class="highlight"><span class="filename">password reset schemas</span><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="o">...</span> <span class="c1">#the rest of the code</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">class</span> <span class="nc">PasswordResetRequestModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
-<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
-<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>
-<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="k">class</span> <span class="nc">PasswordResetConfirmModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="n">new_password</span><span class="p">:</span> <span class="nb">str</span>
-<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="n">confirm_new_password</span><span class="p">:</span> <span class="nb">str</span>
+<div class="highlight"><span class="filename">password reset schemas</span><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="o">...</span> <span class="c1">#the rest of the code</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">class</span> <span class="nc">PasswordResetRequestModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="k">class</span> <span class="nc">PasswordResetConfirmModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>    <span class="n">new_password</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>    <span class="n">confirm_new_password</span><span class="p">:</span> <span class="nb">str</span>
 </code></pre></div>
 <p>We have created the <code>PasswordResetRequestSchema</code> which shall allow users to provide their email address to which an email verification link shall be sent.</p>
 <p>In addition to that is the <code>PasswordResetConfirmModel</code> which we shall use to to set a new password.</p>
 <p>Let us now add the endpoints for requesting a password reset and resetting a password respectively.</p>
-<div class="highlight"><span class="filename">password reset endpoints</span><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/password-reset-request&quot;</span><span class="p">)</span>
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">password_reset_request</span><span class="p">(</span><span class="n">email_data</span><span class="p">:</span> <span class="n">PasswordResetRequestModel</span><span class="p">):</span>
-<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">email</span> <span class="o">=</span> <span class="n">email_data</span><span class="o">.</span><span class="n">email</span>
-<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
-<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">create_url_safe_token</span><span class="p">({</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">})</span>
-<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
-<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>    <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">Config</span><span class="o">.</span><span class="n">DOMAIN</span><span class="si">}</span><span class="s2">/api/v1/auth/password-reset-confirm/</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>
-<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>    <span class="n">html_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="s2">    &lt;h1&gt;Reset Your Password&lt;/h1&gt;</span>
-<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="s2">    &lt;p&gt;Please click this &lt;a href=&quot;</span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2">&quot;&gt;link&lt;/a&gt; to Reset Your Password&lt;/p&gt;</span>
-<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="s2">    &quot;&quot;&quot;</span>
-<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>    <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;Reset Your Password&quot;</span>
-<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>
-<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>    <span class="n">send_email</span><span class="o">.</span><span class="n">delay</span><span class="p">([</span><span class="n">email</span><span class="p">],</span> <span class="n">subject</span><span class="p">,</span> <span class="n">html_message</span><span class="p">)</span>
-<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
-<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>        <span class="n">content</span><span class="o">=</span><span class="p">{</span>
-<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Please check your email for instructions to reset your password&quot;</span><span class="p">,</span>
-<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>        <span class="p">},</span>
-<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a>        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
-<a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a>    <span class="p">)</span>
-<a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a>
-<a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a>
-<a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/password-reset-confirm/</span><span class="si">{token}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">reset_account_password</span><span class="p">(</span>
-<a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a>    <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a>    <span class="n">passwords</span><span class="p">:</span> <span class="n">PasswordResetConfirmModel</span><span class="p">,</span>
-<a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
-<a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a><span class="p">):</span>
-<a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a>    <span class="n">new_password</span> <span class="o">=</span> <span class="n">passwords</span><span class="o">.</span><span class="n">new_password</span>
-<a id="__codelineno-18-31" name="__codelineno-18-31" href="#__codelineno-18-31"></a>    <span class="n">confirm_password</span> <span class="o">=</span> <span class="n">passwords</span><span class="o">.</span><span class="n">confirm_new_password</span>
-<a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a>
-<a id="__codelineno-18-33" name="__codelineno-18-33" href="#__codelineno-18-33"></a>    <span class="k">if</span> <span class="n">new_password</span> <span class="o">!=</span> <span class="n">confirm_password</span><span class="p">:</span>
-<a id="__codelineno-18-34" name="__codelineno-18-34" href="#__codelineno-18-34"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
-<a id="__codelineno-18-35" name="__codelineno-18-35" href="#__codelineno-18-35"></a>            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Passwords do not match&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span>
-<a id="__codelineno-18-36" name="__codelineno-18-36" href="#__codelineno-18-36"></a>        <span class="p">)</span>
-<a id="__codelineno-18-37" name="__codelineno-18-37" href="#__codelineno-18-37"></a>
-<a id="__codelineno-18-38" name="__codelineno-18-38" href="#__codelineno-18-38"></a>    <span class="n">token_data</span> <span class="o">=</span> <span class="n">decode_url_safe_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
-<a id="__codelineno-18-39" name="__codelineno-18-39" href="#__codelineno-18-39"></a>
-<a id="__codelineno-18-40" name="__codelineno-18-40" href="#__codelineno-18-40"></a>    <span class="n">user_email</span> <span class="o">=</span> <span class="n">token_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">)</span>
-<a id="__codelineno-18-41" name="__codelineno-18-41" href="#__codelineno-18-41"></a>
-<a id="__codelineno-18-42" name="__codelineno-18-42" href="#__codelineno-18-42"></a>    <span class="k">if</span> <span class="n">user_email</span><span class="p">:</span>
-<a id="__codelineno-18-43" name="__codelineno-18-43" href="#__codelineno-18-43"></a>        <span class="n">user</span> <span class="o">=</span> <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">get_user_by_email</span><span class="p">(</span><span class="n">user_email</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
-<a id="__codelineno-18-44" name="__codelineno-18-44" href="#__codelineno-18-44"></a>
-<a id="__codelineno-18-45" name="__codelineno-18-45" href="#__codelineno-18-45"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="p">:</span>
-<a id="__codelineno-18-46" name="__codelineno-18-46" href="#__codelineno-18-46"></a>            <span class="k">raise</span> <span class="n">UserNotFound</span><span class="p">()</span>
-<a id="__codelineno-18-47" name="__codelineno-18-47" href="#__codelineno-18-47"></a>
-<a id="__codelineno-18-48" name="__codelineno-18-48" href="#__codelineno-18-48"></a>        <span class="n">passwd_hash</span> <span class="o">=</span> <span class="n">generate_passwd_hash</span><span class="p">(</span><span class="n">new_password</span><span class="p">)</span>
-<a id="__codelineno-18-49" name="__codelineno-18-49" href="#__codelineno-18-49"></a>        <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">update_user</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;password_hash&quot;</span><span class="p">:</span> <span class="n">passwd_hash</span><span class="p">},</span> <span class="n">session</span><span class="p">)</span>
-<a id="__codelineno-18-50" name="__codelineno-18-50" href="#__codelineno-18-50"></a>
-<a id="__codelineno-18-51" name="__codelineno-18-51" href="#__codelineno-18-51"></a>        <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
-<a id="__codelineno-18-52" name="__codelineno-18-52" href="#__codelineno-18-52"></a>            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Password reset Successfully&quot;</span><span class="p">},</span>
-<a id="__codelineno-18-53" name="__codelineno-18-53" href="#__codelineno-18-53"></a>            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
-<a id="__codelineno-18-54" name="__codelineno-18-54" href="#__codelineno-18-54"></a>        <span class="p">)</span>
-<a id="__codelineno-18-55" name="__codelineno-18-55" href="#__codelineno-18-55"></a>
-<a id="__codelineno-18-56" name="__codelineno-18-56" href="#__codelineno-18-56"></a>    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
-<a id="__codelineno-18-57" name="__codelineno-18-57" href="#__codelineno-18-57"></a>        <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Error occured during password reset.&quot;</span><span class="p">},</span>
-<a id="__codelineno-18-58" name="__codelineno-18-58" href="#__codelineno-18-58"></a>        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
-<a id="__codelineno-18-59" name="__codelineno-18-59" href="#__codelineno-18-59"></a>    <span class="p">)</span>
+<div class="highlight"><span class="filename">password reset endpoints</span><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/password-reset-request&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">password_reset_request</span><span class="p">(</span><span class="n">email_data</span><span class="p">:</span> <span class="n">PasswordResetRequestModel</span><span class="p">):</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="n">email</span> <span class="o">=</span> <span class="n">email_data</span><span class="o">.</span><span class="n">email</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">create_url_safe_token</span><span class="p">({</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">})</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">Config</span><span class="o">.</span><span class="n">DOMAIN</span><span class="si">}</span><span class="s2">/api/v1/auth/password-reset-confirm/</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>    <span class="n">html_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="s2">    &lt;h1&gt;Reset Your Password&lt;/h1&gt;</span>
+<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="s2">    &lt;p&gt;Please click this &lt;a href=&quot;</span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2">&quot;&gt;link&lt;/a&gt; to Reset Your Password&lt;/p&gt;</span>
+<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="s2">    &quot;&quot;&quot;</span>
+<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a>    <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;Reset Your Password&quot;</span>
+<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>
+<a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a>    <span class="n">send_email</span><span class="o">.</span><span class="n">delay</span><span class="p">([</span><span class="n">email</span><span class="p">],</span> <span class="n">subject</span><span class="p">,</span> <span class="n">html_message</span><span class="p">)</span>
+<a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
+<a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a>        <span class="n">content</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Please check your email for instructions to reset your password&quot;</span><span class="p">,</span>
+<a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>        <span class="p">},</span>
+<a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a>        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a>    <span class="p">)</span>
+<a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a>
+<a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a>
+<a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/password-reset-confirm/</span><span class="si">{token}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">reset_account_password</span><span class="p">(</span>
+<a id="__codelineno-19-26" name="__codelineno-19-26" href="#__codelineno-19-26"></a>    <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-19-27" name="__codelineno-19-27" href="#__codelineno-19-27"></a>    <span class="n">passwords</span><span class="p">:</span> <span class="n">PasswordResetConfirmModel</span><span class="p">,</span>
+<a id="__codelineno-19-28" name="__codelineno-19-28" href="#__codelineno-19-28"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
+<a id="__codelineno-19-29" name="__codelineno-19-29" href="#__codelineno-19-29"></a><span class="p">):</span>
+<a id="__codelineno-19-30" name="__codelineno-19-30" href="#__codelineno-19-30"></a>    <span class="n">new_password</span> <span class="o">=</span> <span class="n">passwords</span><span class="o">.</span><span class="n">new_password</span>
+<a id="__codelineno-19-31" name="__codelineno-19-31" href="#__codelineno-19-31"></a>    <span class="n">confirm_password</span> <span class="o">=</span> <span class="n">passwords</span><span class="o">.</span><span class="n">confirm_new_password</span>
+<a id="__codelineno-19-32" name="__codelineno-19-32" href="#__codelineno-19-32"></a>
+<a id="__codelineno-19-33" name="__codelineno-19-33" href="#__codelineno-19-33"></a>    <span class="k">if</span> <span class="n">new_password</span> <span class="o">!=</span> <span class="n">confirm_password</span><span class="p">:</span>
+<a id="__codelineno-19-34" name="__codelineno-19-34" href="#__codelineno-19-34"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span>
+<a id="__codelineno-19-35" name="__codelineno-19-35" href="#__codelineno-19-35"></a>            <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Passwords do not match&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span>
+<a id="__codelineno-19-36" name="__codelineno-19-36" href="#__codelineno-19-36"></a>        <span class="p">)</span>
+<a id="__codelineno-19-37" name="__codelineno-19-37" href="#__codelineno-19-37"></a>
+<a id="__codelineno-19-38" name="__codelineno-19-38" href="#__codelineno-19-38"></a>    <span class="n">token_data</span> <span class="o">=</span> <span class="n">decode_url_safe_token</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-19-39" name="__codelineno-19-39" href="#__codelineno-19-39"></a>
+<a id="__codelineno-19-40" name="__codelineno-19-40" href="#__codelineno-19-40"></a>    <span class="n">user_email</span> <span class="o">=</span> <span class="n">token_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;email&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-41" name="__codelineno-19-41" href="#__codelineno-19-41"></a>
+<a id="__codelineno-19-42" name="__codelineno-19-42" href="#__codelineno-19-42"></a>    <span class="k">if</span> <span class="n">user_email</span><span class="p">:</span>
+<a id="__codelineno-19-43" name="__codelineno-19-43" href="#__codelineno-19-43"></a>        <span class="n">user</span> <span class="o">=</span> <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">get_user_by_email</span><span class="p">(</span><span class="n">user_email</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-19-44" name="__codelineno-19-44" href="#__codelineno-19-44"></a>
+<a id="__codelineno-19-45" name="__codelineno-19-45" href="#__codelineno-19-45"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="p">:</span>
+<a id="__codelineno-19-46" name="__codelineno-19-46" href="#__codelineno-19-46"></a>            <span class="k">raise</span> <span class="n">UserNotFound</span><span class="p">()</span>
+<a id="__codelineno-19-47" name="__codelineno-19-47" href="#__codelineno-19-47"></a>
+<a id="__codelineno-19-48" name="__codelineno-19-48" href="#__codelineno-19-48"></a>        <span class="n">passwd_hash</span> <span class="o">=</span> <span class="n">generate_passwd_hash</span><span class="p">(</span><span class="n">new_password</span><span class="p">)</span>
+<a id="__codelineno-19-49" name="__codelineno-19-49" href="#__codelineno-19-49"></a>        <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">update_user</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;password_hash&quot;</span><span class="p">:</span> <span class="n">passwd_hash</span><span class="p">},</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-19-50" name="__codelineno-19-50" href="#__codelineno-19-50"></a>
+<a id="__codelineno-19-51" name="__codelineno-19-51" href="#__codelineno-19-51"></a>        <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
+<a id="__codelineno-19-52" name="__codelineno-19-52" href="#__codelineno-19-52"></a>            <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Password reset Successfully&quot;</span><span class="p">},</span>
+<a id="__codelineno-19-53" name="__codelineno-19-53" href="#__codelineno-19-53"></a>            <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<a id="__codelineno-19-54" name="__codelineno-19-54" href="#__codelineno-19-54"></a>        <span class="p">)</span>
+<a id="__codelineno-19-55" name="__codelineno-19-55" href="#__codelineno-19-55"></a>
+<a id="__codelineno-19-56" name="__codelineno-19-56" href="#__codelineno-19-56"></a>    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
+<a id="__codelineno-19-57" name="__codelineno-19-57" href="#__codelineno-19-57"></a>        <span class="n">content</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Error occured during password reset.&quot;</span><span class="p">},</span>
+<a id="__codelineno-19-58" name="__codelineno-19-58" href="#__codelineno-19-58"></a>        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_500_INTERNAL_SERVER_ERROR</span><span class="p">,</span>
+<a id="__codelineno-19-59" name="__codelineno-19-59" href="#__codelineno-19-59"></a>    <span class="p">)</span>
 </code></pre></div>
 <p>The first endpoint <code>/password-reset-request</code> will get a user's emailvia a POST request and send a password reset link via the provided email address.</p>
 <p>The second one will receive the <code>new_password</code> and the <code>confirm_new_password</code> and <code>token</code> sent in the verification link. From the <code>token</code>, the user's email shall be got and then the user account related to that email address shall be retrieved. </p>

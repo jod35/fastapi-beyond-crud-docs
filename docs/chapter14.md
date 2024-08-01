@@ -420,7 +420,7 @@ To ensure the verification link expires after a certain time, we'll modify the `
 
 First, we'll update the `decode_url_safe_token` function in src/auth/utils. We use the `URLSafeTimedSerializer` from the itsdangerous package to create tokens with expiration times. In the updated function, we'll include logic to check whether the token has expired based on the time it was created.
 
-```python title ="update create_url_safe_token"
+```python title="update create_url_safe_token"
 
 def create_url_safe_token(data: dict, expiration=3600) -> str:
     """
@@ -469,7 +469,7 @@ We shall create a custom exception class, `AccountNotVerified`, to handle cases 
 
 Here’s the implementation in `src/errors.py`:
 
-```python
+```python title="account not verified custom exception"
 # src/errors.py
 from fastapi import FastAPI, status
 from fastapi.exceptions import RequestValidationError
