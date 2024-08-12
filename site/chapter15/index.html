@@ -1,0 +1,1373 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Course webist for the FastAPI Beyond CRUD Course">
+      
+      
+        <meta name="author" content="Ssali Jonathan">
+      
+      
+        <link rel="canonical" href="https://jod35jon.github.io/fastapi-website/site/chapter15/">
+      
+      
+        <link rel="prev" href="../chapter14/">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
+    
+    
+      
+        <title>Background Processing - FastAPI Beyond CRUD</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-TCHXJCN975"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-TCHXJCN975",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-TCHXJCN975",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#background-processing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="FastAPI Beyond CRUD" class="md-header__button md-logo" aria-label="FastAPI Beyond CRUD" data-md-component="logo">
+      
+  <img src="../img/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            FastAPI Beyond CRUD
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Background Processing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jod35/fastapi-beyond-CRUD" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jod35/fastapi-beyond-CRUD
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="FastAPI Beyond CRUD" class="md-nav__button md-logo" aria-label="FastAPI Beyond CRUD" data-md-component="logo">
+      
+  <img src="../img/logo.svg" alt="logo">
+
+    </a>
+    FastAPI Beyond CRUD
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jod35/fastapi-beyond-CRUD" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    jod35/fastapi-beyond-CRUD
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Installation and Project SetUp
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating a Simple Web Server
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter3/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Building a CRUD REST API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter4/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Large Project Structure Using Routers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Databases with SQLModel
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Finishing Up the CRUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter7/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Creating a user authentication model
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter8/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    User Account Creation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter9/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JWT Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter10/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Role-Based Access Control
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter11/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Model And Schema Relationships
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter12/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Error Handling
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter13/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Middleware
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter14/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Email Support
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Background Processing
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Background Processing
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fastapi-background-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      FastAPI Background tasks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background-processing-with-celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background Processing with Celery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Background Processing with Celery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Celery?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up Celery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-redis-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Redis Connection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Environment Variables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-celery-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Celery Task
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-a-celery-worker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running a Celery Worker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifying-your-fastapi-endpoints-to-use-celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modifying Your FastAPI Endpoints to Use Celery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-celery-background-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Celery Background Tasks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-celery-tasks-with-flower" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring Celery Tasks with Flower
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fastapi-background-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      FastAPI Background tasks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#background-processing-with-celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Background Processing with Celery
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Background Processing with Celery">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is Celery?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up Celery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-redis-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Redis Connection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Environment Variables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-celery-task" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Celery Task
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-a-celery-worker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running a Celery Worker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifying-your-fastapi-endpoints-to-use-celery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modifying Your FastAPI Endpoints to Use Celery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-celery-background-tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Celery Background Tasks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-celery-tasks-with-flower" class="md-nav__link">
+    <span class="md-ellipsis">
+      Monitoring Celery Tasks with Flower
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="background-processing">Background Processing</h1>
+<p>We have built several features in our API that work as intended. However, some endpoints take longer to respond, causing a poor user experience and affecting our app's performance. To fix this, we need to optimize these endpoints to make them faster and more efficient. This is important to keep our app running smoothly and keep our users happy.</p>
+<h2 id="fastapi-background-tasks">FastAPI Background tasks</h2>
+<p>FastAPI provides a built-in solution for implementing background tasks, allowing us to offload tasks from the server and run them in the background.</p>
+<p>We can achieve this by using the <code>BackgroundTasks</code> class. To create background tasks, we need to inject an object of this class as a parameter into any path handler containing logic we want to push to the background.</p>
+<p>Let us start by testing the endpoints for creating user accounts.</p>
+<p><a class="glightbox" href="../img/img68.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="User registration response time" src="../img/img68.png" /></a></p>
+<p>It takes about 4 seconds for the server to return a response to the client. While it seems minimal, This can lead to perfoemance issues most especiallky if there are many requests being made to the application.</p>
+<p>To fix this, we are going to modify the user creation API path to make sure that the user verification email is sent to a background task.</p>
+<div class="highlight"><span class="filename">changing to a background task</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">BackgroundTasks</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/signup&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">create_user_Account</span><span class="p">(</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">user_data</span><span class="p">:</span> <span class="n">UserCreateModel</span><span class="p">,</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">bg_tasks</span><span class="p">:</span> <span class="n">BackgroundTasks</span><span class="p">,</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">):</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="sd">    Create user account using email, username, first_name, last_name</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="sd">    params:</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="sd">        user_data: UserCreateModel</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">email</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">email</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>    <span class="n">user_exists</span> <span class="o">=</span> <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">user_exists</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="k">if</span> <span class="n">user_exists</span><span class="p">:</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="k">raise</span> <span class="n">UserAlreadyExists</span><span class="p">()</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">new_user</span> <span class="o">=</span> <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">user_data</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">create_url_safe_token</span><span class="p">({</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">})</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">Config</span><span class="o">.</span><span class="n">DOMAIN</span><span class="si">}</span><span class="s2">/api/v1/auth/verify/</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>    <span class="n">html_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="s2">    &lt;h1&gt;Verify your Email&lt;/h1&gt;</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="s2">    &lt;p&gt;Please click this &lt;a href=&quot;</span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2">&quot;&gt;link&lt;/a&gt; to verify your email&lt;/p&gt;</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="s2">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>    <span class="n">message</span> <span class="o">=</span> <span class="n">create_message</span><span class="p">(</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>        <span class="n">recipients</span><span class="o">=</span><span class="p">[</span><span class="n">email</span><span class="p">],</span> <span class="n">subject</span><span class="o">=</span><span class="s2">&quot;Verify your email&quot;</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">html_message</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>    <span class="p">)</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>    <span class="n">bg_tasks</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="n">mail</span><span class="o">.</span><span class="n">send_message</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a>        <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Account Created! Check email to verify your account&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">new_user</span><span class="p">,</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a>    <span class="p">}</span>
+</code></pre></div>
+<p>In the <code>create_user_Account</code> function, after creating a new user and generating a verification link, the background task functionality is used to send an email verification asynchronously. By adding the task <code>mail.send_message</code> to <code>bg_tasks</code>, the email containing the verification link is sent without blocking the main thread, allowing the response to be returned immediately while the email is sent in the background. </p>
+<p>Let us now testing this with background tasks.
+<a class="glightbox" href="../img/img69.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="creating a user account with background tasks" src="../img/img69.png" /></a></p>
+<p>You can notice that the response is returned after 468 milliseconds. Adding the email sending function to background tasks sends the response immediately while the user verification link is sent via email in the backround.</p>
+<h2 id="background-processing-with-celery">Background Processing with Celery</h2>
+<p>FastAPI's background tasks are a convenient way to handle asynchronous operations without blocking the main thread. However, as the number of background tasks increases, running them all on the same FastAPI server can lead to performance bottlenecks. To address this, we can use Celery, a more scalable solution that allows tasks to be distributed across multiple worker processes and servers. This helps manage high loads efficiently and ensures that your application remains responsive even when handling a large number of background tasks.</p>
+<h3 id="what-is-celery">What is Celery?</h3>
+<p>Celery is an open-source, distributed task queue system in Python that allows you to execute tasks asynchronously in the background. It’s particularly useful for handling time-consuming operations like sending emails, processing images, or performing complex calculations without blocking the main application thread.</p>
+<p>Before setting up Celery, it's important to understand the key concepts involved:</p>
+<p><a class="glightbox" href="../img/img70.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Diagram illustrating Celery at work" src="../img/img70.png" /></a></p>
+<p>Let’s break down the working of Celery using the diagram above.</p>
+<ol>
+<li>
+<p><strong>Celery Tasks (Client):</strong><br />
+   On the server, we have the Celery <strong>tasks</strong> and the FastAPI code where these tasks will be used. A <strong>task</strong> in Celery is simply a Python function that you want to run asynchronously. This can include operations like sending emails, processing data, or interacting with external APIs. We refer to the code that sends tasks to Celery as the <strong>Celery client</strong>.</p>
+</li>
+<li>
+<p><strong>Broker:</strong><br />
+   The <strong>broker</strong> acts as a message queue that facilitates communication between the <strong>Celery client</strong> (where tasks are created) and the <strong>workers</strong> (where tasks are executed). The broker holds tasks until they are picked up by a worker. Celery supports various brokers, with RabbitMQ and Redis being the most popular choices. In our setup, we are using Redis as the task queue.</p>
+</li>
+<li>
+<p><strong>Worker:</strong><br />
+   A <strong>worker</strong> is a process that runs in the background and is responsible for executing tasks. Celery can manage multiple workers simultaneously, even across different machines, which allows for parallel task processing and resource distribution.</p>
+</li>
+<li>
+<p><strong>Result Backend:</strong><br />
+   Once a worker completes a task, its result is stored in the <strong>result backend</strong>. This is an optional component that keeps track of task outcomes, allowing you to check task status and retrieve results later. Common backends include Redis, RabbitMQ, or databases like PostgreSQL. In our case, Redis also serves as the result backend.</p>
+</li>
+</ol>
+<h3 id="setting-up-celery">Setting Up Celery</h3>
+<p>To set up Celery, we have to install it using this command.</p>
+<div class="highlight"><span class="filename">Installing Celery</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>celery
+</code></pre></div>
+<p>Then create a new file called <code>src/celery_tasks.py</code> and add the following code:</p>
+<p><div class="highlight"><span class="filename">src/celery_tasks.py</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">celery</span> <span class="kn">import</span> <span class="n">Celery</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span> <span class="nn">src.mail</span> <span class="kn">import</span> <span class="n">mail</span><span class="p">,</span> <span class="n">create_message</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span> <span class="nn">asgiref.sync</span> <span class="kn">import</span> <span class="n">async_to_sync</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">c_app</span> <span class="o">=</span> <span class="n">Celery</span><span class="p">()</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">c_app</span><span class="o">.</span><span class="n">config_from_object</span><span class="p">(</span><span class="s2">&quot;src.config&quot;</span><span class="p">)</span>
+</code></pre></div>
+Here, we import the <code>Celery</code> class and use it to create the <code>c_app</code> (Celery app) instance. We then configure it using the <code>config_from_object</code> method, pointing to <code>src/config.py</code>.</p>
+<p>Next, update <code>src/config.py</code> to include settings for the Celery app:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">pydantic_settings</span> <span class="kn">import</span> <span class="n">BaseSettings</span><span class="p">,</span> <span class="n">SettingsConfigDict</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">class</span> <span class="nc">Settings</span><span class="p">(</span><span class="n">BaseSettings</span><span class="p">):</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">DATABASE_URL</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">JWT_SECRET</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">JWT_ALGORITHM</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="c1"># add the following setting</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">REDIS_URL</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;redis://localhost:6379/0&quot;</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="o">...</span> <span class="c1"># other settings</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">DOMAIN</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">SettingsConfigDict</span><span class="p">(</span><span class="n">env_file</span><span class="o">=</span><span class="s2">&quot;.env&quot;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">Config</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="c1"># Celery configuration</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="n">broker_url</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">REDIS_URL</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="n">result_backend</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">REDIS_URL</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="n">broker_connection_retry_on_startup</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+<p>In this configuration, we've added the <code>REDIS_URL</code> environment variable, which will be used for both the broker and result backend. The <code>broker_connection_retry_on_startup</code> setting is set to <code>True</code>, meaning Celery will retry connecting to the broker if it's initially unavailable.</p>
+<h3 id="updating-redis-connection">Updating Redis Connection</h3>
+<p>We’ll now update how we connect to Redis in src/db/redis.py:</p>
+<div class="highlight"><span class="filename">updating redis connection</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span> <span class="nn">redis.asyncio</span> <span class="k">as</span> <span class="nn">aioredis</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">from</span> <span class="nn">src.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">JTI_EXPIRY</span> <span class="o">=</span> <span class="mi">3600</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">token_blocklist</span> <span class="o">=</span> <span class="n">aioredis</span><span class="o">.</span><span class="n">from_url</span><span class="p">(</span><span class="n">Config</span><span class="o">.</span><span class="n">REDIS_URL</span><span class="p">)</span>  <span class="c1"># Connect using a URL</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">add_jti_to_blocklist</span><span class="p">(</span><span class="n">jti</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="k">await</span> <span class="n">token_blocklist</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">jti</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">ex</span><span class="o">=</span><span class="n">JTI_EXPIRY</span><span class="p">)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">token_in_blocklist</span><span class="p">(</span><span class="n">jti</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="n">jti</span> <span class="o">=</span> <span class="k">await</span> <span class="n">token_blocklist</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">jti</span><span class="p">)</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="k">return</span> <span class="n">jti</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Here, we’re using redis.asyncio to connect to Redis via a URL, which is defined by the <code>REDIS_URL</code> environment variable.</p>
+<h3 id="updating-environment-variables">Updating Environment Variables</h3>
+<p>Finally, update your .env file to include the <code>REDIS_URL</code>:</p>
+<div class="highlight"><span class="filename">updating environment variables</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">DATABASE_URL</span><span class="o">=</span>&lt;your<span class="w"> </span>database<span class="w"> </span>url&gt;
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nv">JWT_SECRET</span><span class="o">=</span>&lt;your<span class="w"> </span>jwt<span class="w"> </span>secret&gt;
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nv">JWT_ALGORITHM</span><span class="o">=</span>HS256
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nv">MAIL_USERNAME</span><span class="o">=</span>&lt;your<span class="w"> </span>mail<span class="w"> </span>username&gt;
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nv">MAIL_PASSWORD</span><span class="o">=</span>&lt;your<span class="w"> </span>app<span class="w"> </span>password&gt;
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="nv">MAIL_SERVER</span><span class="o">=</span>smtp.gmail.com
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="nv">MAIL_PORT</span><span class="o">=</span><span class="m">587</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nv">MAIL_FROM</span><span class="o">=</span>&lt;your<span class="w"> </span>default<span class="w"> </span>name<span class="w"> </span>from&gt;
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="nv">MAIL_FROM_NAME</span><span class="o">=</span>Bookly
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="nv">DOMAIN</span><span class="o">=</span>localhost:8000
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="nv">REDIS_URL</span><span class="o">=</span>redis://localhost:6379<span class="w">  </span><span class="c1"># Assuming Redis is running locally</span>
+</code></pre></div>
+<h3 id="creating-a-celery-task">Creating a Celery Task</h3>
+<p>With this setup, you're ready to create and execute Celery tasks. In the next step, we’ll define our first Celery task.</p>
+<div class="highlight"><span class="filename">creating celery task for sending</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">from</span> <span class="nn">src.mail</span> <span class="kn">import</span> <span class="n">mail</span><span class="p">,</span> <span class="n">create_message</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kn">from</span> <span class="nn">asgiref.sync</span> <span class="kn">import</span> <span class="n">async_to_sync</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="o">...</span><span class="c1"># more code here</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nd">@c_app</span><span class="o">.</span><span class="n">task</span><span class="p">()</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">def</span> <span class="nf">send_email</span><span class="p">(</span><span class="n">recipients</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">subject</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">message</span> <span class="o">=</span> <span class="n">create_message</span><span class="p">(</span><span class="n">recipients</span><span class="o">=</span><span class="n">recipients</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    <span class="n">async_to_sync</span><span class="p">(</span><span class="n">mail</span><span class="o">.</span><span class="n">send_message</span><span class="p">)(</span><span class="n">message</span><span class="p">)</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Email sent&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>We have created a function called <code>send_email</code>, which is responsible for constructing an HTML message and handling the process of sending an email. This function takes three parameters: <code>recipients</code>, a list of email addresses to which the email will be sent; <code>subject</code>, the subject line of the email; and <code>body</code>, the content of the email in HTML format.</p>
+<p>To create the email message, the <code>send_email</code> function uses another function called <code>create_message</code>. Once the message is created, the function then utilizes the <code>mail.send_message</code> method to actually send the email. However, since this method is asynchronous and we want to call it within a Celery task, we use the <code>async_to_sync</code> function from ASGIRef. This function allows us to execute the async <code>mail.send_message</code> method in a synchronous context, making it compatible with Celery tasks.</p>
+<p>To make this setup work, you need to install ASGIRef by running the following command:</p>
+<div class="highlight"><span class="filename">Installing asgiref</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>asgiref
+</code></pre></div>
+<h3 id="running-a-celery-worker">Running a Celery Worker</h3>
+<p>For our tasks to run, we shall need to set up a worker process, Let us do so by running the following.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>src.celery_tasks.c_app<span class="w"> </span>--loglevel<span class="o">=</span>INFO
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="go"> -------------- celery@vostok1 v5.4.0 (opalescent)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="go">--- ***** ----- </span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="go">-- ******* ---- Linux-6.5.0-45-generic-x86_64-with-glibc2.35 2024-08-12 13:10:25</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="go">- *** --- * --- </span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="go">- ** ---------- [config]</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="go">- ** ---------- .&gt; app:         __main__:0x748bef45e200</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="go">- ** ---------- .&gt; transport:   redis://localhost:6379//</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="go">- ** ---------- .&gt; results:     redis://localhost:6379/</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="go">- *** --- * --- .&gt; concurrency: 4 (prefork)</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="go">-- ******* ---- .&gt; task events: OFF (enable -E to monitor tasks in this worker)</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="go">--- ***** ----- </span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="go"> -------------- [queues]</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="go">                .&gt; celery           exchange=celery(direct) key=celery</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="go">[tasks]</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="go">  . src.celery_tasks.send_email</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="go">[2024-08-12 13:10:25,876: INFO/MainProcess] Connected to redis://localhost:6379//</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="go">[2024-08-12 13:10:25,881: INFO/MainProcess] mingle: searching for neighbors</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="go">[W 240812 13:10:26 inspector:44] Inspect method registered failed</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a><span class="go">[W 240812 13:10:26 inspector:44] Inspect method active failed</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a><span class="go">[W 240812 13:10:26 inspector:44] Inspect method conf failed</span>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a><span class="go">[W 240812 13:10:26 inspector:44] Inspect method active_queues failed</span>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a><span class="go">[W 240812 13:10:26 inspector:44] Inspect method reserved failed</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a><span class="go">[W 240812 13:10:26 inspector:44] Inspect method revoked failed</span>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a><span class="go">[W 240812 13:10:26 inspector:44] Inspect method scheduled failed</span>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a><span class="go">[W 240812 13:10:26 inspector:44] Inspect method stats failed</span>
+</code></pre></div></p>
+<p>This command will run in our virtual environment and will point to the Celery app install <code>c_app</code> that is located in the <code>src/celery_tasks.py</code> file. We also specify the log-level to determine the verbosity of the logs generated by Celery workers. We set it to <code>INFO</code>.</p>
+<h3 id="modifying-your-fastapi-endpoints-to-use-celery">Modifying Your FastAPI Endpoints to Use Celery</h3>
+<p>Now, let's modify the signup endpoint and other endpoints that require sending emails so that they use our Celery setup:</p>
+<div class="highlight"><span class="filename">Modifying code to use Celery tasks</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="o">...</span> <span class="c1"># more imports</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span> <span class="nn">src.celery_tasks</span> <span class="kn">import</span> <span class="n">send_email</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="o">...</span> <span class="c1"># some code here</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/send_mail&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">send_mail</span><span class="p">(</span><span class="n">emails</span><span class="p">:</span> <span class="n">EmailModel</span><span class="p">):</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="n">emails</span> <span class="o">=</span> <span class="n">emails</span><span class="o">.</span><span class="n">addresses</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&lt;h1&gt;Welcome to the app&lt;/h1&gt;&quot;</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;Welcome to our app&quot;</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>    <span class="n">send_email</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">emails</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span> <span class="c1"># changed to this</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Email sent successfully&quot;</span><span class="p">}</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/signup&quot;</span><span class="p">,</span> <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+<a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">create_user_Account</span><span class="p">(</span>
+<a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>    <span class="n">user_data</span><span class="p">:</span> <span class="n">UserCreateModel</span><span class="p">,</span>
+<a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>    <span class="n">bg_tasks</span><span class="p">:</span> <span class="n">BackgroundTasks</span><span class="p">,</span>
+<a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>    <span class="n">session</span><span class="p">:</span> <span class="n">AsyncSession</span> <span class="o">=</span> <span class="n">Depends</span><span class="p">(</span><span class="n">get_session</span><span class="p">),</span>
+<a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="p">):</span>
+<a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a><span class="sd">    Create user account using email, username, first_name, last_name</span>
+<a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a><span class="sd">    params:</span>
+<a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="sd">        user_data: UserCreateModel</span>
+<a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>    <span class="n">email</span> <span class="o">=</span> <span class="n">user_data</span><span class="o">.</span><span class="n">email</span>
+<a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a>
+<a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a>    <span class="n">user_exists</span> <span class="o">=</span> <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">user_exists</span><span class="p">(</span><span class="n">email</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>
+<a id="__codelineno-9-32" name="__codelineno-9-32" href="#__codelineno-9-32"></a>    <span class="k">if</span> <span class="n">user_exists</span><span class="p">:</span>
+<a id="__codelineno-9-33" name="__codelineno-9-33" href="#__codelineno-9-33"></a>        <span class="k">raise</span> <span class="n">UserAlreadyExists</span><span class="p">()</span>
+<a id="__codelineno-9-34" name="__codelineno-9-34" href="#__codelineno-9-34"></a>
+<a id="__codelineno-9-35" name="__codelineno-9-35" href="#__codelineno-9-35"></a>    <span class="n">new_user</span> <span class="o">=</span> <span class="k">await</span> <span class="n">user_service</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="n">user_data</span><span class="p">,</span> <span class="n">session</span><span class="p">)</span>
+<a id="__codelineno-9-36" name="__codelineno-9-36" href="#__codelineno-9-36"></a>
+<a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">create_url_safe_token</span><span class="p">({</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">})</span>
+<a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a>
+<a id="__codelineno-9-39" name="__codelineno-9-39" href="#__codelineno-9-39"></a>    <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">Config</span><span class="o">.</span><span class="n">DOMAIN</span><span class="si">}</span><span class="s2">/api/v1/auth/verify/</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-9-40" name="__codelineno-9-40" href="#__codelineno-9-40"></a>
+<a id="__codelineno-9-41" name="__codelineno-9-41" href="#__codelineno-9-41"></a>    <span class="n">html</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-9-42" name="__codelineno-9-42" href="#__codelineno-9-42"></a><span class="s2">    &lt;h1&gt;Verify your Email&lt;/h1&gt;</span>
+<a id="__codelineno-9-43" name="__codelineno-9-43" href="#__codelineno-9-43"></a><span class="s2">    &lt;p&gt;Please click this &lt;a href=&quot;</span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2">&quot;&gt;link&lt;/a&gt; to verify your email&lt;/p&gt;</span>
+<a id="__codelineno-9-44" name="__codelineno-9-44" href="#__codelineno-9-44"></a><span class="s2">    &quot;&quot;&quot;</span>
+<a id="__codelineno-9-45" name="__codelineno-9-45" href="#__codelineno-9-45"></a>
+<a id="__codelineno-9-46" name="__codelineno-9-46" href="#__codelineno-9-46"></a>    <span class="n">emails</span> <span class="o">=</span> <span class="p">[</span><span class="n">email</span><span class="p">]</span>
+<a id="__codelineno-9-47" name="__codelineno-9-47" href="#__codelineno-9-47"></a>
+<a id="__codelineno-9-48" name="__codelineno-9-48" href="#__codelineno-9-48"></a>    <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;Verify Your email&quot;</span>
+<a id="__codelineno-9-49" name="__codelineno-9-49" href="#__codelineno-9-49"></a>
+<a id="__codelineno-9-50" name="__codelineno-9-50" href="#__codelineno-9-50"></a>    <span class="n">send_email</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">emails</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span> <span class="c1"># changed to this</span>
+<a id="__codelineno-9-51" name="__codelineno-9-51" href="#__codelineno-9-51"></a>
+<a id="__codelineno-9-52" name="__codelineno-9-52" href="#__codelineno-9-52"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-9-53" name="__codelineno-9-53" href="#__codelineno-9-53"></a>        <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Account Created! Check email to verify your account&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-54" name="__codelineno-9-54" href="#__codelineno-9-54"></a>        <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="n">new_user</span><span class="p">,</span>
+<a id="__codelineno-9-55" name="__codelineno-9-55" href="#__codelineno-9-55"></a>    <span class="p">}</span>
+<a id="__codelineno-9-56" name="__codelineno-9-56" href="#__codelineno-9-56"></a>
+<a id="__codelineno-9-57" name="__codelineno-9-57" href="#__codelineno-9-57"></a><span class="o">...</span> <span class="c1"># some more code here</span>
+<a id="__codelineno-9-58" name="__codelineno-9-58" href="#__codelineno-9-58"></a>
+<a id="__codelineno-9-59" name="__codelineno-9-59" href="#__codelineno-9-59"></a><span class="nd">@auth_router</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/password-reset-request&quot;</span><span class="p">)</span>
+<a id="__codelineno-9-60" name="__codelineno-9-60" href="#__codelineno-9-60"></a><span class="k">async</span> <span class="k">def</span> <span class="nf">password_reset_request</span><span class="p">(</span><span class="n">email_data</span><span class="p">:</span> <span class="n">PasswordResetRequestModel</span><span class="p">):</span>
+<a id="__codelineno-9-61" name="__codelineno-9-61" href="#__codelineno-9-61"></a>    <span class="n">email</span> <span class="o">=</span> <span class="n">email_data</span><span class="o">.</span><span class="n">email</span>
+<a id="__codelineno-9-62" name="__codelineno-9-62" href="#__codelineno-9-62"></a>
+<a id="__codelineno-9-63" name="__codelineno-9-63" href="#__codelineno-9-63"></a>    <span class="n">token</span> <span class="o">=</span> <span class="n">create_url_safe_token</span><span class="p">({</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">})</span>
+<a id="__codelineno-9-64" name="__codelineno-9-64" href="#__codelineno-9-64"></a>
+<a id="__codelineno-9-65" name="__codelineno-9-65" href="#__codelineno-9-65"></a>    <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">Config</span><span class="o">.</span><span class="n">DOMAIN</span><span class="si">}</span><span class="s2">/api/v1/auth/password-reset-confirm/</span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-9-66" name="__codelineno-9-66" href="#__codelineno-9-66"></a>
+<a id="__codelineno-9-67" name="__codelineno-9-67" href="#__codelineno-9-67"></a>    <span class="n">html_message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<a id="__codelineno-9-68" name="__codelineno-9-68" href="#__codelineno-9-68"></a><span class="s2">    &lt;h1&gt;Reset Your Password&lt;/h1&gt;</span>
+<a id="__codelineno-9-69" name="__codelineno-9-69" href="#__codelineno-9-69"></a><span class="s2">    &lt;p&gt;Please click this &lt;a href=&quot;</span><span class="si">{</span><span class="n">link</span><span class="si">}</span><span class="s2">&quot;&gt;link&lt;/a&gt; to Reset Your Password&lt;/p&gt;</span>
+<a id="__codelineno-9-70" name="__codelineno-9-70" href="#__codelineno-9-70"></a><span class="s2">    &quot;&quot;&quot;</span>
+<a id="__codelineno-9-71" name="__codelineno-9-71" href="#__codelineno-9-71"></a>    <span class="n">subject</span> <span class="o">=</span> <span class="s2">&quot;Reset Your Password&quot;</span>
+<a id="__codelineno-9-72" name="__codelineno-9-72" href="#__codelineno-9-72"></a>
+<a id="__codelineno-9-73" name="__codelineno-9-73" href="#__codelineno-9-73"></a>    <span class="n">send_email</span><span class="o">.</span><span class="n">delay</span><span class="p">([</span><span class="n">email</span><span class="p">],</span> <span class="n">subject</span><span class="p">,</span> <span class="n">html_message</span><span class="p">)</span> <span class="c1"># changed to this</span>
+<a id="__codelineno-9-74" name="__codelineno-9-74" href="#__codelineno-9-74"></a>
+<a id="__codelineno-9-75" name="__codelineno-9-75" href="#__codelineno-9-75"></a>    <span class="k">return</span> <span class="n">JSONResponse</span><span class="p">(</span>
+<a id="__codelineno-9-76" name="__codelineno-9-76" href="#__codelineno-9-76"></a>        <span class="n">content</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-9-77" name="__codelineno-9-77" href="#__codelineno-9-77"></a>            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Please check your email for instructions to reset your password&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-78" name="__codelineno-9-78" href="#__codelineno-9-78"></a>        <span class="p">},</span>
+<a id="__codelineno-9-79" name="__codelineno-9-79" href="#__codelineno-9-79"></a>        <span class="n">status_code</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+<a id="__codelineno-9-80" name="__codelineno-9-80" href="#__codelineno-9-80"></a>    <span class="p">)</span>
+</code></pre></div>
+<p>The <code>send_email</code> function is called using <code>send_email.delay(...)</code>, which queues the task to be executed asynchronously by a Celery worker. This allows your FastAPI application to continue processing other requests without being delayed by the time-consuming process of sending emails.</p>
+<h3 id="testing-celery-background-tasks">Testing Celery Background Tasks</h3>
+<p>Before testing the email-sending functionality in your application, let's see how the Celery task runs by opening a terminal and running the following commands:</p>
+<div class="highlight"><span class="filename">sending email without Celery task</span><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="o">$</span><span class="w"> </span><span class="n">python3</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">Python</span><span class="w"> </span><span class="m">3.10</span><span class="n">.</span><span class="m">12</span><span class="w"> </span><span class="p">(</span><span class="n">main</span><span class="p">,</span><span class="w"> </span><span class="n">Jul</span><span class="w"> </span><span class="m">29</span><span class="w"> </span><span class="m">2024</span><span class="p">,</span><span class="w"> </span><span class="m">16</span><span class="o">:</span><span class="m">56</span><span class="o">:</span><span class="m">48</span><span class="p">)</span><span class="w"> </span><span class="p">[</span><span class="n">GCC</span><span class="w"> </span><span class="m">11.4</span><span class="n">.</span><span class="m">0</span><span class="p">]</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">linux</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">Type</span><span class="w"> </span><span class="s">&quot;help&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;copyright&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;credits&quot;</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="s">&quot;license&quot;</span><span class="w"> </span><span class="n">for</span><span class="w"> </span><span class="n">more</span><span class="w"> </span><span class="n">information.</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">src.celery_tasks</span><span class="w"> </span><span class="n">import</span><span class="w"> </span><span class="n">send_email</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="n">recipients</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&#39;ssalijonathank@gmail.com&#39;</span><span class="p">]</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="n">subject</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Sample Message to test Background tasks&quot;</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="o">&gt;&gt;&gt;</span><span class="w"> </span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="n">body</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;&quot;&lt;h1&gt;Test Message&lt;/h1&gt;</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="s">... &lt;p&gt;This is to test Celery background tasks&lt;/p&gt;</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="s">... &quot;&quot;&quot;</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="o">&gt;&gt;&gt;</span><span class="w"> </span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="c1"># Send the email without a background task</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="o">&gt;&gt;&gt;</span><span class="w"> </span><span class="nf">send_email</span><span class="p">(</span><span class="n">recipients</span><span class="p">,</span><span class="w"> </span><span class="n">subject</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="p">)</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="n">Email</span><span class="w"> </span><span class="n">sent</span>
+</code></pre></div>
+<p>Here, we imported the <code>send_email</code> function and ran it as a normal Python function. The outcome is the email being sent successfully.</p>
+<p>Now let's test the same with Celery background tasks:</p>
+<div class="highlight"><span class="filename">Sending the email with Celery background tasks</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task1</span> <span class="o">=</span> <span class="n">send_email</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">recipients</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task2</span> <span class="o">=</span> <span class="n">send_email</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">recipients</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task3</span> <span class="o">=</span> <span class="n">send_email</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">recipients</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task1</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="o">&lt;</span><span class="n">AsyncResult</span><span class="p">:</span> <span class="mi">100</span><span class="n">c904a</span><span class="o">-</span><span class="mi">866</span><span class="n">a</span><span class="o">-</span><span class="mi">4907</span><span class="o">-</span><span class="n">a1f2</span><span class="o">-</span><span class="mi">20499165059</span><span class="n">d</span><span class="o">&gt;</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task2</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="o">&lt;</span><span class="n">AsyncResult</span><span class="p">:</span> <span class="mi">70588</span><span class="n">fab</span><span class="o">-</span><span class="mi">9</span><span class="n">bb2</span><span class="o">-</span><span class="mi">47</span><span class="n">d5</span><span class="o">-</span><span class="n">bbd5</span><span class="o">-</span><span class="mi">7</span><span class="n">d060dbee250</span><span class="o">&gt;</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task3</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="o">&lt;</span><span class="n">AsyncResult</span><span class="p">:</span> <span class="mi">4</span><span class="n">dbe9981</span><span class="o">-</span><span class="mf">943e-485</span><span class="n">a</span><span class="o">-</span><span class="n">b470</span><span class="o">-</span><span class="n">c32358336404</span><span class="o">&gt;</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task1</span><span class="o">.</span><span class="n">status</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="s1">&#39;SUCCESS&#39;</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task2</span><span class="o">.</span><span class="n">status</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="s1">&#39;SUCCESS&#39;</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task3</span><span class="o">.</span><span class="n">status</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="s1">&#39;SUCCESS&#39;</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task1</span><span class="o">.</span><span class="n">backend</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="o">&lt;</span><span class="n">celery</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">redis</span><span class="o">.</span><span class="n">RedisBackend</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7a8830512530</span><span class="o">&gt;</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task2</span><span class="o">.</span><span class="n">backend</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="o">&lt;</span><span class="n">celery</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">redis</span><span class="o">.</span><span class="n">RedisBackend</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7a8830512530</span><span class="o">&gt;</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task3</span><span class="o">.</span><span class="n">backend</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="o">&lt;</span><span class="n">celery</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">redis</span><span class="o">.</span><span class="n">RedisBackend</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7a8830512530</span><span class="o">&gt;</span>
+</code></pre></div>
+<p>Here's a revised version of your paragraph:</p>
+<p>In this example, we called the <code>send_email</code> function as a Celery task using the <code>delay</code> method. The tasks are stored in variables <code>task1</code>, <code>task2</code>, and <code>task3</code>, each returning an <code>AsyncResult</code> object. We can monitor the status of each task using the <code>status</code> property, and we can see that all tasks have completed successfully.</p>
+<p>With our Celery setup verified, we can now test the email-sending functionality within our FastAPI application.</p>
+<p><a class="glightbox" href="../img/img74.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Sending an email" src="../img/img74.png" /></a></p>
+<p>As shown, the response is returned after just 8 milliseconds, and the email is sent successfully, as seen below:</p>
+<p><a class="glightbox" href="../img/img75.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Email sent successfully" src="../img/img75.png" /></a></p>
+<p>We have successfully configured our emails to be sent in the background using Celery.</p>
+<h3 id="monitoring-celery-tasks-with-flower">Monitoring Celery Tasks with Flower</h3>
+<p>With a solid understanding of how Celery works, it's time to explore how we can effectively monitor the tasks we've set up. While viewing task statuses in the terminal is possible, having a dashboard to track task progress and results can be much more convenient. This is where Flower comes in—a web-based dashboard designed to help you monitor Celery background tasks. Let's start by installing Flower:</p>
+<div class="highlight"><span class="filename">Installing Flower</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>flower
+</code></pre></div>
+<p>Once installed, you can run Flower using the following Celery command:</p>
+<div class="highlight"><span class="filename">Running Flower</span><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="gp">$ </span>celery<span class="w"> </span>-A<span class="w"> </span>src.celery_tasks.c_app<span class="w"> </span>flower
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="go">[I 240812 13:10:25 command:168] Visit me at http://0.0.0.0:5555</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="go">[I 240812 13:10:25 command:176] Broker: redis://localhost:6379//</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="go">[I 240812 13:10:25 command:177] Registered tasks: </span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="go">    [&#39;celery.accumulate&#39;,</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="go">     &#39;celery.backend_cleanup&#39;,</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="go">     &#39;celery.chain&#39;,</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="go">     &#39;celery.chord&#39;,</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="go">     &#39;celery.chord_unlock&#39;,</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="go">     &#39;celery.chunks&#39;,</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="go">     &#39;celery.group&#39;,</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="go">     &#39;celery.map&#39;,</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="go">     &#39;celery.starmap&#39;,</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="go">     &#39;src.celery_tasks.send_email&#39;]</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="go">[I 240812 13:10:25 mixins:228] Connected to redis://localhost:6379//</span>
+</code></pre></div>
+<p>After running this command, the Flower dashboard will be accessible at <code>http://0.0.0.0:5555</code>.</p>
+<p><a class="glightbox" href="../img/img76.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Celery Worker" src="../img/img76.png" /></a></p>
+<p>The image above shows the active worker process <code>celery@vostok1</code>. You can also view details about all tasks executed by the worker, thanks to the result backend (Redis) that we've configured.</p>
+<p>When you view the worker details, you'll see something like this:</p>
+<p><a class="glightbox" href="../img/img77.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Worker Details" src="../img/img77.png" /></a></p>
+<p>You can also find information about the broker:</p>
+<p><a class="glightbox" href="../img/img78.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Broker Details" src="../img/img78.png" /></a></p>
+<p>Additionally, you can view details about tasks, their arguments, and their results:</p>
+<p><a class="glightbox" href="../img/img79.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Task Details" src="../img/img79.png" /></a></p>
+<p>Using Flower is beneficial as it allows you to monitor task statuses, retry failed tasks, and much more. Therefore, it's highly recommended to have Flower set up and installed in your environment.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In this chapter, we've explored how to enhance our application's performance using background tasks. We began with FastAPI's built-in background tasks, introduced Celery to handle more complex scenarios, and then set up a web dashboard with Flower to monitor these tasks effectively.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../chapter14/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Email Support">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Email Support
+              </div>
+            </div>
+          </a>
+        
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/jod35" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.footer", "navigation.instant", "navigation.top", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>

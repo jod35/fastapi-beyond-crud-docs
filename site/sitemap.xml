@@ -2,77 +2,82 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter1/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter10/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter11/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter12/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter13/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter14/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://jod35jon.github.io/fastapi-website/site/chapter15/</loc>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter2/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter3/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter4/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter5/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter6/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter7/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter8/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://jod35jon.github.io/fastapi-website/site/chapter9/</loc>
-         <lastmod>2024-08-01</lastmod>
+         <lastmod>2024-08-12</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
