@@ -96,13 +96,16 @@ Let’s break down the working of Celery using the diagram above.
 4. **Result Backend:**  
    Once a worker completes a task, its result is stored in the **result backend**. This is an optional component that keeps track of task outcomes, allowing you to check task status and retrieve results later. Common backends include Redis, RabbitMQ, or databases like PostgreSQL. In our case, Redis also serves as the result backend.
 
-### Creating Celery Tasks
 
-To create a Celery task, you decorate any function with the `@app.task` decorator, where `app` is the Celery instance. Let's walk through setting up Celery and creating your first task.
+### Setting Up Celery
 
-#### Setting Up Celery
+To set up Celery, we have to install it using this command.
 
-First, create a new file called `src/celery_tasks.py` and add the following code:
+```console title="Installing Celery"
+$ pip install celery
+```
+
+Then create a new file called `src/celery_tasks.py` and add the following code:
 
 ```python title="src/celery_tasks.py"
 from celery import Celery
@@ -114,7 +117,7 @@ c_app = Celery()
 c_app.config_from_object("src.config")
 
 ```
-Here, we import the Celery class and use it to create the `c_app` (Celery app) instance. We then configure it using the `config_from_object` method, pointing to `src/config.py`.
+Here, we import the `Celery` class and use it to create the `c_app` (Celery app) instance. We then configure it using the `config_from_object` method, pointing to `src/config.py`.
 
 Next, update `src/config.py` to include settings for the Celery app:
 
@@ -127,16 +130,7 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str
     # add the following setting
     REDIS_URL: str = "redis://localhost:6379/0"
-    MAIL_USERNAME: str
-    MAIL_PASSWORD: str
-    MAIL_FROM: str
-    MAIL_PORT: int
-    MAIL_SERVER: str
-    MAIL_FROM_NAME: str
-    MAIL_STARTTLS: bool = True
-    MAIL_SSL_TLS: bool = False
-    USE_CREDENTIALS: bool = True
-    VALIDATE_CERTS: bool = True
+    ... # other settings
     DOMAIN: str
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
@@ -188,6 +182,8 @@ MAIL_FROM_NAME=Bookly
 DOMAIN=localhost:8000
 REDIS_URL=redis://localhost:6379  # Assuming Redis is running locally
 ```
+
+### Creating a Celery Task
 With this setup, you're ready to create and execute Celery tasks. In the next step, we’ll define our first Celery task.
 
 ```python title="creating celery task for sending"
@@ -205,9 +201,256 @@ def send_email(recipients: list[str], subject: str, body: str):
     print("Email sent")
 ```
 
-So, we have created a function called `send_email` which is going to create an HTML message and handle the sending of the email given parameters `recipients` which is a list of email addresses to send emails to, the `subject` of the email, and the body of the email.
+We have created a function called `send_email`, which is responsible for constructing an HTML message and handling the process of sending an email. This function takes three parameters: `recipients`, a list of email addresses to which the email will be sent; `subject`, the subject line of the email; and `body`, the content of the email in HTML format.
 
-The function will utilize the `create_message` function to create a message and finally use the `mail.send_message` function to send the message.
+To create the email message, the `send_email` function uses another function called `create_message`. Once the message is created, the function then utilizes the `mail.send_message` method to actually send the email. However, since this method is asynchronous and we want to call it within a Celery task, we use the `async_to_sync` function from ASGIRef. This function allows us to execute the async `mail.send_message` method in a synchronous context, making it compatible with Celery tasks.
 
-One important thing to note is our use of the `async_to_sync` function from ASGIRef. this function enables us to make sure that the async `mail.send_message` method is called within a Celery task. 
+To make this setup work, you need to install ASGIRef by running the following command:
 
+```console title="Installing asgiref"
+$ pip install asgiref
+```
+
+### Running a Celery Worker
+For our tasks to run, we shall need to set up a worker process, Let us do so by running the following.
+```console title=""
+$ celery -A src.celery_tasks.c_app --loglevel=INFO
+ -------------- celery@vostok1 v5.4.0 (opalescent)
+--- ***** ----- 
+-- ******* ---- Linux-6.5.0-45-generic-x86_64-with-glibc2.35 2024-08-12 13:10:25
+- *** --- * --- 
+- ** ---------- [config]
+- ** ---------- .> app:         __main__:0x748bef45e200
+- ** ---------- .> transport:   redis://localhost:6379//
+- ** ---------- .> results:     redis://localhost:6379/
+- *** --- * --- .> concurrency: 4 (prefork)
+-- ******* ---- .> task events: OFF (enable -E to monitor tasks in this worker)
+--- ***** ----- 
+ -------------- [queues]
+                .> celery           exchange=celery(direct) key=celery
+                
+
+[tasks]
+  . src.celery_tasks.send_email
+
+[2024-08-12 13:10:25,876: INFO/MainProcess] Connected to redis://localhost:6379//
+[2024-08-12 13:10:25,881: INFO/MainProcess] mingle: searching for neighbors
+[W 240812 13:10:26 inspector:44] Inspect method registered failed
+[W 240812 13:10:26 inspector:44] Inspect method active failed
+[W 240812 13:10:26 inspector:44] Inspect method conf failed
+[W 240812 13:10:26 inspector:44] Inspect method active_queues failed
+[W 240812 13:10:26 inspector:44] Inspect method reserved failed
+[W 240812 13:10:26 inspector:44] Inspect method revoked failed
+[W 240812 13:10:26 inspector:44] Inspect method scheduled failed
+[W 240812 13:10:26 inspector:44] Inspect method stats failed
+```
+
+This command will run in our virtual environment and will point to the Celery app install `c_app` that is located in the `src/celery_tasks.py` file. We also specify the log-level to determine the verbosity of the logs generated by Celery workers. We set it to `INFO`.
+
+### Modifying Your FastAPI Endpoints to Use Celery
+
+Now, let's modify the signup endpoint and other endpoints that require sending emails so that they use our Celery setup:
+
+```python title="Modifying code to use Celery tasks"
+... # more imports
+from src.celery_tasks import send_email
+
+... # some code here
+
+@auth_router.post("/send_mail")
+async def send_mail(emails: EmailModel):
+    emails = emails.addresses
+
+    html = "<h1>Welcome to the app</h1>"
+    subject = "Welcome to our app"
+
+    send_email.delay(emails, subject, html) # changed to this
+
+    return {"message": "Email sent successfully"}
+
+@auth_router.post("/signup", status_code=status.HTTP_201_CREATED)
+async def create_user_Account(
+    user_data: UserCreateModel,
+    bg_tasks: BackgroundTasks,
+    session: AsyncSession = Depends(get_session),
+):
+    """
+    Create user account using email, username, first_name, last_name
+    params:
+        user_data: UserCreateModel
+    """
+    email = user_data.email
+
+    user_exists = await user_service.user_exists(email, session)
+
+    if user_exists:
+        raise UserAlreadyExists()
+
+    new_user = await user_service.create_user(user_data, session)
+
+    token = create_url_safe_token({"email": email})
+
+    link = f"http://{Config.DOMAIN}/api/v1/auth/verify/{token}"
+
+    html = f"""
+    <h1>Verify your Email</h1>
+    <p>Please click this <a href="{link}">link</a> to verify your email</p>
+    """
+
+    emails = [email]
+
+    subject = "Verify Your email"
+
+    send_email.delay(emails, subject, html) # changed to this
+
+    return {
+        "message": "Account Created! Check email to verify your account",
+        "user": new_user,
+    }
+
+... # some more code here
+
+@auth_router.post("/password-reset-request")
+async def password_reset_request(email_data: PasswordResetRequestModel):
+    email = email_data.email
+
+    token = create_url_safe_token({"email": email})
+
+    link = f"http://{Config.DOMAIN}/api/v1/auth/password-reset-confirm/{token}"
+
+    html_message = f"""
+    <h1>Reset Your Password</h1>
+    <p>Please click this <a href="{link}">link</a> to Reset Your Password</p>
+    """
+    subject = "Reset Your Password"
+
+    send_email.delay([email], subject, html_message) # changed to this
+
+    return JSONResponse(
+        content={
+            "message": "Please check your email for instructions to reset your password",
+        },
+        status_code=status.HTTP_200_OK,
+    )
+```
+
+The `send_email` function is called using `send_email.delay(...)`, which queues the task to be executed asynchronously by a Celery worker. This allows your FastAPI application to continue processing other requests without being delayed by the time-consuming process of sending emails.
+
+### Testing Celery Background Tasks
+
+Before testing the email-sending functionality in your application, let's see how the Celery task runs by opening a terminal and running the following commands:
+
+```r title="sending email without Celery task"
+$ python3
+Python 3.10.12 (main, Jul 29 2024, 16:56:48) [GCC 11.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from src.celery_tasks import send_email
+>>> recipients = ['ssalijonathank@gmail.com']
+>>> subject = "Sample Message to test Background tasks"
+>>> 
+>>> body = """<h1>Test Message</h1>
+... <p>This is to test Celery background tasks</p>
+... """
+>>> 
+>>> # Send the email without a background task
+>>> send_email(recipients, subject, body)
+Email sent
+```
+
+Here, we imported the `send_email` function and ran it as a normal Python function. The outcome is the email being sent successfully.
+
+Now let's test the same with Celery background tasks:
+
+```py title="Sending the email with Celery background tasks"
+>>> task1 = send_email.delay(recipients, subject, body)
+>>> task2 = send_email.delay(recipients, subject, body)
+>>> task3 = send_email.delay(recipients, subject, body)
+
+>>> task1
+<AsyncResult: 100c904a-866a-4907-a1f2-20499165059d>
+>>> task2
+<AsyncResult: 70588fab-9bb2-47d5-bbd5-7d060dbee250>
+>>> task3
+<AsyncResult: 4dbe9981-943e-485a-b470-c32358336404>
+
+>>> task1.status
+'SUCCESS'
+>>> task2.status
+'SUCCESS'
+>>> task3.status
+'SUCCESS'
+
+>>> task1.backend
+<celery.backends.redis.RedisBackend object at 0x7a8830512530>
+>>> task2.backend
+<celery.backends.redis.RedisBackend object at 0x7a8830512530>
+>>> task3.backend
+<celery.backends.redis.RedisBackend object at 0x7a8830512530>
+```
+
+Here's a revised version of your paragraph:
+
+In this example, we called the `send_email` function as a Celery task using the `delay` method. The tasks are stored in variables `task1`, `task2`, and `task3`, each returning an `AsyncResult` object. We can monitor the status of each task using the `status` property, and we can see that all tasks have completed successfully.
+
+With our Celery setup verified, we can now test the email-sending functionality within our FastAPI application.
+
+![Sending an email](./img/img74.png)
+
+As shown, the response is returned after just 8 milliseconds, and the email is sent successfully, as seen below:
+
+![Email sent successfully](./img/img75.png)
+
+We have successfully configured our emails to be sent in the background using Celery.
+
+
+### Monitoring Celery Tasks with Flower
+
+With a solid understanding of how Celery works, it's time to explore how we can effectively monitor the tasks we've set up. While viewing task statuses in the terminal is possible, having a dashboard to track task progress and results can be much more convenient. This is where Flower comes in—a web-based dashboard designed to help you monitor Celery background tasks. Let's start by installing Flower:
+
+```console title="Installing Flower"
+$ pip install flower
+```
+
+Once installed, you can run Flower using the following Celery command:
+
+```console title="Running Flower"
+$ celery -A src.celery_tasks.c_app flower
+[I 240812 13:10:25 command:168] Visit me at http://0.0.0.0:5555
+[I 240812 13:10:25 command:176] Broker: redis://localhost:6379//
+[I 240812 13:10:25 command:177] Registered tasks: 
+    ['celery.accumulate',
+     'celery.backend_cleanup',
+     'celery.chain',
+     'celery.chord',
+     'celery.chord_unlock',
+     'celery.chunks',
+     'celery.group',
+     'celery.map',
+     'celery.starmap',
+     'src.celery_tasks.send_email']
+[I 240812 13:10:25 mixins:228] Connected to redis://localhost:6379//
+```
+
+After running this command, the Flower dashboard will be accessible at `http://0.0.0.0:5555`.
+
+![Celery Worker](./img/img76.png)
+
+The image above shows the active worker process `celery@vostok1`. You can also view details about all tasks executed by the worker, thanks to the result backend (Redis) that we've configured.
+
+When you view the worker details, you'll see something like this:
+
+![Worker Details](./img/img77.png)
+
+You can also find information about the broker:
+
+![Broker Details](./img/img78.png)
+
+Additionally, you can view details about tasks, their arguments, and their results:
+
+![Task Details](./img/img79.png)
+
+Using Flower is beneficial as it allows you to monitor task statuses, retry failed tasks, and much more. Therefore, it's highly recommended to have Flower set up and installed in your environment.
+
+## Conclusion
+
+In this chapter, we've explored how to enhance our application's performance using background tasks. We began with FastAPI's built-in background tasks, introduced Celery to handle more complex scenarios, and then set up a web dashboard with Flower to monitor these tasks effectively.
