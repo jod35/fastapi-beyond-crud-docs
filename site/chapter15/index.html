@@ -18,6 +18,8 @@
         <link rel="prev" href="../chapter14/">
       
       
+        <link rel="next" href="../chapter16/">
+      
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
@@ -743,6 +745,26 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chapter16/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Documentation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -1228,7 +1250,6 @@ Here, we import the <code>Celery</code> class and use it to create the <code>c_a
 <a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="o">&gt;&gt;&gt;</span> <span class="n">task3</span><span class="o">.</span><span class="n">backend</span>
 <a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="o">&lt;</span><span class="n">celery</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">redis</span><span class="o">.</span><span class="n">RedisBackend</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7a8830512530</span><span class="o">&gt;</span>
 </code></pre></div>
-<p>Here's a revised version of your paragraph:</p>
 <p>In this example, we called the <code>send_email</code> function as a Celery task using the <code>delay</code> method. The tasks are stored in variables <code>task1</code>, <code>task2</code>, and <code>task3</code>, each returning an <code>AsyncResult</code> object. We can monitor the status of each task using the <code>status</code> property, and we can see that all tasks have completed successfully.</p>
 <p>With our Celery setup verified, we can now test the email-sending functionality within our FastAPI application.</p>
 <p><a class="glightbox" href="../img/img74.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Sending an email" src="../img/img74.png" /></a></p>
@@ -1320,6 +1341,22 @@ Here, we import the <code>Celery</code> class and use it to create the <code>c_a
             </div>
           </a>
         
+        
+          
+          <a href="../chapter16/" class="md-footer__link md-footer__link--next" aria-label="Next: API Documentation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                API Documentation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
         
       </nav>
     

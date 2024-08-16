@@ -19,6 +19,7 @@ nav:
   - Middleware: chapter13.md
   - Email Support: chapter14.md
   - Background Processing: chapter15.md
+  - API Documentation: chapter16.md
 
 markdown_extensions:
   - abbr

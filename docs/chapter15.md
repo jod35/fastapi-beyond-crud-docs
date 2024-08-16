@@ -388,7 +388,6 @@ Now let's test the same with Celery background tasks:
 <celery.backends.redis.RedisBackend object at 0x7a8830512530>
 ```
 
-Here's a revised version of your paragraph:
 
 In this example, we called the `send_email` function as a Celery task using the `delay` method. The tasks are stored in variables `task1`, `task2`, and `task3`, each returning an `AsyncResult` object. We can monitor the status of each task using the `status` property, and we can see that all tasks have completed successfully.
 
