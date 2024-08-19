@@ -53,6 +53,13 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 theme:
   name: material
   custom_dir: theme
@@ -64,6 +71,9 @@ theme:
     - content.code.annotate
     - search.suggest
     - search.highlight
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate 
 
   palette:
     # Light mode
