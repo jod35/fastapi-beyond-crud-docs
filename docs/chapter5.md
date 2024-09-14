@@ -199,8 +199,11 @@ class Book(SQLModel , table=True):
 
 ### Explanation
 IN the above code, we have defined a database model using `SQLModel`. Here are the steps we took. 
+
 1. We imported the `SQLModel`, `Field`, `Column` from sqlmodel.
+
 2. We import `sqlalchemy.dialects.postgresql`as `pg` to allow us access the PostgreSQL-specific column types.
+
 3. In the model definition, we create a `Book` class that inherits from `SQLModel`, we then also add the `table` parameter to the class and set it to `True`to inidicate that the class is going to represent a database table.
 
 !!! Note
