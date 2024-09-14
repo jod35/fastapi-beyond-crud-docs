@@ -1,7 +1,7 @@
 site_name:  FastAPI Beyond CRUD
 site_description: Course webist for the FastAPI Beyond CRUD Course
 site_author: Ssali Jonathan
-site_url: https://jod35jon.github.io/fastapi-website/site/
+site_url: https://jod35.github.io/fastapi-beyond-crud-docs/site/
 nav:
   - Home: index.md
   - Installation and Project SetUp: chapter1.md

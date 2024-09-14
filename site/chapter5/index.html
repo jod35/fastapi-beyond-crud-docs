@@ -12,7 +12,7 @@
         <meta name="author" content="Ssali Jonathan">
       
       
-        <link rel="canonical" href="https://jod35jon.github.io/fastapi-website/site/chapter5/">
+        <link rel="canonical" href="https://jod35.github.io/fastapi-beyond-crud-docs/site/chapter5/">
       
       
         <link rel="prev" href="../chapter4/">
@@ -1174,10 +1174,18 @@ Inside <code>models.py</code>, add the following code.
 <a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Book </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
 </code></pre></div></p>
 <h3 id="explanation_1">Explanation</h3>
-<p>IN the above code, we have defined a database model using <code>SQLModel</code>. Here are the steps we took. 
-1. We imported the <code>SQLModel</code>, <code>Field</code>, <code>Column</code> from sqlmodel.
-2. We import <code>sqlalchemy.dialects.postgresql</code>as <code>pg</code> to allow us access the PostgreSQL-specific column types.
-3. In the model definition, we create a <code>Book</code> class that inherits from <code>SQLModel</code>, we then also add the <code>table</code> parameter to the class and set it to <code>True</code>to inidicate that the class is going to represent a database table.</p>
+<p>IN the above code, we have defined a database model using <code>SQLModel</code>. Here are the steps we took. </p>
+<ol>
+<li>
+<p>We imported the <code>SQLModel</code>, <code>Field</code>, <code>Column</code> from sqlmodel.</p>
+</li>
+<li>
+<p>We import <code>sqlalchemy.dialects.postgresql</code>as <code>pg</code> to allow us access the PostgreSQL-specific column types.</p>
+</li>
+<li>
+<p>In the model definition, we create a <code>Book</code> class that inherits from <code>SQLModel</code>, we then also add the <code>table</code> parameter to the class and set it to <code>True</code>to inidicate that the class is going to represent a database table.</p>
+</li>
+</ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>All SQLModel models are pydantic tables and therefore can be used for data validation.</p>
