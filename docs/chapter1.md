@@ -22,7 +22,7 @@ source env/bin/activate
 
 On Windows:
 ```bash
-env/Scripts/activate
+env\Scripts\activate
 ```
 
 Once activated, your command line will indicate the active virtual environment:
