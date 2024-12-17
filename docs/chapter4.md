@@ -324,11 +324,11 @@ The current organization of our API endpoints is as follows:
 
 | Endpoint	| Method |	Description |
 |-----------|--------|--------------|
-| /api/v1/books |	GET  | Read all books |
-| /api/v1/books |	POST | Create a book |
-| /api/v1/books/{book_id} |	GET |	Get a book by ID |
-| /api/v1/books/{book_id} |	PATCH |	Update a book by ID |
-| /api/v1/books/{book_id} |	DELETE |	Delete a book by ID |
+| /api/v1/books/books |	GET  | Read all books |
+| /api/v1/books/books |	POST | Create a book |
+| /api/v1/books/books/{book_id} |	GET |	Get a book by ID |
+| /api/v1/books/books/{book_id} |	PATCH |	Update a book by ID |
+| /api/v1/books/books/{book_id} |	DELETE |	Delete a book by ID |
 
 
 ## Conclusion
