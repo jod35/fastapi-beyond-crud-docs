@@ -1,64 +1,48 @@
-Here's the updated markdown with instructions for setting up a virtual environment:
+# Astro Starter Kit: Basics
 
-# FastAPI Beyond the CRUD Stuff
+```sh
+npm create astro@latest -- --template basics
+```
 
-Welcome to the documentation for the FastAPI Beyond CRUD course.
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
+[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Prerequisites](#prerequisites)
-- [Project Setup](#project-setup)
-- [Running the Application](#running-the-application)
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-## Introduction
-This repository contains the source code for the course website.
+![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
 
-## Prerequisites
-Before starting, make sure you have the following installed:
+## 🚀 Project Structure
 
-- Python 3.x
+Inside of your Astro project, you'll see the following folders and files:
 
-## Project Setup
-To set up the project, follow these steps:
+```text
+/
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── layouts/
+│   │   └── Layout.astro
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
 
-1. **Clone the repository:**
-    ```bash
-    git clone https://github.com/jod35/fastapi-beyond-crud-docs.git
-    ```
+To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
 
-2. **Navigate into the project directory:**
-    ```bash
-    cd fastapi-beyond-crud-docs
-    ```
+## 🧞 Commands
 
-3. **Create a virtual environment:**
-   - On macOS/Linux:
-     ```bash
-     python3 -m venv venv
-     ```
-   - On Windows:
-     ```bash
-     python -m venv venv
-     ```
+All commands are run from the root of the project, from a terminal:
 
-4. **Activate the virtual environment:**
-   - On macOS/Linux:
-     ```bash
-     source venv/bin/activate
-     ```
-   - On Windows:
-     ```bash
-     venv\Scripts\activate
-     ```
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-5. **Install the required dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+## 👀 Want to learn more?
 
-6. **Run the application:**
-    ```bash
-    mkdocs serve
-    ```
-
-Your application should now be up and running within the virtual environment.
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
