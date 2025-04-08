@@ -1,9 +1,34 @@
+---
+const pageTitle = "About Me";
+const identity = {
+    name : "Ssali Jonathan",
+    age: 26,
+    occupation: "Software Engineer",
+    country:"Uganda",
+    skills : ["Python", "HTML","CSS", "JavaScript"]
+}
+
+const hobbies = ["Producing Music", "Gaming", "Programming"]
+const happy = true
+const goal = 3
+const skinColor = 'red'
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>{pageTitle}</title>
+	<style define:vars={{skinColor}}>
+		h1{
+			color:red;
+		}
+		.skill{
+			color: --var(skinColor);
+			font-size: 2.5rem;
+		}
+
+	</style>
 </head>
 <body>
 	<nav>
@@ -11,7 +36,22 @@
         <a href="/about">About</a>
 		<a href="/blog">Blog</a>
     </nav>
-	<h1>FastAPI Beyond CRUD (2025 Edition)</h1>
-    <p>This is the second edition of my open FastAPI course <b>FastAPI Beyond CRUD</b>.</p>
+	<h1>{pageTitle}</h1>
+	<p>Here are some few interesting facts about me. </p>
+	<ul>
+		<li>My name is {identity.name}</li>
+		<li>I live in {identity.country} and I am a {identity.occupation}.</li>
+		<p>My skills are: </p>
+		{
+			identity.skills.map((skill)=> <b class="skill">{skill}, </b>)
+		}
+		<p>During my free time, I love to: </p>
+		{
+			hobbies.map((hobby)=><li>{hobby}</li>)
+		} 
+	</ul>
+
+	{happy && <p>I am happy to learn Astro.</p>}
+	{goal === 3 ? <p>I must get done with this after 3 days.</p> : <p>I will finish in {goal} days.</p>}
 </body>
 </html>
