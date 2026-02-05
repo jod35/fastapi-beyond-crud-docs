@@ -4,6 +4,7 @@ site_author: Ssali Jonathan
 site_url: https://jod35.github.io/fastapi-beyond-crud-docs/site/
 nav:
   - Home: index.md
+  - What's New : whats_new.md
   - Installation and Project SetUp: chapter1.md
   - Creating a Simple Web Server: chapter2.md
   - Building a CRUD REST API: chapter3.md 

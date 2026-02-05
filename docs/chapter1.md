@@ -1,82 +1,30 @@
-# Installation and Project SetUp
+# Getting Started
 
 In this chapter, we install FastAPI, starting with a minimal setup.
 
-### 1. Virtual Environment Creation
+### Prerequisites
 
-Begin by creating a virtual environment using the built-in Python module `venv`. If you already have Python installed, you might not need to install it separately. However, on Linux, installation may be necessary based on your distribution. In your commandline or terminal, type the following command.
+Before we begin, ensure you have the following installed:
 
-```bash
-python3 -m venv env
-```
+- Python 3.12 or higher
+- A text Editor like [VS Code](https://code.visualstudio.com/), [PyCharm](https://www.jetbrains.com/pycharm/), [Zed](https://zed.dev/), or any other text editor of your choice
 
-This command generates a virtual environment in the specified folder (in our example, `env`). This folder is an isolated Python environment that separates the dependencies of our project from the system-wide Python installation.
+- A unix-like environment such as Linux, macOS, or Windows with [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+- [Git](https://git-scm.com/) 
+- [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/install/)
 
-Activate the virtual environment using the following commands:
 
-On Linux or macOS:
+I will be using [Vs Code](https://code.visualstudio.com/) as my text editor of choice with the [Microsoft Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python). My Operating system of choice will be [Arch Linux](https://archlinux.org/) but any unix-like environment will work just fine. I am also using [Fish](https://fishshell.com/) as my shell of choice. It comes with a lot of features out of the box that make it a great choice for developers. My favorite feature is the tab completion of commands and arguments.
 
-```bash
-source env/bin/activate
-```
 
-On Windows:
+### Installing UV
 
-```bash
-env\Scripts\activate
-```
+Throughout this course, we will use [uv](https://docs.astral.sh/uv/) as our package and project manager. Written in Rust, uv is an exceptionally fast and modern alternative to traditional tools like [pip](https://pip.pypa.io/en/stable/), [pipenv](https://pipenv.pypa.io/en/stable/), and [poetry](https://python-poetry.org/docs/). 
 
-Once activated, your command line will indicate the active virtual environment:
+Beyond package installation, uv handles:
 
-On Linux or macOS:
+- **Python Version Management**: Easily switch between different Python versions.
+- **Dependency Resolution**: Fast and reliable resolution for complex projects.
+- **Builds & Publishing**: Tools for building and distributing your packages.
+- **Script Execution**: Run scripts in isolated environments with ease.
 
-```bash
-(env) yourusername@yourmachine$
-```
-
-On Windows:
-
-```bash
-(env) C:\users\YourUsername>
-```
-
-### 2. Directory Structure
-
-At this point, your directory structure should look like this:
-
-```
-└── env
-```
-
-### 3. Installing FastAPI
-
-Now, let us install FastAPI within the virtual environment. We shall install FastAPI using `pip` with the following command.
-
-```console
-(env) pip install "fastapi[standard]"
-```
-
-### 4. Freeze Dependencies
-
-Freeze the installed dependencies into a `requirements.txt` file to track the exact versions of our dependencies so that we can easily reproduce them in the future.
-
-```console
-(env) pip freeze > requirements.txt
-```
-
-### 5. Confirm the installation
-
-Let us confirm our FastAPI installation by running the following command.
-
-```python
-(env) fastapi --version
-FastAPI CLI version: 0.0.2
-```
-
-This command will show us the version of the FastAPI CLI—the FastAPI command-line interface. The `fastapi` command shall help us run and manage our app as we shall see in the coming chapters.
-
-If the version has been displayed, then we are sure that FastAPI has been installed in our virtual environment.
-
-## Conclusion
-
-By following these steps, you have successfully set up a virtual environment, and installed FastAPI, frozen the dependencies to reproduce the project in the future and you have verified your installation using the `fastapi` CLI command. This structured approach ensures a clean and manageable development environment for our FastAPI project. Next, we shall create a simple web server and create our first API routes.
