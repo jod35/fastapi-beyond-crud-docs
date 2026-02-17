@@ -13,11 +13,11 @@ Before proceeding, ensure the following tools are installed on your system:
 - **Docker & Docker Compose**: For containerization and service orchestration.
 
 > [!NOTE]
-> This guide uses VS Code with the Microsoft Python Extension on an Arch Linux system with the Fish shell. However, the instructions are compatible with any standard Unix-like environment and shell.
+> This guide uses VS Code with the [Microsoft Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) on an [Arch Linux system](https://endeavouros.com/) with the [Fish shell](https://fishshell.com/). However, the instructions are compatible with any standard Unix-like environment and shell.
 
 ## Introduction to uv
 
-Throughout this course, we utilize [uv](https://docs.astral.sh/uv/) as our primary package and project manager. Written in Rust, uv is an exceptionally fast and modern alternative to traditional tools such as pip, pipenv, and poetry.
+Throughout this course, we utilize [uv](https://docs.astral.sh/uv/) as our primary package and project manager. Written in Rust, uv is an exceptionally fast and modern alternative to traditional tools such as [pip](https://pip.pypa.io/en/stable/), [pipenv](https://pipenv.pypa.io/en/latest/), and [poetry](https://python-poetry.org/).
 
 Beyond package installation, uv provides robust features for:
 
@@ -285,6 +285,11 @@ $ uv run fastapi dev [PATH]
 Let us navigate to the docs at http://127.0.0.1:8000/ and we should see the following:
 
 ![Hello World](./img/hello-world.png)
+
+
+
+> [!NOTE]
+> It is also possible to use the familiar venv workflow through `uv venv` command. This will create a virtual environment in the `.venv` directory. You can then activate it using `source .venv/bin/activate` command. You can also continue to use pip via `uv pip`.
 
 
 ##Conclusion
