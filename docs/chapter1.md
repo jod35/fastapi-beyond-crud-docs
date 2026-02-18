@@ -1,6 +1,6 @@
 # Getting Started
 
-In this chapter, we will establish a minimal FastAPI development environment, covering prerequisites, package management with uv, and the orchestration of a basic service.
+In this chapter, we will establish a minimal FastAPI development environment, covering prerequisites, package management with **uv**, and the orchestration of a basic service.
 
 ## Prerequisites
 
@@ -17,9 +17,9 @@ Before proceeding, ensure the following tools are installed on your system:
 
 ## Introduction to uv
 
-Throughout this course, we utilize [uv](https://docs.astral.sh/uv/) as our primary package and project manager. Written in Rust, uv is an exceptionally fast and modern alternative to traditional tools such as [pip](https://pip.pypa.io/en/stable/), [pipenv](https://pipenv.pypa.io/en/latest/), and [poetry](https://python-poetry.org/).
+Throughout this course, we will use [uv](https://docs.astral.sh/uv/) as our primary package and project manager. Written in Rust, **uv** is an exceptionally fast and modern alternative to traditional tools such as [pip](https://pip.pypa.io/en/stable/), [pipenv](https://pipenv.pypa.io/en/latest/), and [poetry](https://python-poetry.org/).
 
-Beyond package installation, uv provides robust features for:
+Beyond package installation, **uv** provides robust features for:
 
 - **Python Version Management**: Seamlessly switching between Python runtimes.
 - **Dependency Resolution**: Rapid and reliable resolution for complex dependency trees.
@@ -28,7 +28,7 @@ Beyond package installation, uv provides robust features for:
 
 ### Installation Methods
 
-Multiple installation methods are available for uv, depending on the host operating system:
+Multiple installation methods are available for **uv**, depending on your operating system:
 
 **Using Curl** (Linux, macOS, and Unix-derived platforms)
 ```bash
@@ -66,7 +66,7 @@ Commands:
     version  Read or update the project's version
 ```
 
-The uv tool suite also includes `uvx`, a utility designed for executing binaries and Python tools directly without permanent installation:
+The **uv** tool suite also includes **uvx**, a utility designed for executing binaries and Python tools directly without permanent installation:
 
 ```bash
 $ uvx
@@ -78,13 +78,13 @@ See `uvx --help` for more information.
 To initialize a new project, use the `uv init` command:
 
 ```bash
-$ uv init
+$ uv init fastapi-beyond-crud
 Initialized project `fastapi-beyond-crud`
 ```
 
-This command generates a directory named `fastapi_beyond_crud` (or the name of the current directory) containing the following structure:
+This command generates a directory named `fastapi-beyond-crud` containing the following structure:
 
-```bash
+```text
 .
 ├── main.py
 ├── pyproject.toml
@@ -115,11 +115,11 @@ This command generates a directory named `fastapi_beyond_crud` (or the name of t
     ```
 
 - **`.python-version`**: Specifies the Python version pinned for the project.
-    ```
+    ```text
     3.13
     ```
 
-- **`README.md`**: A Markdown file for project documentation, initially populated with basic project information.
+- **`README.md`**: A Markdown file for project documentation.
 
 ### Executing the Project
 
@@ -132,9 +132,9 @@ Creating virtual environment at: .venv
 Hello from fastapi-beyond-crud!
 ```
 
-Upon execution, uv automatically creates an isolated virtual environment in the `.venv` directory and generates a `uv.lock` file to ensure deterministic builds by pinning specific dependency versions.
+Upon execution, **uv** automatically creates an isolated virtual environment in the `.venv` directory and generates a `uv.lock` file to ensure deterministic builds by pinning specific dependency versions.
 
-```
+```text
 .
 ├── .gitignore
 ├── main.py
@@ -161,7 +161,7 @@ The following commands are available in the environment:
 To enter an interactive Python REPL within the project environment:
 
 ```bash
-$ uv run python3
+$ uv run python
 Python 3.13.11 (main, Dec 17 2025, 21:08:16) [Clang 21.1.4 ] on linux
 Type "help", "copyright", "credits" or "license" for more information.
 >>> 
@@ -169,16 +169,12 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ### Dependency Management
 
-#### Adding Dependencies
-To install a new package, use the `uv add` command followed by the package name:
-
+**Adding Dependencies**: To install a new package, use `uv add`:
 ```bash
 $ uv add <package-name>
 ```
 
-#### Removing Dependencies
-To uninstall a package, use the `uv remove` command:
-
+**Removing Dependencies**: To uninstall a package, use `uv remove`:
 ```bash
 $ uv remove <package-name>
 ```
@@ -188,21 +184,21 @@ $ uv remove <package-name>
 With the project initialized, the next step is to install FastAPI. We utilize the `uv add` command to install the framework along with its standard production dependencies.
 
 ```bash
-$ uv add fastapi[standard]
+$ uv add "fastapi[standard]"
 ```
 
 The `fastapi[standard]` meta-package installs several key dependencies:
 
 - **`email-validator`**: Provides email validation via Pydantic.
 - **`httpx`**: Necessary for using the `TestClient` during automated testing.
-- **`jinja2`**: The default template engine if template rendering is required.
+- **`jinja2`**: The default template engine.
 - **`python-multipart`**: Required for processing form data.
-- **`uvicorn`**: A high-performance ASGI server used to serve the application.
-- **`fastapi-cli`**: Provides the `fastapi` command-line interface for development and deployment.
+- **`uvicorn`**: A high-performance ASGI server.
+- **`fastapi-cli`**: Provides the `fastapi` command-line interface.
 
 ### Verifying the Installation
 
-After installation, verify the environment commands by running `uv run`:
+After installation, verify the available commands by running `uv run`:
 
 ```bash
 $ uv run
@@ -231,7 +227,7 @@ The FastAPI CLI provides several essential subcommands:
 
 ## Creating a Basic Application
 
-To test the installation, we will create a minimal FastAPI application. Update `main.py` with the following code:
+To test the installation, update `main.py` with the following minimal FastAPI application:
 
 ```python
 from fastapi import FastAPI
@@ -259,38 +255,77 @@ $ uv run fastapi dev
 
 In development mode, the server will automatically monitor for file changes and reload the application, ensuring a seamless development workflow.
 
-Note:
- FastAPI now allows you tospecify where your Application instance is found in your `pyproject.toml` file. You can do that by editing it to look like this
+> [!NOTE]
+> FastAPI CLI can automatically detect your application if you specify it in your `pyproject.toml` file. This allows you to run `uv run fastapi dev` or `uv run fastapi run` without manually specifying the application object.
+>
+> You can configure this by adding the following to your `pyproject.toml`:
+>
+> ```toml
+> [tool.fastapi]
+> entrypoint = "main:app"
+> ```
 
-```
-description = "Add your description here"
-readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "fastapi[standard]>=0.128.5",
-]
+With this configuration, you can directly run:
+
+```bash
+$ uv run fastapi dev
 ```
 
-THat will allow you to directly run `uv run fastapi` or `uv fastapi run` without specifying an app object in your FastAPI commans which is done this way,
+Instead of the more verbose:
 
 ```bash
 $ uv run fastapi dev [PATH]
 ```
+
+Where `[PATH]` is the path to your application instance (e.g., `main.py`). You can also use the following options:
 
 - **`--host`**: The address to serve on (default: `127.0.0.1`).
 - **`--port`**: The port to serve on (default: `8000`).
 - **`--reload`**: Enables auto-reload on code changes.
 - **`--entrypoint`**: Manually specifies the app import string (e.g., `main:app`).
 
+
 Let us navigate to the docs at http://127.0.0.1:8000/ and we should see the following:
 
 ![Hello World](./img/hello-world.png)
 
+> [!TIP]
+> You can still use traditional virtual environments with `uv venv`, activate them with `source .venv/bin/activate`, and use `uv pip` if you prefer a more familiar workflow.
 
+## Scaffolding with `fastapi-new`
 
-> [!NOTE]
-> It is also possible to use the familiar venv workflow through `uv venv` command. This will create a virtual environment in the `.venv` directory. You can then activate it using `source .venv/bin/activate` command. You can also continue to use pip via `uv pip`.
+For an even faster setup, you can use `fastapi-new` to bootstrap a project structure automatically:
 
+```bash
+$ uvx run fastapi-new
+Installed 11 packages in 40ms
 
-##Conclusion
-In this chapter, we established a robust foundation for FastAPI development using `uv`. We covered the initialization of a project, dependency management, and the execution of a development server. By leveraging `uv`’s speed and the FastAPI CLI’s convenience, we have transitioned from a clean environment to a functional, auto-reloading web application. In the following chapters, we will build upon this setup to explore more FastAPI features.
+   FastAPI   Creating a new project 🚀
+ 
+       env   Setting up environment with uv
+ 
+      deps   Installing dependencies...
+ 
+  template   Writing template files...
+ 
+   success   ✨ Success! Created FastAPI project: fastapi-beyond-crud
+ 
+             Next steps:
+                $ cd fastapi-beyond-crud
+                $ uv run fastapi dev
+ 
+             Visit http://localhost:8000
+ 
+             Deploy to FastAPI Cloud:
+               $ uv run fastapi login
+               $ uv run fastapi deploy
+ 
+             💡 Tip: Use 'uv run' to automatically use the project's environment
+```
+
+Following these steps will generate the same FastAPI application we built manually, but with significantly less effort.
+
+## Conclusion
+
+In this chapter, we established a robust foundation for FastAPI development using **uv**. We covered project initialization, dependency management, and running a development server with the FastAPI CLI. With an auto-reloading environment ready, we can now move on to building more complex features.
+

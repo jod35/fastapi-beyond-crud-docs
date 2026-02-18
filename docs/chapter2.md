@@ -2,125 +2,82 @@
 
 ## Introduction
 
-Now that we have FastAPI installed, we are going to create a simple web server on which our application shall run using FastAPI.
+Now that we have FastAPI installed and running, we are going to explore some FastAPI features.
 
-At this stage, our directory only contains our virtual environment directory `env` and `requirements.txt` as shown below as follows:
+At this stage, our directory only contains our virtual environment directory `.venv/` and the other files we created in the previous chapter as shown below:
 
 ```console title="Current directory structure"
-└── env
-└── requirements.txt
+.
+├── .gitignore
+├── main.py
+├── pyproject.toml
+├── .python-version
+├── README.md
+└── uv.lock
 ```
 
-Let's create a file named `main.py` and populate it with the following code:
+Inside `main.py` is the following code:
 
 ```python title="main.py"
 from fastapi import FastAPI
 
+
 app = FastAPI()
 
-@app.get('/')
-async def read_root():
-    return {"message": "Hello World!"}
+
+@app.get("/")
+def index() -> dict:
+    return {"Hello": "World"}
 ```
 
-In this code snippet, we perform the following actions:
-
-### **Creating a FastAPI instance:**
-
-We have imported the `FastAPI` class from the `fastapi` package. This class serves as the primary entry point for all FastAPI applications. Through it we can get access to various FastAPI features such as routes , middleware, exception handlers and path operations.
+In this code snippet, We have imported the `FastAPI` class from the `fastapi` package. This class serves as the primary entry point for all FastAPI applications. Through it we can get access to various FastAPI features such as routes , middleware, exception handlers and path operations.
 
 We then create an instance of the `FastAPI` class named `app`. The main FastAPI instance can be called anything as long as it is a valid Python name.
 
-```python title="Creating the FastAPI instance"
-from fastapi import FastAPI
-
-app = FastAPI()
-```
-
-### **Creating an API Route:**
-
-We define our first API route by creating a function named `read_root`. This function, when accessed, will return a JSON message containing "Hello World!".
+We define our first API route by creating a function named `index`. This function, when accessed, will return a JSON message containing "Hello World!".
 
 ```python title="Your first API endpoint"
-@app.get('/')
-async def read_root():
-    return {"message": "Hello World!"}
+@app.get("/")
+def index() -> dict:
+    return {"Hello": "World"}
 ```
 
 The `@app` decorator associates the function with the HTTP GET method via the `get` method. We then provide the path (route) of the root path (`/`). This means that whenever the `/` route is accessed, the defined message will be returned.
 
 All HTTP methods such as `post`,`put`,`head`,`patch`, `delete`, `trace` and `options` are all available on the `@app` decorator.
 
+
 ### **Running the FastAPI Application:**
 
-To run our FastAPI application, we shall use the `fastapi`command we introduced in the previous chapter. Open a terminal and execute the following command within the virtual environment:
+In the previous chapter, we ran the application using UV and the `fastapi` command.
 
 ```console title="Running the server with the FastAPI CLI"
-(env)$ fastapi dev main.py
+(env)$ uv run fastapi dev
 ```
 
-The `fastapi dev` command enables us to execute our FastAPI application in development mode. This feature facilitates running our application with auto-reload functionality, ensuring that any modifications we make are automatically applied, restarting the server accordingly. It operates by identifying the FastAPI instance within the specified module or Python package, which in our scenario is `main.py`, where we have defined the app object. When we initiate our application, it will display the following output.
-
-```console title="terminal ouput"
-
-INFO     Using path main.py
-INFO     Resolved absolute path /home/jod35/Documents/fastapi-beyond-CRUD/main.py
-INFO     Searching for package file structure from directories with __init__.py files
-INFO     Importing from /home/jod35/Documents/fastapi-beyond-CRUD
-
- ╭─ Python package file structure ─╮
- │                                 │
- │      🐍 main.py                 │
- │                                 │
- ╰─────────────────────────────────╯
-
-INFO     Importing module main.py
-INFO     Found importable FastAPI app
-
- ╭─ Importable FastAPI app ─╮
- │                          │
- │  from main import app    │
- │                          │
- ╰──────────────────────────╯
-
-INFO     Using import string main:app
-
- ╭────────── FastAPI CLI - Development mode ───────────╮
- │                                                     │
- │  Serving at: http://127.0.0.1:8000                  │
- │                                                     │
- │  API docs: http://127.0.0.1:8000/docs               │
- │                                                     │
- │  Running in development mode, for production use:   │
- │                                                     │
- │  fastapi run                                        │
- │                                                     │
-
-```
+The `fastapi dev` command enables us to execute our FastAPI application in development mode. This feature facilitates running our application with auto-reload functionality, ensuring that any modifications we make are automatically applied, restarting the server accordingly. It operates by identifying the FastAPI instance within a specified module or Python package where we have defined the app object. By default it will also look for files like `main.py`, `app.py`, `api.py`, `app/main.py`, `app/app.py`, `app/api.py` .
 
 Running the server will make your application available at this web address: `http://localhost:8000`.
 
-Following these steps means you've successfully created a basic FastAPI application with a greeting endpoint. You've also learned how to start the application using Uvicorn, which helps you develop more easily because it automatically reloads your code when you make changes.
-
 ## Choosing an API Client
 
-Depending on your choice, you may want to test your application with an Api Client, I will begin with [Insomnia](https://insomnia.rest/) which is a simple open source application for testing and development APIs.
+To interact with your application, you will need an API client. While [Postman](https://postman.com) and [Insomnia](https://insomnia.rest/) are popular choices, [RestFox](https://github.com/flawiddsouza/Restfox/releases) is a great open-source alternative that works entirely locally without requiring a cloud account. In the following steps, we will use Restfox to test our endpoint.
 
-In insomnia, we shall create our simple request collection and we shall now see our response of `Hello World`.
+In Restfox, we shall create our simple request collection and we shall now see our response of `Hello World`.
 
 1. Create a new request collection
-   ![Creatina request collection](./img/img1.png)
+   ![Creatina request collection](./img/2026/create%20a%20workspace%20in%20restfox.png)
 
 2. Name the request collection
-   ![Name of the collection](./img/img2.png)
+   ![Name of the collection](./img/2026/new_workspace.png)
 
 3. Create an HTTP request
-   ![Create an HTTP request](./img/img3.png)
+   ![Create an HTTP request](./img/2026/new_request.png)
 
 4. Make a request
-   ![Make a request](./img/img4.png)
+   ![Make a request](./img/2026/first%20request.png)
 
-And just like that, you have created your FastAPI application, run it and even made your HTTP request using an HTTP client.
+And just like that, you have made your HTTP request using an HTTP client.
 
 ## Managing Requests and Responses
 
@@ -133,29 +90,24 @@ There are very many ways that clients can pass request data to a FastAPI API rou
 Through such ways, we can obtain data from incoming requests to our APIs.
 
 ### Parameter type declarations
-
-All parameters in a FastAPI request are required to have a type declaration via _type hints_. Primitive Python types such (`None`,`int`,`str`,`bool`,`float`), container types such as (`dict`,`tuples`,`dict`,`set`) and some other complex types are all supported.
-
-Additionally FastAPI also allows all types present within Python's `typing` module.
-These data types represent common conventions in Python and are utilized for variable type annotations. They facilitate type checking and model validation during compilation. Examples include `Optional`, `List`, `Dict`, `Set`, `Union`, `Tuple`, `FrozenSet`, `Iterable`, and `Deque`.
+FastAPI suggests all parameters to a route handler function have type declarations using Python type hints. For a detailed guide on how to use type hints and the various types supported, please refer to my section on [Python Type Hints](./type_hints.md).
 
 ### Path Parameters
-
-All request data supplied in the endpoint URL of a FastAPI API is acquired through a path parameter, thus rendering URLs dynamic. FastAPI adopts curly braces (`{}`) to denote path parameters when defining a URL. Once enclosed within the braces, FastAPI requires that they be provided as parameters to the route handler functions we establish for those paths.
+All request data supplied in the endpoint URL of a FastAPI API is acquired through a path parameter, thus rendering URLs dynamic. FastAPI in a similar way to format strings adopts curly braces (`{}`) to denote path parameters when defining a URL. Once enclosed within the braces, FastAPI requires that they be provided as parameters to the route handler functions we establish for those paths.
 
 ```python title="path parameters"
 #inside main.py
 @app.get('/greet/{username}')
-async def greet(username:str):
+async def greet(username: str) -> dict:
    return {"message":f"Hello {username}"}
 ```
 
 In this example the `greet()` route handler function will require `username` which is annotated with `str` indicating that the username shall be a string. Sending a greetings to the user "jona" shall return the response shown below.
 
-![Greetings a User with a username](./img/img14.png)
+![Greetings a User with a username](./img/2026/greet%20a%20user.png)
 
-Just in we make a request to the route without the param,
-![Greeting without a username specified](./img/img142.png)
+Any value provided to the path parameter is automatically converted to a string.
+![Path param converted to string](./img/2026/path%20param%20converted%20to%20a%20string.png)
 
 ### Query Parameters
 
@@ -171,7 +123,7 @@ user_list = [
 ]
 
 @app.get('/search')
-async def search_for_user(username:str):
+async def search_for_user(username: Optional[str] =None) -> dict:
    for user in user_list:
     if username in user_list :
         return {"message":f"details for user {username}"}
@@ -184,10 +136,33 @@ In this example, we've set up a route for searching users within a simple list. 
 
 Let us save and test the example above. Searching for a user who exists returns the needed response.
 
-![Searching for a user who doesnot exist](./img/img15.png)
+![Searching for a user who doesnot exist](./img/2026/query%20param%20present1.png)
 
 And searching for a user who does not exist returns the following response.
-![Searching a user who does not exist](./img/img16.png)
+![Searching a user who does not exist](./img/2026/query%20param%20present2png)
+
+There will be some validation errors thrown if we try to use the endpoint without the `search` query param. This is because the `username` parameter is required.
+![Searching without the search query param](./img/2026/query%20param%20absent.png)
+
+To make the `username` parameter optional, we can use the `Optional` type from Python's `typing` module to annotate the `username` parameter and also provide a default value of "Jerry".
+
+```python title="Optional Query Params"
+from typing import Optional
+
+@app.get('/search')
+async def search_for_user(username: Optional[str] = "Jerry") -> dict:
+   for user in user_list:
+    if username in user_list :
+        return {"message":f"details for user {username}"}
+
+    else:
+        return {"message":"User Not Found"}
+```
+
+Let us save and test the example above. Searching for a user without a query param returns the default user.
+
+
+![Searching for a user without a query param](./img/2026/query%20param%20present3.png)
 
 ### Optional Parameters
 
@@ -197,7 +172,7 @@ There may also be cases when the API route can operate as needed even in the pre
 from typing import Optional
 
 @app.get('/greet/')
-async def greet(username:Optional[str]="User"):
+async def greet(username:Optional[str]="User") -> dict:
    return {"message":f"Hello {username}"}
 
 ```
@@ -223,34 +198,33 @@ Frequently, clients need to send data to the server for tasks like creating or u
 from pydantic import BaseModel
 
 # the User model
-class UserSchema(BaseModel):
-   username:str
-   email:str
+class ProductSchema(BaseModel):
+   name:str
+   price:float
+   description:str
 
 
-@app.post("/create_user")
-async def create_user(user_data:UserSchema):
-   new_user = {
-      "username" : user_data.username,
-      "email": user_data.email
+@app.post("/create_product")
+async def create_product(product_data:ProductSchema):
+   new_product = {
+      "name" : product_data.name,
+      "price": product_data.price,
+      "description" : product_data.description 
    }
-
-   users.append(new_user)
-
-   return {"message":"User Created successfully","user":new_user}
-
 ```
-
-What we have done in the above example is to create a Pydantic model by inheriting Pydantic's `BaseModel` class. On this class we have defined attributes `username` and `email` and also annotated them with the `str` type.
+What we have done in the above example is to create a Pydantic model by inheriting Pydantic's `BaseModel` class. On this class we have defined attributes `name`, `price` and `description` and also annotated `name` and `description` with the `str` type and `description` with the float type.
 
 ```python title="A simple Pydantic model"
-class UserSchema(BaseModel):
-   username:str
-   email:str
+from pydantic import BaseModel
+
+class ProductSchema(BaseModel):
+    name: str
+    price: float
+    description: str
 
 ```
 
-Following that, have crafted an API route intended to handle a POST request at /create_user. The handler for this route accepts a parameter representing the user_data obtained from the client, with its type annotated as the Pydantic model UserSchema.
+Following that, have crafted an API route intended to handle a POST request at `/create_product`. The handler for this route accepts a parameter representing the `product_data` obtained from the client, with its type annotated as the Pydantic model `ProductSchema`.
 
 ```python
 create_user(user_data:UserSchema)
