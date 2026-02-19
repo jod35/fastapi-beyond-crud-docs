@@ -297,7 +297,7 @@ Let us navigate to the docs at http://127.0.0.1:8000/ and we should see the foll
 For an even faster setup, you can use `fastapi-new` to bootstrap a project structure automatically:
 
 ```bash
-$ uvx run fastapi-new
+$ uvx run fastapi-new fastapi-beyond-crud
 Installed 11 packages in 40ms
 
    FastAPI   Creating a new project 🚀
