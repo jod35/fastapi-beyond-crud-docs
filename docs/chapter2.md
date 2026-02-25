@@ -274,6 +274,6 @@ Making a request to this route reveals the fascinating layer of metadata that tr
 
 ## Conclusion
 
-In this chapter, we have moved beyond a simple installation and built a functioning web server. We have explored the various ways clients can communicate with our API—through path parameters, query strings, request bodies, and headers—and seen how FastAPI uses Python type hints to make this communication safe and reliable.
+In this chapter, we have moved beyond a simple installation and built a functioning web server. We have explored the various ways clients can communicate with our API—through path parameters, query strings, request bodies, and headers and seen how FastAPI uses Python type hints to make this communication safe and reliable.
 
 In the next chapter, we will take these concepts further and begin building a real-world application: a CRUD (Create, Read, Update, Delete) API for managing a bookstore, utilizing an in-memory database to keep our focus on the core logic of web development.
