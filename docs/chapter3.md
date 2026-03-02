@@ -34,20 +34,13 @@ CRUD operations are essential for data management and are commonly utilized in a
 
 Our straightforward CRUD API will feature several endpoints to perform CRUD operations on a basic in-memory database (utilizing Python lists). Below is a list of the endpoints that we will implement in our CRUD API.
 
-| Endpoint | Method  | Description |
-|----------|---------|-------------|
-| /members | GET | Retrieve all members of the SACCO. |
-| /members | POST | Create a new member in the SACCO. |
-| /members/{member_id} | GET | Retrieve details of a specific member by ID. |
-| /members/{member_id} | PUT | Update details of a specific member by ID. |
-| /members/{member_id} | DELETE | Remove a member from the SACCO by ID. |
-| /groups | GET | Retrieve all groups within the SACCO. |
-| /groups | POST | Create a new group in the SACCO. |
-| /groups/{group_id} | GET | Retrieve details of a specific group by ID. |
-| /groups/{group_id} | PUT | Update details of a specific group by ID. |
-| /groups/{group_id} | DELETE | Remove a group from the SACCO by ID. |
-| /groups/{group_id}/members/{member_id} | POST | Add a member to a specific group. |
-| /groups/{group_id}/members/{member_id} | DELETE | Remove a member from a specific group. |
+| Endpoint             | Method | Description                                  |
+| -------------------- | ------ | -------------------------------------------- |
+| /members             | GET    | Retrieve all members of the SACCO.           |
+| /members             | POST   | Create a new member in the SACCO.            |
+| /members/{member_id} | GET    | Retrieve details of a specific member by ID. |
+| /members/{member_id} | PUT    | Update details of a specific member by ID.   |
+| /members/{member_id} | DELETE | Remove a member from the SACCO by ID.        |
 
 The table above outlines various API endpoints, their corresponding HTTP methods, and their functionalities:
 
@@ -66,33 +59,10 @@ The table above outlines various API endpoints, their corresponding HTTP methods
 5. **`/members/{member_id}` - DELETE: Delete a member by ID**
         - _Description:_ This endpoint allows clients to delete a specific member from the SACCO. By sending an HTTP DELETE request to `/members/{member_id}`, the member identified by `member_id` will be removed from the records.
 
-6. **`/groups` - GET: Retrieve all groups**
-        - _Description:_ This endpoint retrieves information about all groups within the SACCO. When a client sends an HTTP GET request to `/groups`, the server responds with details of all groups.
-
-7. **`/groups` - POST: Create a group**
-        - _Description:_ To add a new group to the SACCO, clients can send an HTTP POST request to `/groups`. This operation involves creating and storing a new group based on the data provided in the request body.
-
-8. **`/groups/{group_id}` - GET: Get a group by ID**
-        - _Description:_ By sending an HTTP GET request to `/groups/{group_id}`, clients can retrieve detailed information about a specific group. The `group_id` parameter in the path specifies which group to fetch.
-
-9. **`/groups/{group_id}` - PUT: Update a group by ID**
-        - _Description:_ To modify the information of a specific group, clients can send an HTTP PUT request to `/groups/{group_id}`. The `group_id` parameter identifies the target group, and the request body contains the updated data.
-
-10. **`/groups/{group_id}` - DELETE: Delete a group by ID**
-         - _Description:_ This endpoint allows clients to delete a specific group from the SACCO. By sending an HTTP DELETE request to `/groups/{group_id}`, the group identified by `group_id` will be removed from the records.
-
-11. **`/groups/{group_id}/members/{member_id}` - POST: Add a member to a group**
-         - _Description:_ This endpoint allows clients to add a specific member to a group. By sending an HTTP POST request to `/groups/{group_id}/members/{member_id}`, the member will be added to the specified group.
-
-12. **`/groups/{group_id}/members/{member_id}` - DELETE: Remove a member from a group**
-         - _Description:_ This endpoint allows clients to remove a specific member from a group. By sending an HTTP DELETE request to `/groups/{group_id}/members/{member_id}`, the member will be removed from the specified group.
-
-With a clear plan for our simple API in place, we can now proceed to implement our CRUD API by integrating the functionalities outlined above into `main.py`. We will begin by creating two simple lists to serve as our in-memory database for members and groups.
+With a clear plan for our simple API in place, we can now proceed to implement our CRUD API by integrating the functionalities outlined above into `main.py`. We will begin by creating simple list to serve as our in-memory database for members.
 
 ```python title="In-memory database for members and groups"
 # inside main.py
-
-groups = []
 
 members = []
 ```
@@ -108,7 +78,6 @@ from enum import Enum
 
 # additional code here
 members: list["Member"] = []
-groups: list["Group"] = []
 
 
 class MemberStatus(Enum):
@@ -127,23 +96,15 @@ class Member(BaseModel):
     national_id_number: str
     occupation: str
     status: MemberStatus
-    group_id: Optional[int] = None
-
-
-class Group(BaseModel):
-    id: int
-    name: str
-    description: Optional[str] = None
-    members: list[Member] = []
 ```
 
 The code above establishes the necessary data models for our endpoints. First, we define the `MemberStatus` enum, which indicates the status of a member in a SACCO, with possible values of `active`, `inactive`, `suspended`, and `rejected`.
 
-Next, we introduce the `Member` model, which encapsulates the information we will store about individual group members. Finally, we have the `Group` model for managing group information. Notably, the `Member` model includes a `group_id` field, which will be used to associate a member with a group, establishing a one-to-many relationship. (We will elaborate on this in the databases chapter).
+Next, we introduce the `Member` model, which encapsulates the information we will store about individual group members. 
 
 We are making extensive use of [type hints](./type_hints.md) here, as evidenced by the specifications of the types of items stored in our lists.
 
-## Reading All Members (HTTP GET)
+### Reading All Members (HTTP GET)
 
 This route responds to GET requests made to `/members`, providing a list of all members in the SACCO. It ensures that the response adheres to the `List[Member]` model, guaranteeing consistency with the structure defined by the `Member` model.
 
@@ -166,7 +127,7 @@ This capability enables us to effortlessly respond with a list of member objects
 
 ![List of Members](./img/2026/empty_list_of_books.png)
 
-## Create a Member (HTTP POST)
+### Create a Member (HTTP POST)
 
 ```python title="Create a member"
 from fastapi import FastAPI, status
@@ -205,7 +166,7 @@ We can test this out by making a **GET** request to `http://localhost:8000/membe
 
 ![get members](./img/2026/get%20members%20with%20newly%20added%20data.png)
 
-## Get a member BY ID (HTTP POST)
+### Get a member BY ID (HTTP POST)
 
 ```python title="Get member by ID"
 @app.get("/members/{member_id}", tags=["Members"])
@@ -224,3 +185,114 @@ If we find it, we return it else we return a not found response. Keep in mind th
 
 ![get member by ID](./img/2026/get%20member%20by%20ID.png)
 
+
+### Update a Member by ID (HTTP PUT)
+```python title="Update a member using their ID"
+@app.put("/members/{member_id}", tags=["Members"])
+def update_member(member_id: int, updated_member: Member) -> dict:
+    for index, member in enumerate(members):
+        if member.id == member_id:
+            members[index] = updated_member
+            return {"message": "Member updated successfully", "member": updated_member}
+    return {"message": "Member not found"}
+```
+
+The update endpoint is accessed via the `/members/{member_id}` path using the HTTP PUT method, which is designed for fully updating an existing resource. The route handler requires two parameters: `member_id` (the identifier of the member to update) and `updated_member` (a `Member` object containing the new data).
+
+The function searches through the members list to find the member matching the provided `member_id`. When a match is found, it replaces the existing member data at that index with the updated information and returns a success message. If no matching member is found, it returns a "Member not found" response.
+
+To validate the endpoint, you can test it in two scenarios. First, submit a request with incomplete data (missing required fields from the `Member` model) to see FastAPI's validation error responses. Second, submit a complete request with all required fields to verify that the member data is successfully updated.
+
+![Error when updating with a missing field](./img/2026/update%20a%20member%20error.png)
+
+![Updating a member with successful response](./img/2026/update%20a%20member%20successful.png)
+
+### Delete a Member by ID (HTTP DELETE)
+
+Finally, the delete endpoint:
+
+```python title="delete member by ID"
+@app.delete(
+    "/members/{member_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Members"]
+)
+def delete_member(member_id: int) -> None:
+    for index, member in enumerate(members):
+        if member.id == member_id:
+            del members[index]
+            return
+    return {"message": "Member not found"}
+```
+
+The delete endpoint is accessed at the `/members/{member_id}` path using the HTTP DELETE method. The route handler accepts the `member_id` path parameter, which identifies the member to delete. The function iterates through the members list to locate the member with the matching ID. Once found, it removes the member from the list. If the member is not found, it returns a "Member not found" response.
+
+
+All the member endpoints will look like this for now.
+
+```python title="all member CRUD endpoints"
+
+# inside main.py
+from enum import Enum
+from typing import Optional
+from fastapi import FastAPI, Header, status
+from pydantic import BaseModel
+
+app = FastAPI()
+
+members: list["Member"] = []
+
+class MemberStatus(Enum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    SUSPENDED = "suspended"
+    REJECTED = "rejected"
+
+class Member(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    address: str
+    phone_number: str
+    national_id_number: str
+    occupation: str
+    status: MemberStatus
+
+@app.get("/members", tags=["Members"])
+def get_members() -> list[Member]:
+    return members
+
+@app.post("/members", status_code=status.HTTP_201_CREATED, tags=["Members"])
+def create_member(member: Member) -> dict:
+    members.append(member)
+    return {"message": "Member created successfully", "member_id": member.id}
+
+@app.get("/members/{member_id}", tags=["Members"])
+def get_member(member_id: int) -> Member | dict:
+    for member in members:
+        if member.id == member_id:
+            return member
+    return {"message": "Member not found"}
+
+@app.put("/members/{member_id}", tags=["Members"])
+def update_member(member_id: int, updated_member: Member) -> dict:
+    for index, member in enumerate(members):
+        if member.id == member_id:
+            members[index] = updated_member
+            return {"message": "Member updated successfully", "member": updated_member}
+    return {"message": "Member not found"}
+
+@app.delete(
+    "/members/{member_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Members"]
+)
+def delete_member(member_id: int) -> None:
+    for index, member in enumerate(members):
+        if member.id == member_id:
+            del members[index]
+            return
+    return {"message": "Member not found"}
+```
+
+## Conclusion
+
+In this chapter, we successfully implemented a foundational CRUD API for managing SACCO members. This exercise provided practical experience in defining HTTP routes using the FastAPI framework, mapping standard CRUD operations to their appropriate HTTP methods, and using Python type hints to ensure data integrity. While our current implementation relies on a simple in-memory list for storage, it establishes the essential patterns for more complex data management.
+
+CRUD operations form the cornerstone of most modern web applications, serving as the interface for core business logic. However, as applications grow in complexity, a single-file structure becomes difficult to maintain. In the next chapter, we will evolve our project by introducing a modular architecture using FastAPI routers, setting the stage for a more scalable and production-ready application.
