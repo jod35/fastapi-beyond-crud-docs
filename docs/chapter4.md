@@ -4,248 +4,220 @@
 So far, our project structure is quite simple:
 
 ```console title="Current Project structure"
-├── env/
 ├── main.py
-├── requirements.txt
+├── pyproject.toml
+├── README.md
+└── uv.lock
 ```
 
-### Currrent code structure
+### Current code structure
 Additionally, our `main.py` file looks like this:
 
 ```python title="main.py"
-from fastapi import FastAPI, Query
+# main.py
+from enum import Enum
 
-
-app = FastAPI()
-
-books = [
-    {
-        "id": 1,
-        "title": "Think Python",
-        "author": "Allen B. Downey",
-        "publisher": "O'Reilly Media",
-        "published_date": "2021-01-01",
-        "page_count": 1234,
-        "language": "English",
-    },
-    # ... (other book entries)
-]
-
-class Book(BaseModel):
-    id: int
-    title: str
-    author: str
-    publisher: str
-    published_date: str
-    page_count: int
-    language: str
-
-class BookUpdateModel(BaseModel):
-    title: str
-    author: str
-    publisher: str
-    page_count: int
-    language: str
-
-@app.get("/books", response_model=List[Book])
-async def get_all_books():
-    return books
-
-
-@app.post("/books", status_code=status.HTTP_201_CREATED)
-async def create_a_book(book_data: Book) -> dict:
-    new_book = book_data.model_dump()
-
-    books.append(new_book)
-
-    return new_book
-
-
-@app.get("/book/{book_id}")
-async def get_book(book_id: int) -> dict:
-    for book in books:
-        if book["id"] == book_id:
-            return book
-
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
-
-
-@app.patch("/book/{book_id}")
-async def update_book(book_id: int,book_update_data:BookUpdateModel) -> dict:
-    
-    for book in books:
-        if book['id'] == book_id:
-            book['title'] = book_update_data.title
-            book['publisher'] = book_update_data.publisher
-            book['page_count'] = book_update_data.page_count
-            book['language'] = book_update_data.language
-
-            return book
-        
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
-
-
-@app.delete("/book/{book_id}",status_code=status.HTTP_204_NO_CONTENT)
-async def delete_book(book_id: int):
-    for book in books:
-        if book["id"] == book_id:
-            books.remove(book)
-
-            return {}
-        
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
-```
-## Restructuring the project
-
-The problem here is that if we add more code to this file, our code will become messy and hard to maintain beacuse all our code will be in one file `main.py`. To address this, we need to create a more organized project structure. To start, let's create a new folder called `src`, which will contain an `__init__.py` file to make it a Python package:
-
-```console title="creating the src directory"
-
-├── env/
-├── main.py
-├── requirements.txt
-└── src/
-`-- └── __init__.py
-```
-
-Now, create a folder named `books` inside the `src` directory. Inside this folder, add an `__init__.py` file, a `routes.py` file, a `schemas.py` file, and a `book_data.py` file. The `routes.py` file will contain all the book routes, similar to what we created in the previous chapter. The `schemas.py` file will contain the schemas that are currently in our root directory.
-
-```console title="creating the books directory"
-├── env/
-├── main.py
-├── requirements.txt
-└── src/
-|-- └── __init__.py
-`-- └── books/
-    |-- └── __init__.py
-    |-- └── routes.py
-    |-- └── schemas.py
-    `-- └── book_data.py
-```
-
-First, let's move our `books` list from `main.py` to `book_data.py` inside the `books` directory.
-
-```python title="src/books/book_data.py"
-
-
-books = [
-    {
-        "id": 1,
-        "title": "Think Python",
-        "author": "Allen B. Downey",
-        "publisher": "O'Reilly Media",
-        "published_date": "2021-01-01",
-        "page_count": 1234,
-        "language": "English",
-    },
-    # ... (other book entries)
-]
-```
-
-Next, let's also move our Pydantic validation models from `main.py` to the `schemas.py` module inside the `books` directory.
-
-```python title="src/books/schemas.py"
+from fastapi import FastAPI, Header, status
+from typing import Optional
 
 from pydantic import BaseModel
 
-class Book(BaseModel):
+app = FastAPI()
+
+
+members: list["Member"] = []
+
+class MemberStatus(Enum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    SUSPENDED = "suspended"
+    REJECTED = "rejected"
+
+
+class Member(BaseModel):
     id: int
-    title: str
-    author: str
-    publisher: str
-    published_date: str
-    page_count: int
-    language: str
+    first_name: str
+    last_name: str
+    address: str
+    phone_number: str
+    national_id_number: str
+    occupation: str
+    status: MemberStatus
+    group_id: Optional[int] = None
 
-class BookUpdateModel(BaseModel):
-    title: str
-    author: str
-    publisher: str
-    page_count: int
-    language: str
+
+@app.get("/members", tags=["Members"])
+def get_members() -> list[Member]:
+    return members
+
+
+@app.post("/members", status_code=status.HTTP_201_CREATED, tags=["Members"])
+def create_member(member: Member) -> dict:
+    members.append(member)
+    return {"message": "Member created successfully", "member_id": member.id}
+
+
+@app.get("/members/{member_id}", tags=["Members"])
+def get_member(member_id: int) -> Member | dict:
+    for member in members:
+        if member.id == member_id:
+            return member
+    return {"message": "Member not found"}
+
+
+@app.put("/members/{member_id}", tags=["Members"])
+def update_member(member_id: int, updated_member: Member) -> dict:
+    for index, member in enumerate(members):
+        if member.id == member_id:
+            members[index] = updated_member
+            return {"message": "Member updated successfully", "member": updated_member}
+    return {"message": "Member not found"}
+
+
+@app.delete(
+    "/members/{member_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Members"]
+)
+def delete_member(member_id: int) -> None:
+    for index, member in enumerate(members):
+        if member.id == member_id:
+            del members[index]
+            return
+    return {"message": "Member not found"}
+```
+## Restructuring the project
+
+The problem here is that if we add more code to this file, our code will become messy and hard to maintain because all our code will be in one file, `main.py`. To address this, we need to create a more organized project structure. To start, let's create a new folder called `src`, which will contain an `__init__.py` file to make it a Python package:
+
+```console title="creating the src directory"
+├── main.py
+├── pyproject.toml
+├── README.md
+├── src
+│   └── __init__.py
+└── uv.lock
 ```
 
-Now, let's update `routes.py` as follows:
+Now, create two folders named `routes` and `schemas` inside the `src` directory. Inside each of these folders, add an `__init__.py` file. The `routes` folder will contain all the project routes. The `schemas` folder will contain the schemas (Pydantic models) that are currently in our root directory. 
 
-```python title="src/books/routes.py"
-
-from fastapi import APIRouter
-from src.books.book_data import books
-from src.books.schemas import BookSchema, BookUpdateSchema
-
-book_router = APIRouter()
-
-@book_router.get("/books", response_model=List[Book])
-async def get_all_books():
-    return books
-
-
-@book_router.post("/books", status_code=status.HTTP_201_CREATED)
-async def create_a_book(book_data: Book) -> dict:
-    new_book = book_data.model_dump()
-
-    books.append(new_book)
-
-    return new_book
-
-
-@book_router.get("/book/{book_id}")
-async def get_book(book_id: int) -> dict:
-    for book in books:
-        if book["id"] == book_id:
-            return book
-
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
-
-
-@book_router.patch("/book/{book_id}")
-async def update_book(book_id: int,book_update_data:BookUpdateModel) -> dict:
-    
-    for book in books:
-        if book['id'] == book_id:
-            book['title'] = book_update_data.title
-            book['publisher'] = book_update_data.publisher
-            book['page_count'] = book_update_data.page_count
-            book['language'] = book_update_data.language
-
-            return book
-        
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
-
-
-@book_router.delete("/book/{book_id}",status_code=status.HTTP_204_NO_CONTENT)
-async def delete_book(book_id: int):
-    for book in books:
-        if book["id"] == book_id:
-            books.remove(book)
-
-            return {}
-        
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
+```console title="creating the new directory structure"
+├── main.py
+├── pyproject.toml
+├── README.md
+├── src
+│   ├── __init__.py
+│   ├── routes
+│   │   └── __init__.py
+│   └── schemas
+│       └── __init__.py
+└── uv.lock
 ```
-## Introduction to FastAPI routers 
-What has been accomplished is the division of our project into modules using routers. FastAPI routers allow easy modularization of our API by grouping related API routes together. Routers function similarly to FastAPI instances (similar to what we have in `main.py`). As our project expands, we will introduce additional API routes, and all of them will be organized into modules grouping related functionalities.
 
-Let's enhance our `main.py` file to adopt this modular structure:
+First, let's move all our API endpoints in `main.py` to `src/routes/members.py`.
+
+```python title="src/routes/members.py"
+# src/routes/members.py
+
+from fastapi import APIRouter, Header, status
+from src.schemas.members import Member
+
+member_router = APIRouter(tags=["members"])
+
+
+members: list["Member"] = []
+
+@member_router.get("/")
+def get_members() -> list[Member]:
+    return members
+
+
+@member_router.post("/", status_code=status.HTTP_201_CREATED)
+def create_member(member: Member) -> dict:
+    members.append(member)
+    return {"message": "Member created successfully", "member_id": member.id}
+
+
+@member_router.get("/{member_id}")
+def get_member(member_id: int) -> Member | dict:
+    for member in members:
+        if member.id == member_id:
+            return member
+    return {"message": "Member not found"}
+
+
+@member_router.put("/{member_id}")
+def update_member(member_id: int, updated_member: Member) -> dict:
+    for index, member in enumerate(members):
+        if member.id == member_id:
+            members[index] = updated_member
+            return {"message": "Member updated successfully", "member": updated_member}
+    return {"message": "Member not found"}
+
+
+@member_router.delete(
+    "/{member_id}", status_code=status.HTTP_204_NO_CONTENT
+)
+def delete_member(member_id: int) -> None:
+    for index, member in enumerate(members):
+        if member.id == member_id:
+            del members[index]
+            return
+    return {"message": "Member not found"}
+```
+
+Not a lot has changed in this file; we just moved the code with member API endpoints from `main.py` to `src/routes/members.py`. Also, we are using a router object `member_router` instead of the app instance we used earlier to define routes. 
+
+Routers in FastAPI can be thought of as mini `FastAPI` instances that help us modularize a FastAPI application by grouping related API endpoints together. All routers are created using the `APIRouter` class. This class has some similar attributes to the `FastAPI` class. 
+
+In this case, we are using the `tags` attribute on the router to define the tags for the routes. The `tags` attribute is used to group related endpoints together for documentation purposes (we shall explore this in much more detail later).
+
+Next, let's also move our Pydantic validation models from `main.py` to the `members.py` module inside the `src/schemas` directory.
+
+```python title="src/schemas/members.py"
+# src/schemas/members.py
+from enum import Enum
+from typing import Optional
+from pydantic import BaseModel
+
+class MemberStatus(Enum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    SUSPENDED = "suspended"
+    REJECTED = "rejected"
+
+
+class Member(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    address: str
+    phone_number: str
+    national_id_number: str
+    occupation: str
+    status: MemberStatus
+    group_id: Optional[int] = None
+
+```
+
+Each of the Pydantic models we shall create will be placed inside the `src/schemas` folder based on where it will be needed in the routes.
+
+Let's update our `main.py` file to adopt this modular structure:
 
 ```python title="Including the book router to our app"
 
 # Inside main.py title
 from fastapi import FastAPI
-from src.books.routes import book_router
-
-version = 'v1'
+from src.routes.members import member_router
 
 app = FastAPI(
-    title='Bookly',
-    description='A RESTful API for a book review web service',
-    version=version,
+    title="SACCO Management System",
+    description="A REST API for a SACCO management web service",
+    version="1.0.0"
 )
 
-app.include_router(book_router,prefix=f"/api/{version}/books", tags=['books'])
+app.include_router(member_router, prefix="/members")
 ```
 
-Firstly, a variable called `version` has been introduced to hold the API version. Next, we import the `book_router` created in the previous example. Using our FastAPI instance, we include all endpoints created with it by calling the `include_router` method.
+First, we import the `member_router` created in the previous example. Using our FastAPI instance, we include all endpoints created with it by calling the `include_router` method.
 
 Arguments added to the FastAPI instance are:
 
@@ -255,83 +227,49 @@ Arguments added to the FastAPI instance are:
 
 While these arguments may not be particularly useful at present, they become valuable when we explore API documentation with **OpenAPI**.
 
-Furthermore, we added the following arguments to the include_router method:
+Furthermore, we added the following arguments to the `include_router` method:
 
-- `prefix`: The path through which all related endpoints can be accessed. In our case, it's named the /{version}/books prefix, resulting in /v1/books or /v2/books based on the application version. This implies that all book-related endpoints can be accessed using http://localhost:8000/api/v1/books.
+- `prefix`: The path through which all related endpoints can be accessed. In our case, it's named the `/members` prefix, resulting in `/members`. This implies that all member-related endpoints can be accessed using `http://localhost:8000/members`.
 
-- `tags`: The list of tags associated with the endpoints that fall within a given router.
+!!! Note
+    We can also add the `tags` argument to the `include_router` method to group related endpoints together for documentation purposes. For example, we can add the following argument to the `include_router` method:
+    ```python title="Adding tags to the include_router method"
+    app.include_router(member_router, prefix="/members", tags=["members"])
+    ```
 
-Let us now now move all the source code in our `main.py` module to `src/__init__.py`. (delete your `main.py`)
-
-```python title="src/__init__.py"
-from fastapi import FastAPI
-from src.books.routes import book_router
-
-version = 'v1'
-
-app = FastAPI(
-    title="Bookly",
-    description="A REST API for a book review web service",
-    version= version,
-    lifespan=life_span
-)
-
-app.include_router(book_router, prefix=f"/api/{version}/books", tags=['books'])
-```
-Having moved our code, we shall now have this folder structure.
+Having moved our code, we shall now have this folder structure:
 ```console title="modified directory structure"
-├── requirements.txt
-├── run.py
-└── src
-|-- ├── books
-|-- │   ├── book_data.py
-|-- │   ├── __init__.py
-|-- │   ├── routes.py
-|-- │   ├── schemas.py
-|-- │   ├── book_data.py
-`-- └── __init__.py
+├── main.py
+├── pyproject.toml
+├── README.md
+├── src
+│   ├── __init__.py
+│   ├── routes
+│   │   ├── __init__.py
+│   │   └── members.py
+│   └── schemas
+│       ├── __init__.py
+│       └── members.py
+└── uv.lock
 ```
 
-Once more, let's start our server using `fastapi dev src/`. Pay attention to the fact that this time we're specifying`src/`. This is because we've designated it as a package by including `__init__.py`. Additionally, our FastAPI instance named `app` is created there. Consequently, FastAPI will utilize it to operate our application.
+Once more, let's start our server using `uv run fastapi dev`. Nothing changes. All the code we are going to write will now exist in the `src` directory. API endpoints will be grouped together based on their functionality. Pydantic models will also be placed in `src/schemas` based on where they will be used.
 
-Runnning our application will the following terminal output.
-```console title="Running the server"
-INFO     Using path src                                                                                                                                     
-INFO     Resolved absolute path /home/jod35/Documents/fastapi-beyond-CRUD/src                                                                               
-INFO     Searching for package file structure from directories with __init__.py files                                                                       
-INFO     Importing from /home/jod35/Documents/fastapi-beyond-CRUD                                                                                           
-                                                                                                                                                            
- ╭─ Python package file structure ─╮                                                                                                                        
- │                                 │                                                                                                                        
- │  📁 src                         │                                                                                                                        
- │  └── 🐍 __init__.py             │                                                                                                                        
- │                                 │                                                                                                                        
- ╰─────────────────────────────────╯                                                                                                                        
-                                                                                                                                                            
-INFO     Importing module src                                                                                                                               
-INFO     Found importable FastAPI app                                                                                                                       
-                                                                                                                                                            
- ╭─ Importable FastAPI app ─╮                                                                                                                               
- │                          │                                                                                                                               
- │  from src import app     │                                                                                                                               
- │                          │                                                                                                                               
- ╰──────────────────────────╯                                                                                                                               
-```
 
-### Note:
+!!! Note
 
-The current organization of our API endpoints is as follows:
+    The current organization of our API endpoints is as follows:
 
-| Endpoint	| Method |	Description |
-|-----------|--------|--------------|
-| /api/v1/books |	GET  | Read all books |
-| /api/v1/books |	POST | Create a book |
-| /api/v1/books/{book_id} |	GET |	Get a book by ID |
-| /api/v1/books/{book_id} |	PATCH |	Update a book by ID |
-| /api/v1/books/{book_id} |	DELETE |	Delete a book by ID |
+    | Endpoint	| Method |	Description |
+    |-----------|--------|--------------|
+    | members |	GET  | Read all members |
+    | members |	POST | Create a member |
+    | members/{member_id} |	GET |	Get a member by ID |
+    | members/{member_id} |	PATCH |	Update a member by ID |
+    | members/{member_id} |	DELETE |	Delete a member by ID |
 
 
 ## Conclusion
-This chapter has focused on creating a folder structure that we can use even when our project gets bigger. In the next chapter, we shall focus on database and look at how we can persist our data and use Python to manage a relational database.
+This chapter has focused on creating a folder structure that we can use even when our project gets bigger. In the next chapter, we shall focus on databases, look at how we can persist our data, and use Python to manage both a relational and a non-relational database.
 
 

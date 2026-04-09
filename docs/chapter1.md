@@ -1,25 +1,25 @@
 # Getting Started
 
-In this chapter, we will establish a minimal FastAPI development environment, covering prerequisites, package management with **uv**, and the orchestration of a basic service.
+In this chapter, we will create a minimal FastAPI development environment, covering prerequisites, package management with **uv**, and the creation of a basic service.
 
 ## Prerequisites
 
-Before proceeding, ensure the following tools are installed on your system:
+Before proceeding, I recommend you install the following tools on your system:
 
 - **Python 3.12+**: The core language runtime.
 - **Text Editor**: A modern editor such as [VS Code](https://code.visualstudio.com/), [PyCharm](https://www.jetbrains.com/pycharm/), or [Zed](https://zed.dev/).
 - **Unix-like Environment**: Linux, macOS, or Windows with [WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
 - **Git**: For version control.
-- **Docker & Docker Compose**: For containerization and service orchestration.
+- **Docker & Docker Compose**: For containerization and service orchestration. (we shall use this later)
 
 !!! note
     This guide uses VS Code with the [Microsoft Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) on an [Arch Linux system](https://endeavouros.com/) with the [Fish shell](https://fishshell.com/). However, the instructions are compatible with any standard Unix-like environment and shell.
 
 ## Introduction to uv
 
-Throughout this course, we will use [uv](https://docs.astral.sh/uv/) as our primary package and project manager. Written in Rust, **uv** is an exceptionally fast and modern alternative to traditional tools such as [pip](https://pip.pypa.io/en/stable/), [pipenv](https://pipenv.pypa.io/en/latest/), and [poetry](https://python-poetry.org/).
+Throughout this course, we will use [uv](https://docs.astral.sh/uv/) as our primary package and project manager. Written in Rust, **uv** is an extremely fast and modern alternative to traditional tools such as [pip](https://pip.pypa.io/en/stable/), [pipenv](https://pipenv.pypa.io/en/latest/), and [poetry](https://python-poetry.org/).
 
-Beyond package installation, **uv** provides robust features for:
+Beyond package installation, **uv** provides features for:
 
 - **Python Version Management**: Seamlessly switching between Python runtimes.
 - **Dependency Resolution**: Rapid and reliable resolution for complex dependency trees.

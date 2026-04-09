@@ -2,11 +2,11 @@
 
 ## Introduction
 
-Having mastered the basics of FastAPI, we are now ready to take a significant step forward by developing a practical application. Throughout this book, we will construct a Savings and Credit Cooperative Organization (SACCO) management application. SACCOS are member-owned financial cooperatives that allow groups to pool their resources for collective saving and loan provision, serving as an alternative to conventional banking systems.
+Having mastered the basics of FastAPI, we are now ready to take a significant step forward by developing a practical application. In this chapter, we will construct a Savings and Credit Cooperative Organization (SACCO) management application. SACCOS are member-owned financial cooperatives that allow groups to pool their resources for collective saving and loan provision, serving as an alternative to conventional banking systems.
 
 In our SACCO application, members will have the ability to deposit savings, access loans based on their savings, repay loans with interest, and share in the profits generated from interest income. A vital aspect of such systems is the onboarding process. Our implementation will facilitate multiple groups registering under a single SACCO, with individual members joining specific groups.
 
-In this chapter, we will lay the groundwork for the onboarding feature by implementing CRUD operations to manage both groups and members, marking our first complete CRUD application.
+In this chapter, we will lay the groundwork for the onboarding feature by implementing CRUD operations to manage members, marking our first complete CRUD application.
 
 ## What is CRUD?
 
@@ -28,7 +28,7 @@ CRUD stands for the four fundamental operations for data management:
     - _Objective:_ To remove data.
     - _Action:_ Delete a record or entity.
 
-CRUD operations are essential for data management and are commonly utilized in applications that handle data persistence. In **FastAPI Beyond CRUD**, we will focus on extending FastAPI's capabilities beyond standard CRUD applications, exploring advanced features and use cases. However, before delving into these aspects, we will first create a simple CRUD API using FastAPI.
+CRUD operations are essential for data management and are commonly utilized in applications that handle data persistence. In **FastAPI Beyond CRUD**, we will focus on extending FastAPI's capabilities beyond standard CRUD applications, exploring advanced features and use cases. However, before going into these aspects, we will first create a simple CRUD API using FastAPI.
 
 ## A Simple CRUD API Implementation
 
@@ -116,12 +116,13 @@ def get_members() -> list[Member]:
 
 FastAPI significantly simplifies the process of returning any JSON serializable object as a response. You should also be able to return Pydantic models as we have done in the example above using `list[Member]`. 
 
-> Note
-> JSON (JavaScript Object Notation) serialization involves transforming a data structure or object from a programming language (such as Python, JavaScript, or others) into a JSON-formatted string. This string representation can then be transmitted over a network or stored in a file, subsequently allowing deserialization back into the original data structure.
-> 
-> In Python, the following data types are natively serializable to JSON Lists, Dictionaries, Strings, Numbers (int, float), Tuples (converted to JSON arrays), Booleans, None (converted to JSON null)
->
-> **Note:** Some types like custom objects, datetime objects, and sets are not natively JSON serializable and require custom encoders or conversion before serialization.
+!!! Note
+    JSON (JavaScript Object Notation) serialization involves transforming a data structure or object from a programming language (such as Python, JavaScript, or others) into a JSON-formatted string. This string representation can then be transmitted over a network or stored in a file, subsequently allowing deserialization back into the original data structure.
+ 
+In Python, the following data types are natively serializable to JSON Lists, Dictionaries, Strings, Numbers (int, float), Tuples (converted to JSON arrays), Booleans, None (converted to JSON null)
+
+!!! Note
+    Some types like custom objects, datetime objects, and sets are not natively JSON serializable and require custom encoders or conversion before serialization.
 
 This capability enables us to effortlessly respond with a list of member objects (which is currently an empty list of objects) when issuing a `GET` request to `http://localhost:8000/members`, as illustrated below:
 

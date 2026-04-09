@@ -1034,9 +1034,9 @@
 
 <h1 id="building-a-crud-rest-api">Building a CRUD REST API</h1>
 <h2 id="introduction">Introduction</h2>
-<p>Having mastered the basics of FastAPI, we are now ready to take a significant step forward by developing a practical application. Throughout this book, we will construct a Savings and Credit Cooperative Organization (SACCO) management application. SACCOS are member-owned financial cooperatives that allow groups to pool their resources for collective saving and loan provision, serving as an alternative to conventional banking systems.</p>
+<p>Having mastered the basics of FastAPI, we are now ready to take a significant step forward by developing a practical application. In this chapter, we will construct a Savings and Credit Cooperative Organization (SACCO) management application. SACCOS are member-owned financial cooperatives that allow groups to pool their resources for collective saving and loan provision, serving as an alternative to conventional banking systems.</p>
 <p>In our SACCO application, members will have the ability to deposit savings, access loans based on their savings, repay loans with interest, and share in the profits generated from interest income. A vital aspect of such systems is the onboarding process. Our implementation will facilitate multiple groups registering under a single SACCO, with individual members joining specific groups.</p>
-<p>In this chapter, we will lay the groundwork for the onboarding feature by implementing CRUD operations to manage both groups and members, marking our first complete CRUD application.</p>
+<p>In this chapter, we will lay the groundwork for the onboarding feature by implementing CRUD operations to manage members, marking our first complete CRUD application.</p>
 <h2 id="what-is-crud">What is CRUD?</h2>
 <p>CRUD stands for the four fundamental operations for data management:</p>
 <ul>
@@ -1069,7 +1069,7 @@
 </ul>
 </li>
 </ul>
-<p>CRUD operations are essential for data management and are commonly utilized in applications that handle data persistence. In <strong>FastAPI Beyond CRUD</strong>, we will focus on extending FastAPI's capabilities beyond standard CRUD applications, exploring advanced features and use cases. However, before delving into these aspects, we will first create a simple CRUD API using FastAPI.</p>
+<p>CRUD operations are essential for data management and are commonly utilized in applications that handle data persistence. In <strong>FastAPI Beyond CRUD</strong>, we will focus on extending FastAPI's capabilities beyond standard CRUD applications, exploring advanced features and use cases. However, before going into these aspects, we will first create a simple CRUD API using FastAPI.</p>
 <h2 id="a-simple-crud-api-implementation">A Simple CRUD API Implementation</h2>
 <p>Our straightforward CRUD API will feature several endpoints to perform CRUD operations on a basic in-memory database (utilizing Python lists). Below is a list of the endpoints that we will implement in our CRUD API.</p>
 <table>
@@ -1174,12 +1174,15 @@
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="k">return</span> <span class="n">members</span>
 </code></pre></div>
 <p>FastAPI significantly simplifies the process of returning any JSON serializable object as a response. You should also be able to return Pydantic models as we have done in the example above using <code>list[Member]</code>. </p>
-<blockquote>
-<p>Note
-JSON (JavaScript Object Notation) serialization involves transforming a data structure or object from a programming language (such as Python, JavaScript, or others) into a JSON-formatted string. This string representation can then be transmitted over a network or stored in a file, subsequently allowing deserialization back into the original data structure.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>JSON (JavaScript Object Notation) serialization involves transforming a data structure or object from a programming language (such as Python, JavaScript, or others) into a JSON-formatted string. This string representation can then be transmitted over a network or stored in a file, subsequently allowing deserialization back into the original data structure.</p>
+</div>
 <p>In Python, the following data types are natively serializable to JSON Lists, Dictionaries, Strings, Numbers (int, float), Tuples (converted to JSON arrays), Booleans, None (converted to JSON null)</p>
-<p><strong>Note:</strong> Some types like custom objects, datetime objects, and sets are not natively JSON serializable and require custom encoders or conversion before serialization.</p>
-</blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some types like custom objects, datetime objects, and sets are not natively JSON serializable and require custom encoders or conversion before serialization.</p>
+</div>
 <p>This capability enables us to effortlessly respond with a list of member objects (which is currently an empty list of objects) when issuing a <code>GET</code> request to <code>http://localhost:8000/members</code>, as illustrated below:</p>
 <p><img alt="List of Members" src=".././img/2026/empty_list_of_books.png" /></p>
 <h3 id="create-a-member-http-post">Create a Member (HTTP POST)</h3>

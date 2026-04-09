@@ -22,6 +22,7 @@ I have made this course available for free on my [Youtube channel](https://youtu
 
 - [Become a Patron](https://www.patreon.com/jod35)
 - [Become a Youtube channel member](https://www.youtube.com/@SsaliJonathan)
+- [Buy me a coffee](https://www.buymeacoffee.com/jod35)
 
 ## My socials
 Follow me on the following platforms for updates and more content
@@ -29,3 +30,4 @@ Follow me on the following platforms for updates and more content
 - [Twitter](https://twitter.com/jod35_)
 - [Github](https://github.com/jod35)
 - [Youtube](https://youtube.com/@SsaliJonathan)
+- [Dev.to](https://dev.to/jod35)

@@ -1157,23 +1157,23 @@
 
 
 <h1 id="getting-started">Getting Started</h1>
-<p>In this chapter, we will establish a minimal FastAPI development environment, covering prerequisites, package management with <strong>uv</strong>, and the orchestration of a basic service.</p>
+<p>In this chapter, we will create a minimal FastAPI development environment, covering prerequisites, package management with <strong>uv</strong>, and the creation of a basic service.</p>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>Before proceeding, ensure the following tools are installed on your system:</p>
+<p>Before proceeding, I recommend you install the following tools on your system:</p>
 <ul>
 <li><strong>Python 3.12+</strong>: The core language runtime.</li>
 <li><strong>Text Editor</strong>: A modern editor such as <a href="https://code.visualstudio.com/">VS Code</a>, <a href="https://www.jetbrains.com/pycharm/">PyCharm</a>, or <a href="https://zed.dev/">Zed</a>.</li>
 <li><strong>Unix-like Environment</strong>: Linux, macOS, or Windows with <a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL</a>.</li>
 <li><strong>Git</strong>: For version control.</li>
-<li><strong>Docker &amp; Docker Compose</strong>: For containerization and service orchestration.</li>
+<li><strong>Docker &amp; Docker Compose</strong>: For containerization and service orchestration. (we shall use this later)</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This guide uses VS Code with the <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Microsoft Python Extension</a> on an <a href="https://endeavouros.com/">Arch Linux system</a> with the <a href="https://fishshell.com/">Fish shell</a>. However, the instructions are compatible with any standard Unix-like environment and shell.</p>
 </div>
 <h2 id="introduction-to-uv">Introduction to uv</h2>
-<p>Throughout this course, we will use <a href="https://docs.astral.sh/uv/">uv</a> as our primary package and project manager. Written in Rust, <strong>uv</strong> is an exceptionally fast and modern alternative to traditional tools such as <a href="https://pip.pypa.io/en/stable/">pip</a>, <a href="https://pipenv.pypa.io/en/latest/">pipenv</a>, and <a href="https://python-poetry.org/">poetry</a>.</p>
-<p>Beyond package installation, <strong>uv</strong> provides robust features for:</p>
+<p>Throughout this course, we will use <a href="https://docs.astral.sh/uv/">uv</a> as our primary package and project manager. Written in Rust, <strong>uv</strong> is an extremely fast and modern alternative to traditional tools such as <a href="https://pip.pypa.io/en/stable/">pip</a>, <a href="https://pipenv.pypa.io/en/latest/">pipenv</a>, and <a href="https://python-poetry.org/">poetry</a>.</p>
+<p>Beyond package installation, <strong>uv</strong> provides features for:</p>
 <ul>
 <li><strong>Python Version Management</strong>: Seamlessly switching between Python runtimes.</li>
 <li><strong>Dependency Resolution</strong>: Rapid and reliable resolution for complex dependency trees.</li>
