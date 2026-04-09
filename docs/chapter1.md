@@ -12,8 +12,8 @@ Before proceeding, ensure the following tools are installed on your system:
 - **Git**: For version control.
 - **Docker & Docker Compose**: For containerization and service orchestration.
 
-> [!NOTE]
-> This guide uses VS Code with the [Microsoft Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) on an [Arch Linux system](https://endeavouros.com/) with the [Fish shell](https://fishshell.com/). However, the instructions are compatible with any standard Unix-like environment and shell.
+!!! note
+    This guide uses VS Code with the [Microsoft Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) on an [Arch Linux system](https://endeavouros.com/) with the [Fish shell](https://fishshell.com/). However, the instructions are compatible with any standard Unix-like environment and shell.
 
 ## Introduction to uv
 
@@ -255,15 +255,15 @@ $ uv run fastapi dev
 
 In development mode, the server will automatically monitor for file changes and reload the application, ensuring a seamless development workflow.
 
-> [!NOTE]
-> FastAPI CLI can automatically detect your application if you specify it in your `pyproject.toml` file. This allows you to run `uv run fastapi dev` or `uv run fastapi run` without manually specifying the application object.
->
-> You can configure this by adding the following to your `pyproject.toml`:
->
-> ```toml
-> [tool.fastapi]
-> entrypoint = "main:app"
-> ```
+!!! note
+    FastAPI CLI can automatically detect your application if you specify it in your `pyproject.toml` file. This allows you to run `uv run fastapi dev` or `uv run fastapi run` without manually specifying the application object.
+
+    You can configure this by adding the following to your `pyproject.toml`:
+
+    ```toml
+    [tool.fastapi]
+    entrypoint = "main:app"
+    ```
 
 With this configuration, you can directly run:
 
@@ -289,8 +289,8 @@ Let us navigate to the docs at http://127.0.0.1:8000/ and we should see the foll
 
 ![Hello World](./img/hello-world.png)
 
-> [!TIP]
-> You can still use traditional virtual environments with `uv venv`, activate them with `source .venv/bin/activate`, and use `uv pip` if you prefer a more familiar workflow.
+!!! TIP
+    You can still use traditional virtual environments with `uv venv`, activate them with `source .venv/bin/activate`, and use `uv pip` if you prefer a more familiar workflow.
 
 ## Scaffolding with `fastapi-new`
 

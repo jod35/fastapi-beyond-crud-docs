@@ -11,3 +11,8 @@ dependencies = [
     "mkdocs-glightbox>=0.5.2",
     "mkdocs-material>=9.7.1",
 ]
+
+[dependency-groups]
+dev = [
+    "zensical>=0.0.28",
+]
