@@ -15,25 +15,33 @@
         <link rel="canonical" href="https://jod35.github.io/fastapi-beyond-crud-docs/site/chapter1/">
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../whats_new/">
       
       
         <link rel="next" href="../chapter2/">
       
       
+        
+      
+      
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.24">
+      <meta name="generator" content="zensical-0.0.28">
     
     
       
-        <title>Installation and Project SetUp - FastAPI Beyond CRUD</title>
+        <title>Getting Started - FastAPI Beyond CRUD</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.6f2fbb28.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.dfe2e883.min.css">
       
       
 
@@ -47,14 +55,14 @@
         
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
       
     
     
       <link rel="stylesheet" href="../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,a=__md_scope)=>JSON.parse(t.getItem(a.pathname+"."+e)),__md_set=(e,t,a=localStorage,_=__md_scope)=>{try{a.setItem(_.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
     
       
   
@@ -63,24 +71,14 @@
   
   
 
-<script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-TCHXJCN975"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-TCHXJCN975",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-TCHXJCN975",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-TCHXJCN975"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-TCHXJCN975",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-TCHXJCN975",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
   
     <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
   
 
     
     
-    
-   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
-    html.glightbox-open { overflow: initial; height: 100%; }
-    .gslide-title { margin-top: 0px; user-select: text; }
-    .gslide-desc { color: #666; user-select: text; }
-    .gslide-image img { background: white; }
-    .gscrollbar-fixer { padding-right: 15px; }
-    .gdesc-inner { font-size: 0.75rem; }
-    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
-    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
-    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  </head>
   
   
     
@@ -95,11 +93,11 @@
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
     <div data-md-component="skip">
       
         
-        <a href="#installation-and-project-setup" class="md-skip">
+        <a href="#getting-started" class="md-skip">
           Skip to content
         </a>
       
@@ -115,14 +113,14 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="FastAPI Beyond CRUD" class="md-header__button md-logo" aria-label="FastAPI Beyond CRUD" data-md-component="logo">
+    <a href="./.." title="FastAPI Beyond CRUD" class="md-header__button md-logo" aria-label="FastAPI Beyond CRUD" data-md-component="logo">
       
-  <img src="../img/logo.svg" alt="logo">
+  <img src="../img/logo.svg" alt="FastAPI Beyond CRUD">
 
     </a>
-    <label class="md-header__button md-icon" for="__drawer">
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
       
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
     </label>
     <div class="md-header__title" data-md-component="header-title">
       <div class="md-header__ellipsis">
@@ -134,7 +132,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Installation and Project SetUp
+              Getting Started
             
           </span>
         </div>
@@ -150,7 +148,7 @@
     <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
     
       <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
       </label>
     
   
@@ -160,7 +158,7 @@
     <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="teal"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
     
       <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
       </label>
     
   
@@ -168,62 +166,36 @@
       
     
     
-      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
     
-      <label class="md-header__button md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-      </label>
-      <div class="md-search" data-md-component="search" role="dialog">
-  <label class="md-search__overlay" for="__search"></label>
-  <div class="md-search__inner" role="search">
-    <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
-      <label class="md-search__icon md-icon" for="__search">
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
-        
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-      </label>
-      <nav class="md-search__options" aria-label="Search">
-        
-        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
           
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
-        </button>
-      </nav>
-      
-        <div class="md-search__suggest" data-md-component="search-suggest"></div>
-      
-    </form>
-    <div class="md-search__output">
-      <div class="md-search__scrollwrap" data-md-scrollfix>
-        <div class="md-search-result" data-md-component="search-result">
-          <div class="md-search-result__meta">
-            Initializing search
-          </div>
-          <ol class="md-search-result__list" role="presentation"></ol>
-        </div>
-      </div>
-    </div>
-  </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
 </div>
+      
     
-    
-      <div class="md-header__source">
+    <div class="md-header__source">
+      
         <a href="https://github.com/jod35/fastapi-beyond-CRUD" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
     jod35/fastapi-beyond-CRUD
   </div>
 </a>
-      </div>
-    
+      
+    </div>
   </nav>
   
 </header>
@@ -249,9 +221,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="FastAPI Beyond CRUD" class="md-nav__button md-logo" aria-label="FastAPI Beyond CRUD" data-md-component="logo">
+    <a href="./.." title="FastAPI Beyond CRUD" class="md-nav__button md-logo" aria-label="FastAPI Beyond CRUD" data-md-component="logo">
       
-  <img src="../img/logo.svg" alt="logo">
+  <img src="../img/logo.svg" alt="FastAPI Beyond CRUD">
 
     </a>
     FastAPI Beyond CRUD
@@ -261,7 +233,7 @@
       <a href="https://github.com/jod35/fastapi-beyond-CRUD" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
   </div>
   <div class="md-source__repository">
     jod35/fastapi-beyond-CRUD
@@ -278,12 +250,46 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="./.." class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Home
+  
+
+    
   </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../whats_new/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    What's New
+  
+
+    
+  </span>
+  
   
 
       </a>
@@ -310,27 +316,42 @@
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
+  
   <span class="md-ellipsis">
+    
+  
     Installation and Project SetUp
+  
+
+    
   </span>
+  
   
 
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="./" class="md-nav__link md-nav__link--active">
+      <a href="././" class="md-nav__link md-nav__link--active">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Installation and Project SetUp
+  
+
+    
   </span>
+  
   
 
       </a>
       
         
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
   
   
   
@@ -339,50 +360,161 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      On this page
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-virtual-environment-creation" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Virtual Environment Creation
+      
+        Prerequisites
+      
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-directory-structure" class="md-nav__link">
+  <a href="#introduction-to-uv" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Directory Structure
+      
+        Introduction to uv
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction to uv">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation Methods
+      
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#3-installing-fastapi" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#initializing-a-uv-project" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Installing FastAPI
+      
+        Initializing a uv Project
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Initializing a uv Project">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#project-file-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project File Overview
+      
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#4-freeze-dependencies" class="md-nav__link">
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executing-the-project" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Freeze Dependencies
+      
+        Executing the Project
+      
     </span>
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#5-confirm-the-installation" class="md-nav__link">
+  <a href="#installing-fastapi" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Confirm the installation
+      
+        Installing FastAPI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing FastAPI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verifying-the-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying the Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-basic-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a Basic Application
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a Basic Application">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#running-the-development-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the Development Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scaffolding-with-fastapi-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaffolding with fastapi-new
+      
     </span>
   </a>
   
@@ -391,7 +523,9 @@
         <li class="md-nav__item">
   <a href="#conclusion" class="md-nav__link">
     <span class="md-ellipsis">
-      Conclusion
+      
+        Conclusion
+      
     </span>
   </a>
   
@@ -415,9 +549,16 @@
       <a href="../chapter2/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Creating a Simple Web Server
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -435,9 +576,16 @@
       <a href="../chapter3/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Building a CRUD REST API
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -455,9 +603,16 @@
       <a href="../chapter4/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Large Project Structure Using Routers
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -475,9 +630,16 @@
       <a href="../chapter5/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Databases with SQLModel
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -495,9 +657,16 @@
       <a href="../chapter6/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Finishing Up the CRUD
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -515,9 +684,16 @@
       <a href="../chapter7/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Creating a user authentication model
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -535,9 +711,16 @@
       <a href="../chapter8/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     User Account Creation
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -555,9 +738,16 @@
       <a href="../chapter9/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     JWT Authentication
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -575,9 +765,16 @@
       <a href="../chapter10/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Role-Based Access Control
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -595,9 +792,16 @@
       <a href="../chapter11/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Model And Schema Relationships
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -615,9 +819,16 @@
       <a href="../chapter12/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Error Handling
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -635,9 +846,16 @@
       <a href="../chapter13/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Middleware
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -655,9 +873,16 @@
       <a href="../chapter14/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Email Support
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -675,9 +900,16 @@
       <a href="../chapter15/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     Background Processing
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -695,9 +927,16 @@
       <a href="../chapter16/" class="md-nav__link">
         
   
+  
   <span class="md-ellipsis">
+    
+  
     API Documentation
+  
+
+    
   </span>
+  
   
 
       </a>
@@ -718,7 +957,8 @@
                   <div class="md-sidebar__inner">
                     
 
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
   
   
   
@@ -727,50 +967,161 @@
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
-      Table of contents
+      On this page
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-virtual-environment-creation" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Virtual Environment Creation
+      
+        Prerequisites
+      
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-directory-structure" class="md-nav__link">
+  <a href="#introduction-to-uv" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Directory Structure
+      
+        Introduction to uv
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction to uv">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#installation-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation Methods
+      
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#3-installing-fastapi" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#initializing-a-uv-project" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Installing FastAPI
+      
+        Initializing a uv Project
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Initializing a uv Project">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#project-file-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project File Overview
+      
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#4-freeze-dependencies" class="md-nav__link">
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#executing-the-project" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Freeze Dependencies
+      
+        Executing the Project
+      
     </span>
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#dependency-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dependency Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#5-confirm-the-installation" class="md-nav__link">
+  <a href="#installing-fastapi" class="md-nav__link">
     <span class="md-ellipsis">
-      5. Confirm the installation
+      
+        Installing FastAPI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installing FastAPI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#verifying-the-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verifying the Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-a-basic-application" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating a Basic Application
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creating a Basic Application">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#running-the-development-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running the Development Server
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scaffolding-with-fastapi-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaffolding with fastapi-new
+      
     </span>
   </a>
   
@@ -779,7 +1130,9 @@
         <li class="md-nav__item">
   <a href="#conclusion" class="md-nav__link">
     <span class="md-ellipsis">
-      Conclusion
+      
+        Conclusion
+      
     </span>
   </a>
   
@@ -795,56 +1148,267 @@
           
           
             <div class="md-content" data-md-component="content">
+              
               <article class="md-content__inner md-typeset">
                 
                   
-
   
   
 
 
-<h1 id="installation-and-project-setup">Installation and Project SetUp</h1>
-<p>In this chapter, we install FastAPI, starting with a minimal setup.</p>
-<h3 id="1-virtual-environment-creation">1. Virtual Environment Creation</h3>
-<p>Begin by creating a virtual environment using the built-in Python module <code>venv</code>. If you already have Python installed, you might not need to install it separately. However, on Linux, installation may be necessary based on your distribution. In your commandline or terminal, type the following command.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>env
+<h1 id="getting-started">Getting Started</h1>
+<p>In this chapter, we will create a minimal FastAPI development environment, covering prerequisites, package management with <strong>uv</strong>, and the creation of a basic service.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before proceeding, I recommend you install the following tools on your system:</p>
+<ul>
+<li><strong>Python 3.12+</strong>: The core language runtime.</li>
+<li><strong>Text Editor</strong>: A modern editor such as <a href="https://code.visualstudio.com/">VS Code</a>, <a href="https://www.jetbrains.com/pycharm/">PyCharm</a>, or <a href="https://zed.dev/">Zed</a>.</li>
+<li><strong>Unix-like Environment</strong>: Linux, macOS, or Windows with <a href="https://learn.microsoft.com/en-us/windows/wsl/install">WSL</a>.</li>
+<li><strong>Git</strong>: For version control.</li>
+<li><strong>Docker &amp; Docker Compose</strong>: For containerization and service orchestration. (we shall use this later)</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This guide uses VS Code with the <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Microsoft Python Extension</a> on an <a href="https://endeavouros.com/">Arch Linux system</a> with the <a href="https://fishshell.com/">Fish shell</a>. However, the instructions are compatible with any standard Unix-like environment and shell.</p>
+</div>
+<h2 id="introduction-to-uv">Introduction to uv</h2>
+<p>Throughout this course, we will use <a href="https://docs.astral.sh/uv/">uv</a> as our primary package and project manager. Written in Rust, <strong>uv</strong> is an extremely fast and modern alternative to traditional tools such as <a href="https://pip.pypa.io/en/stable/">pip</a>, <a href="https://pipenv.pypa.io/en/latest/">pipenv</a>, and <a href="https://python-poetry.org/">poetry</a>.</p>
+<p>Beyond package installation, <strong>uv</strong> provides features for:</p>
+<ul>
+<li><strong>Python Version Management</strong>: Seamlessly switching between Python runtimes.</li>
+<li><strong>Dependency Resolution</strong>: Rapid and reliable resolution for complex dependency trees.</li>
+<li><strong>Building &amp; Publishing</strong>: Streamlined workflows for package distribution.</li>
+<li><strong>Script Execution</strong>: Running scripts within isolated, reproducible environments.</li>
+</ul>
+<h3 id="installation-methods">Installation Methods</h3>
+<p>Multiple installation methods are available for <strong>uv</strong>, depending on your operating system:</p>
+<p><strong>Using Curl</strong> (Linux, macOS, and Unix-derived platforms)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>$<span class="w"> </span>curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+</code></pre></div></p>
+<p><strong>Using PowerShell</strong> (Windows)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>PS&gt;<span class="w"> </span>powershell<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;irm https://astral.sh/uv/install.ps1 | iex&quot;</span>
+</code></pre></div></p>
+<p><strong>Using Pipx</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>$<span class="w"> </span>pipx<span class="w"> </span>install<span class="w"> </span>uv
+</code></pre></div></p>
+<p>For comprehensive details, refer to the official <a href="https://docs.astral.sh/uv/getting-started/installation/">uv installation documentation</a>.</p>
+<h3 id="initializing-a-uv-project">Initializing a uv Project</h3>
+<p>After installation, verify the setup by executing the <code>uv</code> command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>$<span class="w"> </span>uv
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>An<span class="w"> </span>extremely<span class="w"> </span>fast<span class="w"> </span>Python<span class="w"> </span>package<span class="w"> </span>manager.
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>Usage:<span class="w"> </span>uv<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>&lt;COMMAND&gt;
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>Commands:
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span>auth<span class="w">     </span>Manage<span class="w"> </span>authentication
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span>run<span class="w">      </span>Run<span class="w"> </span>a<span class="w"> </span><span class="nb">command</span><span class="w"> </span>or<span class="w"> </span>script
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span>init<span class="w">     </span>Create<span class="w"> </span>a<span class="w"> </span>new<span class="w"> </span>project
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span>add<span class="w">      </span>Add<span class="w"> </span>dependencies<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>project
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span>remove<span class="w">   </span>Remove<span class="w"> </span>dependencies<span class="w"> </span>from<span class="w"> </span>the<span class="w"> </span>project
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span>version<span class="w">  </span>Read<span class="w"> </span>or<span class="w"> </span>update<span class="w"> </span>the<span class="w"> </span>project<span class="err">&#39;</span>s<span class="w"> </span>version
 </code></pre></div>
-<p>This command generates a virtual environment in the specified folder (in our example, <code>env</code>). This folder is an isolated Python environment that separates the dependencies of our project from the system-wide Python installation.</p>
-<p>Activate the virtual environment using the following commands:</p>
-<p>On Linux or macOS:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">source</span><span class="w"> </span>env/bin/activate
+<p>The <strong>uv</strong> tool suite also includes <strong>uvx</strong>, a utility designed for executing binaries and Python tools directly without permanent installation:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>$<span class="w"> </span>uvx
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Provide<span class="w"> </span>a<span class="w"> </span><span class="nb">command</span><span class="w"> </span>to<span class="w"> </span>run<span class="w"> </span>with<span class="w"> </span><span class="sb">`</span>uvx<span class="w"> </span>&lt;command&gt;<span class="sb">`</span>.
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>See<span class="w"> </span><span class="sb">`</span>uvx<span class="w"> </span>--help<span class="sb">`</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>more<span class="w"> </span>information.
 </code></pre></div>
-<p>On Windows:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>env<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
+<p>To initialize a new project, use the <code>uv init</code> command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$<span class="w"> </span>uv<span class="w"> </span>init<span class="w"> </span>fastapi-beyond-crud
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Initialized<span class="w"> </span>project<span class="w"> </span><span class="sb">`</span>fastapi-beyond-crud<span class="sb">`</span>
 </code></pre></div>
-<p>Once activated, your command line will indicate the active virtual environment:</p>
-<p>On Linux or macOS:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="o">(</span>env<span class="o">)</span><span class="w"> </span>yourusername@yourmachine$
+<p>This command generates a directory named <code>fastapi-beyond-crud</code> containing the following structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>.
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>├── main.py
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>├── pyproject.toml
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>├── .python-version
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>└── README.md
 </code></pre></div>
-<p>On Windows:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="o">(</span>env<span class="o">)</span><span class="w"> </span>C:<span class="se">\u</span>sers<span class="se">\Y</span>ourUsername&gt;
+<h4 id="project-file-overview">Project File Overview</h4>
+<ul>
+<li>
+<p><strong><code>main.py</code></strong>: A boilerplate Python script to verify the environment.
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello from fastapi-beyond-crud!&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">main</span><span class="p">()</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong><code>pyproject.toml</code></strong>: The primary configuration file for the project, handling dependency management, metadata, and tool-specific settings.
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">[project]</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;fastapi-beyond-crud&quot;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.1.0&quot;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Add your description here&quot;</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">readme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;README.md&quot;</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="n">requires-python</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;=3.13&quot;</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[]</span>
+</code></pre></div></p>
+</li>
+<li>
+<p><strong><code>.python-version</code></strong>: Specifies the Python version pinned for the project.
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>3.13
+</code></pre></div></p>
+</li>
+<li>
+<p><strong><code>README.md</code></strong>: A Markdown file for project documentation.</p>
+</li>
+</ul>
+<h3 id="executing-the-project">Executing the Project</h3>
+<p>With the project structure established, use the <code>uv run</code> command to execute the starter script:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>main.py
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Using<span class="w"> </span>CPython<span class="w"> </span><span class="m">3</span>.13.11
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Creating<span class="w"> </span>virtual<span class="w"> </span>environment<span class="w"> </span>at:<span class="w"> </span>.venv
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>Hello<span class="w"> </span>from<span class="w"> </span>fastapi-beyond-crud!
 </code></pre></div>
-<h3 id="2-directory-structure">2. Directory Structure</h3>
-<p>At this point, your directory structure should look like this:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>└── env
+<p>Upon execution, <strong>uv</strong> automatically creates an isolated virtual environment in the <code>.venv</code> directory and generates a <code>uv.lock</code> file to ensure deterministic builds by pinning specific dependency versions.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>.
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>├── .gitignore
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>├── main.py
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>├── pyproject.toml
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>├── .python-version
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>├── README.md
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>├── uv.lock
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>└── .venv
 </code></pre></div>
-<h3 id="3-installing-fastapi">3. Installing FastAPI</h3>
-<p>Now, let us install FastAPI within the virtual environment. We shall install FastAPI using <code>pip</code> with the following command.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="gp gp-VirtualEnv">(env)</span> <span class="go">pip install &quot;fastapi[standard]&quot;</span>
+<p>The <code>uv run</code> command can execute standalone Python scripts or binaries available within the project environment. Running <code>uv run</code> without arguments displays available binaries:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>$<span class="w"> </span>uv<span class="w"> </span>run
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Provide<span class="w"> </span>a<span class="w"> </span><span class="nb">command</span><span class="w"> </span>or<span class="w"> </span>script<span class="w"> </span>to<span class="w"> </span>invoke<span class="w"> </span>with<span class="w"> </span><span class="sb">`</span>uv<span class="w"> </span>run<span class="w"> </span>&lt;command&gt;<span class="sb">`</span><span class="w"> </span>or<span class="w"> </span><span class="sb">`</span>uv<span class="w"> </span>run<span class="w"> </span>&lt;script&gt;.py<span class="sb">`</span>.
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>The<span class="w"> </span>following<span class="w"> </span>commands<span class="w"> </span>are<span class="w"> </span>available<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>environment:
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>-<span class="w"> </span>python
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>-<span class="w"> </span>python3
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>-<span class="w"> </span>python3.13
 </code></pre></div>
-<h3 id="4-freeze-dependencies">4. Freeze Dependencies</h3>
-<p>Freeze the installed dependencies into a <code>requirements.txt</code> file to track the exact versions of our dependencies so that we can easily reproduce them in the future.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gp gp-VirtualEnv">(env)</span> <span class="go">pip freeze &gt; requirements.txt</span>
+<p>To enter an interactive Python REPL within the project environment:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>$<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>python
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>Python<span class="w"> </span><span class="m">3</span>.13.11<span class="w"> </span><span class="o">(</span>main,<span class="w"> </span>Dec<span class="w"> </span><span class="m">17</span><span class="w"> </span><span class="m">2025</span>,<span class="w"> </span><span class="m">21</span>:08:16<span class="o">)</span><span class="w"> </span><span class="o">[</span>Clang<span class="w"> </span><span class="m">21</span>.1.4<span class="w"> </span><span class="o">]</span><span class="w"> </span>on<span class="w"> </span>linux
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>Type<span class="w"> </span><span class="s2">&quot;help&quot;</span>,<span class="w"> </span><span class="s2">&quot;copyright&quot;</span>,<span class="w"> </span><span class="s2">&quot;credits&quot;</span><span class="w"> </span>or<span class="w"> </span><span class="s2">&quot;license&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>more<span class="w"> </span>information.
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>&gt;&gt;&gt;<span class="w"> </span>
 </code></pre></div>
-<h3 id="5-confirm-the-installation">5. Confirm the installation</h3>
-<p>Let us confirm our FastAPI installation by running the following command.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">(</span><span class="n">env</span><span class="p">)</span> <span class="n">fastapi</span> <span class="o">--</span><span class="n">version</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">FastAPI</span> <span class="n">CLI</span> <span class="n">version</span><span class="p">:</span> <span class="mf">0.0.2</span>
+<h3 id="dependency-management">Dependency Management</h3>
+<p><strong>Adding Dependencies</strong>: To install a new package, use <code>uv add</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>$<span class="w"> </span>uv<span class="w"> </span>add<span class="w"> </span>&lt;package-name&gt;
+</code></pre></div></p>
+<p><strong>Removing Dependencies</strong>: To uninstall a package, use <code>uv remove</code>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>$<span class="w"> </span>uv<span class="w"> </span>remove<span class="w"> </span>&lt;package-name&gt;
+</code></pre></div></p>
+<h2 id="installing-fastapi">Installing FastAPI</h2>
+<p>With the project initialized, the next step is to install FastAPI. We utilize the <code>uv add</code> command to install the framework along with its standard production dependencies.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>$<span class="w"> </span>uv<span class="w"> </span>add<span class="w"> </span><span class="s2">&quot;fastapi[standard]&quot;</span>
 </code></pre></div>
-<p>This command will show us the version of the FastAPI CLI—the FastAPI command-line interface. The <code>fastapi</code> command shall help us run and manage our app as we shall see in the coming chapters.</p>
-<p>If the version has been displayed, then we are sure that FastAPI has been installed in our virtual environment.</p>
+<p>The <code>fastapi[standard]</code> meta-package installs several key dependencies:</p>
+<ul>
+<li><strong><code>email-validator</code></strong>: Provides email validation via Pydantic.</li>
+<li><strong><code>httpx</code></strong>: Necessary for using the <code>TestClient</code> during automated testing.</li>
+<li><strong><code>jinja2</code></strong>: The default template engine.</li>
+<li><strong><code>python-multipart</code></strong>: Required for processing form data.</li>
+<li><strong><code>uvicorn</code></strong>: A high-performance ASGI server.</li>
+<li><strong><code>fastapi-cli</code></strong>: Provides the <code>fastapi</code> command-line interface.</li>
+</ul>
+<h3 id="verifying-the-installation">Verifying the Installation</h3>
+<p>After installation, verify the available commands by running <code>uv run</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>$<span class="w"> </span>uv<span class="w"> </span>run
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>The<span class="w"> </span>following<span class="w"> </span>commands<span class="w"> </span>are<span class="w"> </span>available<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>environment:
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>-<span class="w"> </span>fastapi
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>-<span class="w"> </span>uvicorn
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>-<span class="w"> </span>...
+</code></pre></div>
+<p>The <code>fastapi</code> command is the primary entry point for managing and running your application. You can explore its capabilities using the <code>--help</code> flag:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>$<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>fastapi<span class="w"> </span>--help
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w"> </span>Usage:<span class="w"> </span>fastapi<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w"> </span>FastAPI<span class="w"> </span>CLI<span class="w"> </span>-<span class="w"> </span>The<span class="w"> </span>fastapi<span class="w"> </span><span class="nb">command</span><span class="w"> </span>line<span class="w"> </span>app.<span class="w"> </span>😎
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w"> </span>Manage<span class="w"> </span>your<span class="w"> </span>FastAPI<span class="w"> </span>projects,<span class="w"> </span>run<span class="w"> </span>your<span class="w"> </span>FastAPI<span class="w"> </span>apps,<span class="w"> </span>and<span class="w"> </span>more.
+</code></pre></div>
+<p>The FastAPI CLI provides several essential subcommands:
+- <strong><code>dev</code></strong>: Starts the application in development mode with auto-reload enabled.
+- <strong><code>run</code></strong>: Executes the application in production mode.
+- <strong><code>deploy</code></strong>: Facilitates deployment to FastAPI Cloud.</p>
+<h2 id="creating-a-basic-application">Creating a Basic Application</h2>
+<p>To test the installation, update <code>main.py</code> with the following minimal FastAPI application:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Hello&quot;</span><span class="p">:</span> <span class="s2">&quot;World&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="running-the-development-server">Running the Development Server</h3>
+<p>Execute the application using the <code>fastapi dev</code> command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>$<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>fastapi<span class="w"> </span>dev
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">   </span>FastAPI<span class="w">   </span>Starting<span class="w"> </span>development<span class="w"> </span>server<span class="w"> </span>🚀
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">    </span>server<span class="w">   </span>Server<span class="w"> </span>started<span class="w"> </span>at<span class="w"> </span>http://127.0.0.1:8000
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span>server<span class="w">   </span>Documentation<span class="w"> </span>at<span class="w"> </span>http://127.0.0.1:8000/docs
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">       </span>tip<span class="w">   </span>Running<span class="w"> </span><span class="k">in</span><span class="w"> </span>development<span class="w"> </span>mode<span class="p">;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>production,<span class="w"> </span>use:<span class="w"> </span>fastapi<span class="w"> </span>run
+</code></pre></div>
+<p>In development mode, the server will automatically monitor for file changes and reload the application, ensuring a seamless development workflow.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>FastAPI CLI can automatically detect your application if you specify it in your <code>pyproject.toml</code> file. This allows you to run <code>uv run fastapi dev</code> or <code>uv run fastapi run</code> without manually specifying the application object.</p>
+<p>You can configure this by adding the following to your <code>pyproject.toml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">[tool.fastapi]</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">entrypoint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;main:app&quot;</span>
+</code></pre></div>
+</div>
+<p>With this configuration, you can directly run:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>$<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>fastapi<span class="w"> </span>dev
+</code></pre></div>
+<p>Instead of the more verbose:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>$<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>fastapi<span class="w"> </span>dev<span class="w"> </span><span class="o">[</span>PATH<span class="o">]</span>
+</code></pre></div>
+<p>Where <code>[PATH]</code> is the path to your application instance (e.g., <code>main.py</code>). You can also use the following options:</p>
+<ul>
+<li><strong><code>--host</code></strong>: The address to serve on (default: <code>127.0.0.1</code>).</li>
+<li><strong><code>--port</code></strong>: The port to serve on (default: <code>8000</code>).</li>
+<li><strong><code>--reload</code></strong>: Enables auto-reload on code changes.</li>
+<li><strong><code>--entrypoint</code></strong>: Manually specifies the app import string (e.g., <code>main:app</code>).</li>
+</ul>
+<p>Let us navigate to the docs at http://127.0.0.1:8000/ and we should see the following:</p>
+<p><img alt="Hello World" src=".././img/hello-world.png" /></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can still use traditional virtual environments with <code>uv venv</code>, activate them with <code>source .venv/bin/activate</code>, and use <code>uv pip</code> if you prefer a more familiar workflow.</p>
+</div>
+<h2 id="scaffolding-with-fastapi-new">Scaffolding with <code>fastapi-new</code></h2>
+<p>For an even faster setup, you can use <code>fastapi-new</code> to bootstrap a project structure automatically:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>$<span class="w"> </span>uvx<span class="w"> </span>run<span class="w"> </span>fastapi-new<span class="w"> </span>fastapi-beyond-crud
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>Installed<span class="w"> </span><span class="m">11</span><span class="w"> </span>packages<span class="w"> </span><span class="k">in</span><span class="w"> </span>40ms
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">   </span>FastAPI<span class="w">   </span>Creating<span class="w"> </span>a<span class="w"> </span>new<span class="w"> </span>project<span class="w"> </span>🚀
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">       </span>env<span class="w">   </span>Setting<span class="w"> </span>up<span class="w"> </span>environment<span class="w"> </span>with<span class="w"> </span>uv
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">      </span>deps<span class="w">   </span>Installing<span class="w"> </span>dependencies...
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a>
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="w">  </span>template<span class="w">   </span>Writing<span class="w"> </span>template<span class="w"> </span>files...
+<a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a>
+<a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="w">   </span>success<span class="w">   </span>✨<span class="w"> </span>Success!<span class="w"> </span>Created<span class="w"> </span>FastAPI<span class="w"> </span>project:<span class="w"> </span>fastapi-beyond-crud
+<a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>
+<a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a><span class="w">             </span>Next<span class="w"> </span>steps:
+<a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a><span class="w">                </span>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>fastapi-beyond-crud
+<a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a><span class="w">                </span>$<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>fastapi<span class="w"> </span>dev
+<a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a>
+<a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a><span class="w">             </span>Visit<span class="w"> </span>http://localhost:8000
+<a id="__codelineno-24-19" name="__codelineno-24-19" href="#__codelineno-24-19"></a>
+<a id="__codelineno-24-20" name="__codelineno-24-20" href="#__codelineno-24-20"></a><span class="w">             </span>Deploy<span class="w"> </span>to<span class="w"> </span>FastAPI<span class="w"> </span>Cloud:
+<a id="__codelineno-24-21" name="__codelineno-24-21" href="#__codelineno-24-21"></a><span class="w">               </span>$<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>fastapi<span class="w"> </span>login
+<a id="__codelineno-24-22" name="__codelineno-24-22" href="#__codelineno-24-22"></a><span class="w">               </span>$<span class="w"> </span>uv<span class="w"> </span>run<span class="w"> </span>fastapi<span class="w"> </span>deploy
+<a id="__codelineno-24-23" name="__codelineno-24-23" href="#__codelineno-24-23"></a>
+<a id="__codelineno-24-24" name="__codelineno-24-24" href="#__codelineno-24-24"></a><span class="w">             </span>💡<span class="w"> </span>Tip:<span class="w"> </span>Use<span class="w"> </span><span class="s1">&#39;uv run&#39;</span><span class="w"> </span>to<span class="w"> </span>automatically<span class="w"> </span>use<span class="w"> </span>the<span class="w"> </span>project<span class="err">&#39;</span>s<span class="w"> </span>environment
+</code></pre></div>
+<p>Following these steps will generate the same FastAPI application we built manually, but with significantly less effort.</p>
 <h2 id="conclusion">Conclusion</h2>
-<p>By following these steps, you have successfully set up a virtual environment, and installed FastAPI, frozen the dependencies to reproduce the project in the future and you have verified your installation using the <code>fastapi</code> CLI command. This structured approach ensures a clean and manageable development environment for our FastAPI project. Next, we shall create a simple web server and create our first API routes.</p>
+<p>In this chapter, we established a robust foundation for FastAPI development using <strong>uv</strong>. We covered project initialization, dependency management, and running a development server with the FastAPI CLI. With an auto-reloading environment ready, we can now move on to building more complex features.</p>
+
+
 
 
 
@@ -869,7 +1433,7 @@
         
           <button type="button" class="md-top md-icon" data-md-component="top" hidden>
   
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
   Back to top
 </button>
         
@@ -882,17 +1446,17 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
+          <a href="../whats_new/" class="md-footer__link md-footer__link--prev" aria-label="Previous: What&#x27;s New">
             <div class="md-footer__button md-icon">
               
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
             </div>
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Previous
               </span>
               <div class="md-ellipsis">
-                Home
+                What's New
               </div>
             </div>
           </a>
@@ -910,7 +1474,7 @@
             </div>
             <div class="md-footer__button md-icon">
               
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </div>
           </a>
         
@@ -923,13 +1487,14 @@
   
   
     Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
     </a>
   
 </div>
       
-        <div class="md-social">
+        
+<div class="md-social">
   
     
     
@@ -939,7 +1504,7 @@
       
     
     <a href="https://github.com/jod35" target="_blank" rel="noopener" title="github.com" class="md-social__link">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M202.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1M496 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2m-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3m-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1"/></svg>
     </a>
   
 </div>
@@ -954,13 +1519,14 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.footer", "navigation.instant", "navigation.top", "content.code.annotate", "search.suggest", "search.highlight", "content.code.copy", "content.code.select", "content.code.annotate"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["navigation.footer","navigation.instant","navigation.top","content.code.annotate","search.suggest","search.highlight","content.code.copy","content.code.select","content.code.annotate"],"search":"../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
-      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
+      <script src="../assets/javascripts/bundle.c2b142ea.min.js"></script>
       
     
-  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
-document$.subscribe(() => { lightbox.reload() });
-</script></body>
+  </body>
 </html>
