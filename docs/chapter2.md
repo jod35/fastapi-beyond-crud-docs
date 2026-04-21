@@ -30,11 +30,11 @@ def index() -> dict:
     return {"Hello": "World"}
 ```
 
-Even in these few lines, several important things are happening. First, we import the `FastAPI` class, which serves as the primary gateway to the framework. Think of this class as the orchestrator of your application; through it, you will define routes, register middleware, and manage how your server handles everything from basic requests to complex exceptions.
+Even in these few lines, several important things are happening. First, we import the `FastAPI` class, which serves as the main entry point to the framework. Think of this class as the orchestrator of your application—through it, you'll define routes, register middleware, and manage how your server handles everything from basic requests to complex exceptions.
 
-Next, we create an instance of this class, which we've named `app`. While you can technically name this variable anything, `app` is the industry standard and makes your code immediately recognizable to other developers.
+Next, we create an instance of this class and name it `app`. While you can technically name it anything, `app` is the industry standard and makes your code immediately recognizable to other developers.
 
-Finally, we define our first API route. This is done by creating a standard Python function, `index`, and decorating it with `@app.get("/")`. This decorator tells FastAPI that whenever someone visits the root URL of our server using an HTTP GET request, it should execute the `index` function and return its result—in this case, a simple JSON message.
+Finally, we define our first API route by creating a Python function, `index`, and decorating it with `@app.get("/")`. This decorator tells FastAPI to execute the `index` function whenever someone visits the root URL with an HTTP GET request and return its result—in this case, a simple JSON message.
 
 ```python title="Your first API endpoint"
 @app.get("/")
@@ -42,7 +42,7 @@ def index() -> dict:
     return {"Hello": "World"}
 ```
 
-FastAPI makes handling different types of interactions seamless. While we are using `get` here to retrieve data, the `@app` decorator supports all standard HTTP methods, including `post`, `put`, `delete`, `patch`, and more, allowing you to build comprehensive and RESTful APIs with ease.
+FastAPI makes handling different types of interactions seamless. While we're using `get` here to retrieve data, the `@app` decorator supports all standard HTTP methods—`post`, `put`, `delete`, `patch`, and more—allowing you to build comprehensive, RESTful APIs with ease.
 
 ### Running the Application
 
@@ -111,6 +111,27 @@ FastAPI is also smart enough to handle basic data conversion; any value provided
 
 ![Path param converted to string](./img/2026/path%20param%20converted%20to%20a%20string.png)
 
+
+#### Validating Path params
+We can declare and validate path parameters in FastAPI using the `Path` function in FastAPI.
+
+```py
+from fastapi import Path
+
+@app.get('/greet/{username}')
+async def greet(username: str=Path(... ,max_length=100, min_length=2)) -> dict:
+   return {"message":f"Hello {username}"}
+```
+
+The use of `...` specifies that the path parameter is always required. Unlike query parameters, path parameters cannot have default values.
+
+The `Path` function accepts the following arguments:
+
+- `gt, ge, lt, le`: numeric validations for numeric parameters
+- `min_length / max_length`: string validations for string path parameters
+- `title` / `description`: Used in OpenAPI documentation (we'll cover this later)
+- `pattern`: The regex pattern to match against the path parameter 
+
 ### Query Parameters
 
 Query parameters are the key-value pairs you often see at the end of a URL, following a question mark (`?`). They are ideal for optional data, such as search filters or pagination settings.
@@ -118,9 +139,9 @@ Query parameters are the key-value pairs you often see at the end of a URL, foll
 ```python title="Query params"
 # inside main.py
 
-user_list = [
    "Jerry",
    "Joey",
+user_list = [
    "Phil"
 ]
 
@@ -142,11 +163,11 @@ If the user isn't found, our logic handles it gracefully:
 
 ![Searching for a user who does not exist](./img/2026/query%20param%20present2png)
 
-However, if we attempt to call this endpoint without providing a `username`, FastAPI will return a validation error because we haven't provided a default value, making the parameter required by default.
+However, if you try to call this endpoint without providing a `username`, FastAPI returns a validation error because we haven't provided a default value, making the parameter required by default.
 
 ![Searching without the search query param](./img/2026/query%20param%20absent.png)
 
-To make a parameter truly optional, we can provide a default value. By using Python's `Optional` type and assigning a fallback, we can ensure our API remains robust even when certain data is missing.
+To make a parameter truly optional, provide a default value. By using Python's `Optional` type and assigning a fallback, you ensure your API remains robust even when certain data is missing.
 
 ```python title="Optional Query Params"
 from typing import Optional
@@ -165,7 +186,7 @@ Now, if a request arrives without a query string, the API will simply default to
 
 ![Searching for a user without a query param](./img/2026/query%20param%20present3.png)
 
-### Refining Optional Parameters
+#### Refining Optional Parameters
 
 The flexibility of FastAPI allows you to mix and match these approaches. You can even design routes that can handle a parameter as either a path element or a query string, depending on your architectural needs. Consider this alternate version of our greeting:
 
@@ -177,17 +198,36 @@ async def greet(username:Optional[str]="User") -> dict:
    return {"message":f"Hello {username}"}
 ```
 
-By removing `{username}` from the route string and providing a default value in the function signature, we've transformed the requirement. Now, the `username` is an optional query parameter that defaults to "User" if left blank.
+By removing `{username}` from the route string and providing a default value in the function signature, we've transformed it. Now, `username` becomes an optional query parameter that defaults to "User" if not provided.
 
 ![Greeting a user with a username as a query param](./img/img17.png)
 
 ![Greeting with the default value of the username](./img/img18.png)
 
-## The Request Body and Pydantic
+#### Validating Query Parameters
+We can also validate query parameters FastAPI route handlers using FastAPI's `Query` function.
 
-As your application grows, you will often need to send complex data structures to the server for example, when creating a new product or updating a user profile. While you could pass this data through numerous query parameters, it quickly becomes unwieldy. 
+```py title="validating a username using the Query function"
+from fastapi import Query
 
-Instead, we use a **Request Body**. FastAPI leverages the power of Pydantic to let you define exactly what your data should look like using simple Python classes.
+@app.get('/greet/')
+async def greet(username: str = Query(default="User", min_length=2, max_length=100)) -> dict:
+   return {"message":f"Hello {username}"}
+```
+
+The `Query` function lets you add important validations to query parameters. Here are its main arguments: 
+
+- `default`: The default value if the query parameter isn't provided
+- `min_length` / `max_length`: String length validations
+- `le`, `lt`, `ge`, `gt`: Integer value validations
+- `pattern`: A regex pattern to match against the query parameter
+- `alias`: An alternative parameter name that can be used instead
+
+### The Request Body and Pydantic
+
+As your application grows, you'll often need to send complex data structures to the server—for example, when creating a new product or updating a user profile. While you could pass this data through query parameters, it quickly becomes unwieldy. 
+
+Instead, use a **Request Body**. FastAPI harnesses Pydantic to let you define exactly what your data should look like using simple Python classes.
 
 ```python title="Request Body"
 # inside main.py
@@ -222,7 +262,7 @@ class ProductSchema(BaseModel):
 
 FastAPI handles the heavy lifting for you. It automatically parses the incoming JSON, validates the data types, and provides you with a clean Python object (`product_data`) to work with inside your function.
 
-If a client sends an invalid request—for example, by omitting the request body entirely—FastAPI automatically intervenes.
+If a client sends an invalid request—for example, by omitting the request body—FastAPI automatically catches it.
 
 ![Making request without request body](./img/2026/send%20request%20body%20without%20body.png)
 
@@ -234,6 +274,45 @@ When the client provides valid data that matches our schema, everything works pe
 
 ![Successful request with valid product data](./img/2026/send%20request%20body%20with%20valid%20product%20data.png)
 
+#### Adding Values to Request Body Without Pydantic Models
+By now, you understand that any parameter not defined in your path parameters is treated as a query parameter. Here's a simple example:
+
+```python title="a query param"
+class ProductSchema(BaseModel):
+    name: str
+    price: float
+    description: str
+
+@app.post("/create_product")
+async def create_product(product_data:ProductSchema, sku: str):
+   new_product = {
+      "name" : product_data.name,
+      "price": product_data.price,
+      "description" : product_data.description 
+   }
+```
+
+This treats the new parameter as a query parameter. But what if you want it to be part of the request body without adding it to the Pydantic model? That's where the `Body` function comes in. It lets you include the `sku` field in the request body even if it's not part of your model. 
+
+```python title="a param part of the request body"
+from fastapi import Body
+
+class ProductSchema(BaseModel):
+    name: str
+    price: float
+    description: str
+
+@app.post("/create_product")
+async def create_product(product_data:ProductSchema, sku: str= Body(...)):
+   new_product = {
+      "name" : product_data.name,
+      "price": product_data.price,
+      "description" : product_data.description 
+   }
+
+   return {"product": product, "sku": sku}
+```
+
 ### Understanding Request Headers
 
 Beyond the explicit data we send in the URL or the body, every HTTP request carries **Headers**. These provide essential context about the request's origin and preferences, such as:
@@ -243,7 +322,7 @@ Beyond the explicit data we send in the URL or the body, every HTTP request carr
 - **Accept-Language**: The user's preferred language for the response.
 - **Authorization**: (Often used for security tokens, which we will cover later).
 
-FastAPI allows you to access these headers just as easily as any other parameter. By using the `Header` function, you can retrieve specific values, which FastAPI intelligently maps from standard HTTP kebab-case (like `User-Agent`) to Pythonic snake-case (`user_agent`).
+FastAPI makes accessing headers just as easy as any other parameter. Use the `Header` function to retrieve specific values—FastAPI automatically maps from HTTP kebab-case (like `User-Agent`) to Python snake_case (`user_agent`).
 
 ```python title="Request Headers"
 # inside main.py
@@ -274,6 +353,6 @@ Making a request to this route reveals the fascinating layer of metadata that tr
 
 ## Conclusion
 
-In this chapter, we have moved beyond a simple installation and built a functioning web server. We have explored the various ways clients can communicate with our API through path parameters, query strings, request bodies, and headers and seen how FastAPI uses Python type hints to make this communication safe and reliable.
+In this chapter, we've moved beyond installation and built a functioning web server. We've explored the various ways clients can communicate with our API through path parameters, query strings, request bodies, and headers—and seen how FastAPI uses Python type hints to make this communication safe and reliable.
 
-In the next chapter, we will take these concepts further and begin building a real-world application: a CRUD (Create, Read, Update, Delete) API for managing a bookstore, utilizing an in-memory database to keep our focus on the core logic of web development.
+In the next chapter, we'll take these concepts further and build a real-world application: a CRUD (Create, Read, Update, Delete) API for managing a bookstore, using an in-memory database to keep our focus on core web development logic.

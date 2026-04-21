@@ -1,12 +1,24 @@
-# Databases with SQLModel
+# Databases Part 1
 
 In the preceding chapter, we developed a functional CRUD API that operated on a simple in-memory database, represented by a Python list. However, in real-world applications, it's essential to use a persistent database to store all necessary data.
 
 ## Choosing a Database for FastAPI
 
-FastAPI supports various types of databases, including relational/SQL databases and non-relational/NoSQL databases. Depending on your specific requirements, you can opt for either type.
+FastAPI is a database agnostic framework meaning that it was not designed to have a specific way to support a particular kind of database. Instead, it was designed to work with any kind of database whether relational or non-relational. 
 
-For this series, we'll focus on using a relational database, specifically PostgreSQL. PostgreSQL is a widely used free and open-source relational database management system, offering numerous benefits:
+For this series, we'll discuss both relational and non-relational databases. 
+
+
+### Relational Databases
+
+Relational databases are those which store structured data. They store data in tables which are made up of rows and columns. They use SQL to interact with the database. Some popular examples of such are MySQL, PostgreSQL (which we used in the previous edition), SQLite, etc.
+
+### Non-relational Databases
+
+Non-relational databases on the other hand are designed to store unstructred, semi structured data or rapidly changing data. They offer schemaless ways to model the database. Some popular examples of such are MongoDB, Cassandra, Redis, etc.
+
+## A Relational Database Setup with PostgreSQL
+Our focus in this chapter will be on using a relational database, specifically PostgreSQL. PostgreSQL is a widely used free and open-source relational database management system, offering numerous benefits:
 
 While using PostgreSQL, we shall need to choose a way to interact with the database using the Python Language. That introduces us to the concept of an [Object Relational mapper](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping).
 
@@ -27,6 +39,8 @@ In simpler terms, think of an ORM as an interpreter in a conversation where one 
 4. **Data Conversion**: The ORM handles converting Python data types into database-specific types and vice versa, ensuring compatibility between the two.
 
 An ORM simplifies the process of working with databases by allowing you to focus on your application's logic in Python, rather than getting bogged down in SQL queries and database management details. It acts as a bridge between the object-oriented world of programming and the relational world of databases.
+
+#### SQLAlchemy
 
 There are several different ORM solutions available for Python, but the most popular is [SQLAlchemy](https://sqlalchemy.org). SQLAlchemy simplifies database access and manipulation by providing an ORM for mapping Python objects to database tables and offering a high-level SQL expression language for querying databases. While SQLAlchemy is a powerful tool on its own, there's an ORM solution that seamlessly integrates SQLAlchemy with Pydantic, the data validation library discussed in previous chapters.
 
