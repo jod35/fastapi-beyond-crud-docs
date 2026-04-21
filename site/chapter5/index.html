@@ -29,7 +29,7 @@
     
     
       
-        <title>Databases with SQLModel - FastAPI Beyond CRUD</title>
+        <title>Databases Part 1 - FastAPI Beyond CRUD</title>
       
     
     
@@ -97,7 +97,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#databases-with-sqlmodel" class="md-skip">
+        <a href="#databases-part-1" class="md-skip">
           Skip to content
         </a>
       
@@ -132,7 +132,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Databases with SQLModel
+              Databases Part 1
             
           </span>
         </div>
@@ -481,6 +481,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Choosing a Database for FastAPI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relational-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relational Databases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-relational-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Non-relational Databases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-relational-database-setup-with-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Relational Database Setup with PostgreSQL
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -503,6 +542,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="How it Works:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sqlalchemy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQLAlchemy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1003,6 +1059,45 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Choosing a Database for FastAPI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#relational-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relational Databases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-relational-databases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Non-relational Databases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-relational-database-setup-with-postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A Relational Database Setup with PostgreSQL
+      
+    </span>
+  </a>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1025,6 +1120,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="How it Works:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sqlalchemy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQLAlchemy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1202,11 +1314,17 @@
   
 
 
-<h1 id="databases-with-sqlmodel">Databases with SQLModel</h1>
+<h1 id="databases-part-1">Databases Part 1</h1>
 <p>In the preceding chapter, we developed a functional CRUD API that operated on a simple in-memory database, represented by a Python list. However, in real-world applications, it's essential to use a persistent database to store all necessary data.</p>
 <h2 id="choosing-a-database-for-fastapi">Choosing a Database for FastAPI</h2>
-<p>FastAPI supports various types of databases, including relational/SQL databases and non-relational/NoSQL databases. Depending on your specific requirements, you can opt for either type.</p>
-<p>For this series, we'll focus on using a relational database, specifically PostgreSQL. PostgreSQL is a widely used free and open-source relational database management system, offering numerous benefits:</p>
+<p>FastAPI is a database agnostic framework meaning that it was not designed to have a specific way to support a particular kind of database. Instead, it was designed to work with any kind of database whether relational or non-relational. </p>
+<p>For this series, we'll discuss both relational and non-relational databases. </p>
+<h3 id="relational-databases">Relational Databases</h3>
+<p>Relational databases are those which store structured data. They store data in tables which are made up of rows and columns. They use SQL to interact with the database. Some popular examples of such are MySQL, PostgreSQL (which we used in the previous edition), SQLite, etc.</p>
+<h3 id="non-relational-databases">Non-relational Databases</h3>
+<p>Non-relational databases on the other hand are designed to store unstructred, semi structured data or rapidly changing data. They offer schemaless ways to model the database. Some popular examples of such are MongoDB, Cassandra, Redis, etc.</p>
+<h2 id="a-relational-database-setup-with-postgresql">A Relational Database Setup with PostgreSQL</h2>
+<p>Our focus in this chapter will be on using a relational database, specifically PostgreSQL. PostgreSQL is a widely used free and open-source relational database management system, offering numerous benefits:</p>
 <p>While using PostgreSQL, we shall need to choose a way to interact with the database using the Python Language. That introduces us to the concept of an <a href="https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping">Object Relational mapper</a>.</p>
 <h2 id="explaining-an-object-relational-mapper-orm">Explaining an Object-Relational Mapper (ORM)</h2>
 <p>An Object-Relational Mapper (ORM) serves as a translator between a programming language, such as Python, and a database, like PostgreSQL or MySQL.</p>
@@ -1227,6 +1345,7 @@
 </li>
 </ol>
 <p>An ORM simplifies the process of working with databases by allowing you to focus on your application's logic in Python, rather than getting bogged down in SQL queries and database management details. It acts as a bridge between the object-oriented world of programming and the relational world of databases.</p>
+<h4 id="sqlalchemy">SQLAlchemy</h4>
 <p>There are several different ORM solutions available for Python, but the most popular is <a href="https://sqlalchemy.org">SQLAlchemy</a>. SQLAlchemy simplifies database access and manipulation by providing an ORM for mapping Python objects to database tables and offering a high-level SQL expression language for querying databases. While SQLAlchemy is a powerful tool on its own, there's an ORM solution that seamlessly integrates SQLAlchemy with Pydantic, the data validation library discussed in previous chapters.</p>
 <h2 id="creating-a-database">Creating a Database</h2>
 <p>In this series, we will make use of <a href="https://sqlmodel.tiangolo.com/">SQLModel</a>, a library tailored for FastAPI. Interestingly, it was developed by the same individual who created FastAPI.</p>

@@ -111,6 +111,27 @@ FastAPI is also smart enough to handle basic data conversion; any value provided
 
 ![Path param converted to string](./img/2026/path%20param%20converted%20to%20a%20string.png)
 
+
+### Validating Path params
+We can declare and validate path parameters in FastAPI using the `Path` function in FastAPI.
+
+```py
+from fastapi import Path
+
+@app.get('/greet/{username}')
+async def greet(username: str=Path(... ,max_length=100, min_length=2)) -> dict:
+   return {"message":f"Hello {username}"}
+```
+
+The use of `...` is to specify that the path param is always going to be required, unlike query params, path params cannot have a default value.
+
+The `Path` function is a function that takes in the following arguments.
+
+- `gt, ge, lt, le`: numeric validations for numeric params
+- `min_length / max_length`: string vlidations for string path params
+- `title / description`: These are used on the OpenAPI docs. (we shall discuss this later)
+- `pattern`: The regex pattern to match with the path param 
+
 ### Query Parameters
 
 Query parameters are the key-value pairs you often see at the end of a URL, following a question mark (`?`). They are ideal for optional data, such as search filters or pagination settings.
@@ -183,7 +204,26 @@ By removing `{username}` from the route string and providing a default value in 
 
 ![Greeting with the default value of the username](./img/img18.png)
 
-## The Request Body and Pydantic
+### Validating Query Parameters
+We can also validate query parameters FastAPI route handlers using FastAPI's `Query` function.
+
+```py title="validating a username using the Query function"
+from fastapi import Query
+
+@app.get('/greet/')
+async def greet(username: str = Query(default="User", min_length=2, max_length=100)) -> dict:
+   return {"message":f"Hello {username}"}
+```
+
+Using the `Query` function allows you to add important validations to query parameters. The `Query` has the following arguments. 
+
+- `default` : The default value of the query param if the param is not provided
+- `min_length / max_length`: These help to describe string length validations
+- `le, lt, ge, gt`: These help to add validations for integer query parameters
+- `pattern`: The regular expression to use to match a query param
+- `alias`: A different param name that can be used instead of the param described.
+
+### The Request Body and Pydantic
 
 As your application grows, you will often need to send complex data structures to the server for example, when creating a new product or updating a user profile. While you could pass this data through numerous query parameters, it quickly becomes unwieldy. 
 
@@ -233,6 +273,45 @@ You’ll notice the server returns a `422 Unprocessable Entity` status. This isn
 When the client provides valid data that matches our schema, everything works perfectly:
 
 ![Successful request with valid product data](./img/2026/send%20request%20body%20with%20valid%20product%20data.png)
+
+#### Adding values to Request Body without Pydantic models
+At this point you understand that any paramater that is not defined in your path params will be treated as a query paramater. Here is a simple example.
+
+```python title="a query param"
+class ProductSchema(BaseModel):
+    name: str
+    price: float
+    description: str
+
+@app.post("/create_product")
+async def create_product(product_data:ProductSchema, sku: str):
+   new_product = {
+      "name" : product_data.name,
+      "price": product_data.price,
+      "description" : product_data.description 
+   }
+```
+
+This will treat our new param to our handler as a query parameter. What if we want to use it as part of the request body but not part of our product model? There is where the `Body` function comes in. The `Body` function allows for us to make the `sku` field be part of the request body even if it is not found on a Pydantic model. 
+
+```python title="a param part of the request body"
+from fastapi import Body
+
+class ProductSchema(BaseModel):
+    name: str
+    price: float
+    description: str
+
+@app.post("/create_product")
+async def create_product(product_data:ProductSchema, sku: str= Body(...)):
+   new_product = {
+      "name" : product_data.name,
+      "price": product_data.price,
+      "description" : product_data.description 
+   }
+
+   return {"product": product, "sku": sku}
+```
 
 ### Understanding Request Headers
 
