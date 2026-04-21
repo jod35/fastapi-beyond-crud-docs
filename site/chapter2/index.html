@@ -462,7 +462,8 @@
     </span>
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Path Parameters">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#validating-path-params" class="md-nav__link">
@@ -475,6 +476,11 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#query-parameters" class="md-nav__link">
     <span class="md-ellipsis">
@@ -484,7 +490,8 @@
     </span>
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Query Parameters">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#refining-optional-parameters" class="md-nav__link">
@@ -508,6 +515,11 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#the-request-body-and-pydantic" class="md-nav__link">
     <span class="md-ellipsis">
@@ -524,7 +536,7 @@
   <a href="#adding-values-to-request-body-without-pydantic-models" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Adding values to Request Body without Pydantic models
+        Adding Values to Request Body Without Pydantic Models
       
     </span>
   </a>
@@ -1047,7 +1059,8 @@
     </span>
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Path Parameters">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#validating-path-params" class="md-nav__link">
@@ -1060,6 +1073,11 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#query-parameters" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1069,7 +1087,8 @@
     </span>
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Query Parameters">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#refining-optional-parameters" class="md-nav__link">
@@ -1093,6 +1112,11 @@
   
 </li>
         
+      </ul>
+    </nav>
+  
+</li>
+        
           <li class="md-nav__item">
   <a href="#the-request-body-and-pydantic" class="md-nav__link">
     <span class="md-ellipsis">
@@ -1109,7 +1133,7 @@
   <a href="#adding-values-to-request-body-without-pydantic-models" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Adding values to Request Body without Pydantic models
+        Adding Values to Request Body Without Pydantic Models
       
     </span>
   </a>
@@ -1189,14 +1213,14 @@
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Hello&quot;</span><span class="p">:</span> <span class="s2">&quot;World&quot;</span><span class="p">}</span>
 </code></pre></div>
-<p>Even in these few lines, several important things are happening. First, we import the <code>FastAPI</code> class, which serves as the primary gateway to the framework. Think of this class as the orchestrator of your application; through it, you will define routes, register middleware, and manage how your server handles everything from basic requests to complex exceptions.</p>
-<p>Next, we create an instance of this class, which we've named <code>app</code>. While you can technically name this variable anything, <code>app</code> is the industry standard and makes your code immediately recognizable to other developers.</p>
-<p>Finally, we define our first API route. This is done by creating a standard Python function, <code>index</code>, and decorating it with <code>@app.get("/")</code>. This decorator tells FastAPI that whenever someone visits the root URL of our server using an HTTP GET request, it should execute the <code>index</code> function and return its result—in this case, a simple JSON message.</p>
+<p>Even in these few lines, several important things are happening. First, we import the <code>FastAPI</code> class, which serves as the main entry point to the framework. Think of this class as the orchestrator of your application—through it, you'll define routes, register middleware, and manage how your server handles everything from basic requests to complex exceptions.</p>
+<p>Next, we create an instance of this class and name it <code>app</code>. While you can technically name it anything, <code>app</code> is the industry standard and makes your code immediately recognizable to other developers.</p>
+<p>Finally, we define our first API route by creating a Python function, <code>index</code>, and decorating it with <code>@app.get("/")</code>. This decorator tells FastAPI to execute the <code>index</code> function whenever someone visits the root URL with an HTTP GET request and return its result—in this case, a simple JSON message.</p>
 <div class="highlight"><span class="filename">Your first API endpoint</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Hello&quot;</span><span class="p">:</span> <span class="s2">&quot;World&quot;</span><span class="p">}</span>
 </code></pre></div>
-<p>FastAPI makes handling different types of interactions seamless. While we are using <code>get</code> here to retrieve data, the <code>@app</code> decorator supports all standard HTTP methods, including <code>post</code>, <code>put</code>, <code>delete</code>, <code>patch</code>, and more, allowing you to build comprehensive and RESTful APIs with ease.</p>
+<p>FastAPI makes handling different types of interactions seamless. While we're using <code>get</code> here to retrieve data, the <code>@app</code> decorator supports all standard HTTP methods—<code>post</code>, <code>put</code>, <code>delete</code>, <code>patch</code>, and more—allowing you to build comprehensive, RESTful APIs with ease.</p>
 <h3 id="running-the-application">Running the Application</h3>
 <p>To see our code in action, we return to the terminal. As we saw in the previous chapter, we can launch our server using the <code>uv</code> tool and the FastAPI CLI:</p>
 <div class="highlight"><span class="filename">Running the server with the FastAPI CLI</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="gp gp-VirtualEnv">(env)</span><span class="gp">$ </span>uv<span class="w"> </span>run<span class="w"> </span>fastapi<span class="w"> </span>dev
@@ -1247,7 +1271,7 @@
 <p><img alt="Greeting a User with a username" src=".././img/2026/greet%20a%20user.png" /></p>
 <p>FastAPI is also smart enough to handle basic data conversion; any value provided in that segment of the URL will be automatically parsed according to your type definition.</p>
 <p><img alt="Path param converted to string" src=".././img/2026/path%20param%20converted%20to%20a%20string.png" /></p>
-<h3 id="validating-path-params">Validating Path params</h3>
+<h4 id="validating-path-params">Validating Path params</h4>
 <p>We can declare and validate path parameters in FastAPI using the <code>Path</code> function in FastAPI.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
@@ -1255,21 +1279,21 @@
 <a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">greet</span><span class="p">(</span><span class="n">username</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="o">...</span> <span class="p">,</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="sa">f</span><span class="s2">&quot;Hello </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
 </code></pre></div>
-<p>The use of <code>...</code> is to specify that the path param is always going to be required, unlike query params, path params cannot have a default value.</p>
-<p>The <code>Path</code> function is a function that takes in the following arguments.</p>
+<p>The use of <code>...</code> specifies that the path parameter is always required. Unlike query parameters, path parameters cannot have default values.</p>
+<p>The <code>Path</code> function accepts the following arguments:</p>
 <ul>
-<li><code>gt, ge, lt, le</code>: numeric validations for numeric params</li>
-<li><code>min_length / max_length</code>: string vlidations for string path params</li>
-<li><code>title / description</code>: These are used on the OpenAPI docs. (we shall discuss this later)</li>
-<li><code>pattern</code>: The regex pattern to match with the path param </li>
+<li><code>gt, ge, lt, le</code>: numeric validations for numeric parameters</li>
+<li><code>min_length / max_length</code>: string validations for string path parameters</li>
+<li><code>title</code> / <code>description</code>: Used in OpenAPI documentation (we'll cover this later)</li>
+<li><code>pattern</code>: The regex pattern to match against the path parameter </li>
 </ul>
 <h3 id="query-parameters">Query Parameters</h3>
 <p>Query parameters are the key-value pairs you often see at the end of a URL, following a question mark (<code>?</code>). They are ideal for optional data, such as search filters or pagination settings.</p>
 <div class="highlight"><span class="filename">Query params</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># inside main.py</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">user_list</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>   <span class="s2">&quot;Jerry&quot;</span><span class="p">,</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>   <span class="s2">&quot;Joey&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>   <span class="s2">&quot;Jerry&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>   <span class="s2">&quot;Joey&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">user_list</span> <span class="o">=</span> <span class="p">[</span>
 <a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>   <span class="s2">&quot;Phil&quot;</span>
 <a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="p">]</span>
 <a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
@@ -1286,9 +1310,9 @@
 <p><img alt="Searching for a user who exists" src=".././img/2026/query%20param%20present1.png" /></p>
 <p>If the user isn't found, our logic handles it gracefully:</p>
 <p><img alt="Searching for a user who does not exist" src=".././img/2026/query%20param%20present2png" /></p>
-<p>However, if we attempt to call this endpoint without providing a <code>username</code>, FastAPI will return a validation error because we haven't provided a default value, making the parameter required by default.</p>
+<p>However, if you try to call this endpoint without providing a <code>username</code>, FastAPI returns a validation error because we haven't provided a default value, making the parameter required by default.</p>
 <p><img alt="Searching without the search query param" src=".././img/2026/query%20param%20absent.png" /></p>
-<p>To make a parameter truly optional, we can provide a default value. By using Python's <code>Optional</code> type and assigning a fallback, we can ensure our API remains robust even when certain data is missing.</p>
+<p>To make a parameter truly optional, provide a default value. By using Python's <code>Optional</code> type and assigning a fallback, you ensure your API remains robust even when certain data is missing.</p>
 <div class="highlight"><span class="filename">Optional Query Params</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/search&#39;</span><span class="p">)</span>
@@ -1302,7 +1326,7 @@
 </code></pre></div>
 <p>Now, if a request arrives without a query string, the API will simply default to searching for "Jerry."</p>
 <p><img alt="Searching for a user without a query param" src=".././img/2026/query%20param%20present3.png" /></p>
-<h3 id="refining-optional-parameters">Refining Optional Parameters</h3>
+<h4 id="refining-optional-parameters">Refining Optional Parameters</h4>
 <p>The flexibility of FastAPI allows you to mix and match these approaches. You can even design routes that can handle a parameter as either a path element or a query string, depending on your architectural needs. Consider this alternate version of our greeting:</p>
 <div class="highlight"><span class="filename">Optional Query Params</span><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
@@ -1310,10 +1334,10 @@
 <a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">greet</span><span class="p">(</span><span class="n">username</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">=</span><span class="s2">&quot;User&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="sa">f</span><span class="s2">&quot;Hello </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
 </code></pre></div>
-<p>By removing <code>{username}</code> from the route string and providing a default value in the function signature, we've transformed the requirement. Now, the <code>username</code> is an optional query parameter that defaults to "User" if left blank.</p>
+<p>By removing <code>{username}</code> from the route string and providing a default value in the function signature, we've transformed it. Now, <code>username</code> becomes an optional query parameter that defaults to "User" if not provided.</p>
 <p><img alt="Greeting a user with a username as a query param" src=".././img/img17.png" /></p>
 <p><img alt="Greeting with the default value of the username" src=".././img/img18.png" /></p>
-<h3 id="validating-query-parameters">Validating Query Parameters</h3>
+<h4 id="validating-query-parameters">Validating Query Parameters</h4>
 <p>We can also validate query parameters FastAPI route handlers using FastAPI's <code>Query</code> function.</p>
 <div class="highlight"><span class="filename">validating a username using the Query function</span><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Query</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
@@ -1321,17 +1345,17 @@
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">greet</span><span class="p">(</span><span class="n">username</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Query</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="n">min_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="sa">f</span><span class="s2">&quot;Hello </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
 </code></pre></div>
-<p>Using the <code>Query</code> function allows you to add important validations to query parameters. The <code>Query</code> has the following arguments. </p>
+<p>The <code>Query</code> function lets you add important validations to query parameters. Here are its main arguments: </p>
 <ul>
-<li><code>default</code> : The default value of the query param if the param is not provided</li>
-<li><code>min_length / max_length</code>: These help to describe string length validations</li>
-<li><code>le, lt, ge, gt</code>: These help to add validations for integer query parameters</li>
-<li><code>pattern</code>: The regular expression to use to match a query param</li>
-<li><code>alias</code>: A different param name that can be used instead of the param described.</li>
+<li><code>default</code>: The default value if the query parameter isn't provided</li>
+<li><code>min_length</code> / <code>max_length</code>: String length validations</li>
+<li><code>le</code>, <code>lt</code>, <code>ge</code>, <code>gt</code>: Integer value validations</li>
+<li><code>pattern</code>: A regex pattern to match against the query parameter</li>
+<li><code>alias</code>: An alternative parameter name that can be used instead</li>
 </ul>
 <h3 id="the-request-body-and-pydantic">The Request Body and Pydantic</h3>
-<p>As your application grows, you will often need to send complex data structures to the server for example, when creating a new product or updating a user profile. While you could pass this data through numerous query parameters, it quickly becomes unwieldy. </p>
-<p>Instead, we use a <strong>Request Body</strong>. FastAPI leverages the power of Pydantic to let you define exactly what your data should look like using simple Python classes.</p>
+<p>As your application grows, you'll often need to send complex data structures to the server—for example, when creating a new product or updating a user profile. While you could pass this data through query parameters, it quickly becomes unwieldy. </p>
+<p>Instead, use a <strong>Request Body</strong>. FastAPI harnesses Pydantic to let you define exactly what your data should look like using simple Python classes.</p>
 <div class="highlight"><span class="filename">Request Body</span><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># inside main.py</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
@@ -1359,14 +1383,14 @@
 <a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
 </code></pre></div>
 <p>FastAPI handles the heavy lifting for you. It automatically parses the incoming JSON, validates the data types, and provides you with a clean Python object (<code>product_data</code>) to work with inside your function.</p>
-<p>If a client sends an invalid request—for example, by omitting the request body entirely—FastAPI automatically intervenes.</p>
+<p>If a client sends an invalid request—for example, by omitting the request body—FastAPI automatically catches it.</p>
 <p><img alt="Making request without request body" src=".././img/2026/send%20request%20body%20without%20body.png" /></p>
 <p>You’ll notice the server returns a <code>422 Unprocessable Entity</code> status. This isn't just a generic error; it’s a helpful signal that the data provided (or lack thereof) didn't meet the requirements of your schema. Similarly, if required fields are missing, FastAPI will pinpoint exactly what is wrong:</p>
 <p><img alt="Request with missing fields in post data" src=".././img/2026/send%20request%20body%20with%20missing%20fields.png" /></p>
 <p>When the client provides valid data that matches our schema, everything works perfectly:</p>
 <p><img alt="Successful request with valid product data" src=".././img/2026/send%20request%20body%20with%20valid%20product%20data.png" /></p>
-<h4 id="adding-values-to-request-body-without-pydantic-models">Adding values to Request Body without Pydantic models</h4>
-<p>At this point you understand that any paramater that is not defined in your path params will be treated as a query paramater. Here is a simple example.</p>
+<h4 id="adding-values-to-request-body-without-pydantic-models">Adding Values to Request Body Without Pydantic Models</h4>
+<p>By now, you understand that any parameter not defined in your path parameters is treated as a query parameter. Here's a simple example:</p>
 <div class="highlight"><span class="filename">a query param</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">ProductSchema</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">price</span><span class="p">:</span> <span class="nb">float</span>
@@ -1380,7 +1404,7 @@
 <a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>      <span class="s2">&quot;description&quot;</span> <span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">description</span> 
 <a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>   <span class="p">}</span>
 </code></pre></div>
-<p>This will treat our new param to our handler as a query parameter. What if we want to use it as part of the request body but not part of our product model? There is where the <code>Body</code> function comes in. The <code>Body</code> function allows for us to make the <code>sku</code> field be part of the request body even if it is not found on a Pydantic model. </p>
+<p>This treats the new parameter as a query parameter. But what if you want it to be part of the request body without adding it to the Pydantic model? That's where the <code>Body</code> function comes in. It lets you include the <code>sku</code> field in the request body even if it's not part of your model. </p>
 <div class="highlight"><span class="filename">a param part of the request body</span><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Body</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">ProductSchema</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
@@ -1406,7 +1430,7 @@
 <li><strong>Accept-Language</strong>: The user's preferred language for the response.</li>
 <li><strong>Authorization</strong>: (Often used for security tokens, which we will cover later).</li>
 </ul>
-<p>FastAPI allows you to access these headers just as easily as any other parameter. By using the <code>Header</code> function, you can retrieve specific values, which FastAPI intelligently maps from standard HTTP kebab-case (like <code>User-Agent</code>) to Pythonic snake-case (<code>user_agent</code>).</p>
+<p>FastAPI makes accessing headers just as easy as any other parameter. Use the <code>Header</code> function to retrieve specific values—FastAPI automatically maps from HTTP kebab-case (like <code>User-Agent</code>) to Python snake_case (<code>user_agent</code>).</p>
 <div class="highlight"><span class="filename">Request Headers</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># inside main.py</span>
 <a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/get_headers&quot;</span><span class="p">)</span>
 <a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_all_request_headers</span><span class="p">(</span>
@@ -1431,8 +1455,8 @@
 <p>Making a request to this route reveals the fascinating layer of metadata that travels with every click and API call.</p>
 <p><img alt="Response returning headers" src=".././img/2026/get%20request%20headers.png" /></p>
 <h2 id="conclusion">Conclusion</h2>
-<p>In this chapter, we have moved beyond a simple installation and built a functioning web server. We have explored the various ways clients can communicate with our API through path parameters, query strings, request bodies, and headers and seen how FastAPI uses Python type hints to make this communication safe and reliable.</p>
-<p>In the next chapter, we will take these concepts further and begin building a real-world application: a CRUD (Create, Read, Update, Delete) API for managing a bookstore, utilizing an in-memory database to keep our focus on the core logic of web development.</p>
+<p>In this chapter, we've moved beyond installation and built a functioning web server. We've explored the various ways clients can communicate with our API through path parameters, query strings, request bodies, and headers—and seen how FastAPI uses Python type hints to make this communication safe and reliable.</p>
+<p>In the next chapter, we'll take these concepts further and build a real-world application: a CRUD (Create, Read, Update, Delete) API for managing a bookstore, using an in-memory database to keep our focus on core web development logic.</p>
 
 
 
