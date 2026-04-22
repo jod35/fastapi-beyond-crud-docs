@@ -277,22 +277,6 @@ When the client provides valid data that matches our schema, everything works pe
 #### Adding Values to Request Body Without Pydantic Models
 By now, you understand that any parameter not defined in your path parameters is treated as a query parameter. Here's a simple example:
 
-```python title="a query param"
-class ProductSchema(BaseModel):
-    name: str
-    price: float
-    description: str
-
-@app.post("/create_product")
-async def create_product(product_data:ProductSchema, sku: str):
-   new_product = {
-      "name" : product_data.name,
-      "price": product_data.price,
-      "description" : product_data.description 
-   }
-```
-
-This treats the new parameter as a query parameter. But what if you want it to be part of the request body without adding it to the Pydantic model? That's where the `Body` function comes in. It lets you include the `sku` field in the request body even if it's not part of your model. 
 
 ```python title="a param part of the request body"
 from fastapi import Body
@@ -312,6 +296,126 @@ async def create_product(product_data:ProductSchema, sku: str= Body(...)):
 
    return {"product": product, "sku": sku}
 ```
+
+But what if you want to include additional fields in the request body without adding them to the Pydantic model? That's where the `Body` function comes in. It allows you to include the `sku` field in the request body even if it's not part of your model.
+
+When you send a request, the request body will include the `sku` field as shown below:
+```json
+{
+  "product_data": {
+    "name": "string",
+    "price": 0,
+    "description": "string"
+  },
+  "sku": "string"
+}
+```
+
+The `Body` function can also be used for partial body extraction in situations where you may need to get individual fields without having a defined Pydantic model.
+
+```python
+
+@app.post('/create_product2')
+async def create_product2(
+   name: str=Body(..., embed=True),
+   price: float=Body(..., embed=True),
+   description: str=Body(..., embed=True),
+   sku: str=Body(..., embed=True)
+) -> dict:
+   new_product = {
+      "name" : name,
+      "price": price,
+      "description" : description,
+      "sku": sku 
+   }
+
+   return {"product": new_product}
+```
+
+In this example, we're not defining the request body using a Pydantic model. Instead, we define individual fields that compose the complete request body, as shown below:
+
+```json
+{
+  "name": "string",
+  "price": 0,
+  "description": "string",
+  "sku": "string"
+}
+```
+
+We're also using the `embed=True` argument, which tells FastAPI to expect these fields as top-level keys in the request body rather than nested values. This approach is useful when you have multiple individual request body parameters.
+
+The `Body` function accepts the following arguments:
+
+- `default`: a default value if the parameter is not provided
+- `default_factory`: a callable to generate a default value if none is provided
+- `alias`: an alternative name for the field
+- `alias_priority`: priority for resolving aliases
+- `media_type`: the media type (default is `application/json`)
+- `embed`: a boolean; if True, the field is embedded as a top-level key in the request body
+- `json_schema_extra`: additional JSON schema data
+
+### Handling Form Data
+At this point, we've only been handling requests with JSON data. However, many applications need to accept data from HTML forms, which are encoded as `application/x-www-form-urlencoded`. To handle this, we use the `Form` function, which works similarly to the `Body` function we saw earlier. Unlike `Body`, the `Form` function expects form-encoded data instead of JSON.
+
+```python title="handling form encoded data"
+from fastapi import Form
+
+
+@app.post('/create_product2')
+async def create_product2(
+   name: str=Form(...),
+   price: float=Form(...),
+   description: str=Form(...),
+   sku: str=Form(...)
+) -> dict:
+   new_product = {
+      "name" : name,
+      "price": price,
+      "description" : description,
+      "sku": sku 
+   }
+
+   return {"product": new_product}
+
+```
+
+It's worth noting that FastAPI does not allow validation of form-encoded data in Pydantic models. Instead, we must manually define validations on the fields as individual parameters in our route handlers.
+
+The `Form` function has the following parameters:
+
+- `default` - Default value if the parameter is not set. Use ... for required, None for optional
+- `default_factory` - Callable to generate the default value dynamically
+- `media_type` - Media type of the body (e.g., application/json)
+- `alias` - Alternative name the client sends
+- `alias_priority` - Priority for alias resolution
+- `validation_alias` - Name used for validation separate from serialization
+- `serialization_alias` - Name used when serializing output
+- `title` - Short title for OpenAPI docs
+- `description` - Human-readable description for OpenAPI docs
+- `gt` - Greater than (numeric validation)
+- `ge` - Greater than or equal (numeric validation)
+- `lt` - Less than (numeric validation)
+- `le` - Less than or equal (numeric validation)
+- `min_length` - Minimum length (string/array)
+- `max_length` - Maximum length (string/array)
+- `pattern` - Regex pattern for string validation
+- `regex` - Alias for pattern
+- `discriminator` - Discriminator for polymorphic schemas
+- `strict` - Enforce strict type checking
+- `multiple_of` - Value must be a multiple of this number
+- `allow_inf_nan` - Allow infinity and NaN values
+- `max_digits` - Maximum number of digits (Decimal)
+- `decimal_places` - Maximum decimal places
+- `example` - Example value for OpenAPI
+- `examples` - Multiple examples for OpenAPI
+- `openapi_examples` - Alias for examples
+- `deprecated` - Mark parameter as deprecated
+- `include_in_schema` - Include in OpenAPI schema
+- `json_schema_extra` - Additional JSON schema data
+
+### Handling Files
+
 
 ### Understanding Request Headers
 
