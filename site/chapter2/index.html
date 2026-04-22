@@ -549,6 +549,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#handling-form-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling Form Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handling-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#understanding-request-headers" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -651,7 +673,7 @@
   <span class="md-ellipsis">
     
   
-    Databases with SQLModel
+    Using Relational Databases
   
 
     
@@ -1146,6 +1168,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#handling-form-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling Form Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#handling-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Handling Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#understanding-request-headers" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1391,37 +1435,125 @@
 <p><img alt="Successful request with valid product data" src=".././img/2026/send%20request%20body%20with%20valid%20product%20data.png" /></p>
 <h4 id="adding-values-to-request-body-without-pydantic-models">Adding Values to Request Body Without Pydantic Models</h4>
 <p>By now, you understand that any parameter not defined in your path parameters is treated as a query parameter. Here's a simple example:</p>
-<div class="highlight"><span class="filename">a query param</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">ProductSchema</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="n">price</span><span class="p">:</span> <span class="nb">float</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/create_product&quot;</span><span class="p">)</span>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_product</span><span class="p">(</span><span class="n">product_data</span><span class="p">:</span><span class="n">ProductSchema</span><span class="p">,</span> <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>   <span class="n">new_product</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>      <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>      <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">price</span><span class="p">,</span>
-<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>      <span class="s2">&quot;description&quot;</span> <span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">description</span> 
-<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>   <span class="p">}</span>
+<div class="highlight"><span class="filename">a param part of the request body</span><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Body</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">ProductSchema</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="n">price</span><span class="p">:</span> <span class="nb">float</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/create_product&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_product</span><span class="p">(</span><span class="n">product_data</span><span class="p">:</span><span class="n">ProductSchema</span><span class="p">,</span> <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span> <span class="n">Body</span><span class="p">(</span><span class="o">...</span><span class="p">)):</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>   <span class="n">new_product</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>      <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>      <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">price</span><span class="p">,</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>      <span class="s2">&quot;description&quot;</span> <span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">description</span> 
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>   <span class="p">}</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">product</span><span class="p">,</span> <span class="s2">&quot;sku&quot;</span><span class="p">:</span> <span class="n">sku</span><span class="p">}</span>
 </code></pre></div>
-<p>This treats the new parameter as a query parameter. But what if you want it to be part of the request body without adding it to the Pydantic model? That's where the <code>Body</code> function comes in. It lets you include the <code>sku</code> field in the request body even if it's not part of your model. </p>
-<div class="highlight"><span class="filename">a param part of the request body</span><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Body</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">ProductSchema</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">price</span><span class="p">:</span> <span class="nb">float</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/create_product&quot;</span><span class="p">)</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_product</span><span class="p">(</span><span class="n">product_data</span><span class="p">:</span><span class="n">ProductSchema</span><span class="p">,</span> <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span> <span class="n">Body</span><span class="p">(</span><span class="o">...</span><span class="p">)):</span>
-<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>   <span class="n">new_product</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>      <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>      <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">price</span><span class="p">,</span>
-<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>      <span class="s2">&quot;description&quot;</span> <span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">description</span> 
-<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>   <span class="p">}</span>
-<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>
-<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">product</span><span class="p">,</span> <span class="s2">&quot;sku&quot;</span><span class="p">:</span> <span class="n">sku</span><span class="p">}</span>
+<p>But what if you want to include additional fields in the request body without adding them to the Pydantic model? That's where the <code>Body</code> function comes in. It allows you to include the <code>sku</code> field in the request body even if it's not part of your model.</p>
+<p>When you send a request, the request body will include the <code>sku</code> field as shown below:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">&quot;product_data&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">  </span><span class="nt">&quot;sku&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="p">}</span>
+</code></pre></div></p>
+<p>The <code>Body</code> function can also be used for partial body extraction in situations where you may need to get individual fields without having a defined Pydantic model.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/create_product2&#39;</span><span class="p">)</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_product2</span><span class="p">(</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>   <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">Body</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>   <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="n">Body</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>   <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">Body</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>   <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">Body</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">embed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>   <span class="n">new_product</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>      <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>      <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">price</span><span class="p">,</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>      <span class="s2">&quot;description&quot;</span> <span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>      <span class="s2">&quot;sku&quot;</span><span class="p">:</span> <span class="n">sku</span> 
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>   <span class="p">}</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">new_product</span><span class="p">}</span>
 </code></pre></div>
+<p>In this example, we're not defining the request body using a Pydantic model. Instead, we define individual fields that compose the complete request body, as shown below:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">&quot;price&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span><span class="nt">&quot;sku&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="p">}</span>
+</code></pre></div>
+<p>We're also using the <code>embed=True</code> argument, which tells FastAPI to expect these fields as top-level keys in the request body rather than nested values. This approach is useful when you have multiple individual request body parameters.</p>
+<p>The <code>Body</code> function accepts the following arguments:</p>
+<ul>
+<li><code>default</code>: a default value if the parameter is not provided</li>
+<li><code>default_factory</code>: a callable to generate a default value if none is provided</li>
+<li><code>alias</code>: an alternative name for the field</li>
+<li><code>alias_priority</code>: priority for resolving aliases</li>
+<li><code>media_type</code>: the media type (default is <code>application/json</code>)</li>
+<li><code>embed</code>: a boolean; if True, the field is embedded as a top-level key in the request body</li>
+<li><code>json_schema_extra</code>: additional JSON schema data</li>
+</ul>
+<h3 id="handling-form-data">Handling Form Data</h3>
+<p>At this point, we've only been handling requests with JSON data. However, many applications need to accept data from HTML forms, which are encoded as <code>application/x-www-form-urlencoded</code>. To handle this, we use the <code>Form</code> function, which works similarly to the <code>Body</code> function we saw earlier. Unlike <code>Body</code>, the <code>Form</code> function expects form-encoded data instead of JSON.</p>
+<div class="highlight"><span class="filename">handling form encoded data</span><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">Form</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/create_product2&#39;</span><span class="p">)</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_product2</span><span class="p">(</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>   <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>   <span class="n">price</span><span class="p">:</span> <span class="nb">float</span><span class="o">=</span><span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>   <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>   <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span><span class="o">=</span><span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>   <span class="n">new_product</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>      <span class="s2">&quot;name&quot;</span> <span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>      <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">price</span><span class="p">,</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>      <span class="s2">&quot;description&quot;</span> <span class="p">:</span> <span class="n">description</span><span class="p">,</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>      <span class="s2">&quot;sku&quot;</span><span class="p">:</span> <span class="n">sku</span> 
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>   <span class="p">}</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;product&quot;</span><span class="p">:</span> <span class="n">new_product</span><span class="p">}</span>
+</code></pre></div>
+<p>It's worth noting that FastAPI does not allow validation of form-encoded data in Pydantic models. Instead, we must manually define validations on the fields as individual parameters in our route handlers.</p>
+<p>The <code>Form</code> function has the following parameters:</p>
+<ul>
+<li><code>default</code> - Default value if the parameter is not set. Use ... for required, None for optional</li>
+<li><code>default_factory</code> - Callable to generate the default value dynamically</li>
+<li><code>media_type</code> - Media type of the body (e.g., application/json)</li>
+<li><code>alias</code> - Alternative name the client sends</li>
+<li><code>alias_priority</code> - Priority for alias resolution</li>
+<li><code>validation_alias</code> - Name used for validation separate from serialization</li>
+<li><code>serialization_alias</code> - Name used when serializing output</li>
+<li><code>title</code> - Short title for OpenAPI docs</li>
+<li><code>description</code> - Human-readable description for OpenAPI docs</li>
+<li><code>gt</code> - Greater than (numeric validation)</li>
+<li><code>ge</code> - Greater than or equal (numeric validation)</li>
+<li><code>lt</code> - Less than (numeric validation)</li>
+<li><code>le</code> - Less than or equal (numeric validation)</li>
+<li><code>min_length</code> - Minimum length (string/array)</li>
+<li><code>max_length</code> - Maximum length (string/array)</li>
+<li><code>pattern</code> - Regex pattern for string validation</li>
+<li><code>regex</code> - Alias for pattern</li>
+<li><code>discriminator</code> - Discriminator for polymorphic schemas</li>
+<li><code>strict</code> - Enforce strict type checking</li>
+<li><code>multiple_of</code> - Value must be a multiple of this number</li>
+<li><code>allow_inf_nan</code> - Allow infinity and NaN values</li>
+<li><code>max_digits</code> - Maximum number of digits (Decimal)</li>
+<li><code>decimal_places</code> - Maximum decimal places</li>
+<li><code>example</code> - Example value for OpenAPI</li>
+<li><code>examples</code> - Multiple examples for OpenAPI</li>
+<li><code>openapi_examples</code> - Alias for examples</li>
+<li><code>deprecated</code> - Mark parameter as deprecated</li>
+<li><code>include_in_schema</code> - Include in OpenAPI schema</li>
+<li><code>json_schema_extra</code> - Additional JSON schema data</li>
+</ul>
+<h3 id="handling-files">Handling Files</h3>
 <h3 id="understanding-request-headers">Understanding Request Headers</h3>
 <p>Beyond the explicit data we send in the URL or the body, every HTTP request carries <strong>Headers</strong>. These provide essential context about the request's origin and preferences, such as:</p>
 <ul>
@@ -1431,26 +1563,26 @@
 <li><strong>Authorization</strong>: (Often used for security tokens, which we will cover later).</li>
 </ul>
 <p>FastAPI makes accessing headers just as easy as any other parameter. Use the <code>Header</code> function to retrieve specific values—FastAPI automatically maps from HTTP kebab-case (like <code>User-Agent</code>) to Python snake_case (<code>user_agent</code>).</p>
-<div class="highlight"><span class="filename">Request Headers</span><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># inside main.py</span>
-<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/get_headers&quot;</span><span class="p">)</span>
-<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_all_request_headers</span><span class="p">(</span>
-<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="n">user_agent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
-<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="n">accept_encoding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
-<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="n">referer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
-<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="n">connection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
-<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>    <span class="n">accept_language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
-<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    <span class="n">host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
-<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>
-<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>    <span class="n">request_headers</span> <span class="o">=</span> <span class="p">{}</span>
-<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_agent</span>
-<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;Accept-Encoding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accept_encoding</span>
-<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;Referer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">referer</span>
-<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;Accept-Language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accept_language</span>
-<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;Connection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">connection</span>
-<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;Host&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">host</span>
-<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>
-<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>    <span class="k">return</span> <span class="n">request_headers</span>
+<div class="highlight"><span class="filename">Request Headers</span><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># inside main.py</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/get_headers&quot;</span><span class="p">)</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_all_request_headers</span><span class="p">(</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="n">user_agent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">accept_encoding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>    <span class="n">referer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="n">connection</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="n">accept_language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>    <span class="n">host</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Header</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>    <span class="n">request_headers</span> <span class="o">=</span> <span class="p">{}</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;User-Agent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_agent</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;Accept-Encoding&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accept_encoding</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;Referer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">referer</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;Accept-Language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">accept_language</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;Connection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">connection</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>    <span class="n">request_headers</span><span class="p">[</span><span class="s2">&quot;Host&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">host</span>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    <span class="k">return</span> <span class="n">request_headers</span>
 </code></pre></div>
 <p>Making a request to this route reveals the fascinating layer of metadata that travels with every click and API call.</p>
 <p><img alt="Response returning headers" src=".././img/2026/get%20request%20headers.png" /></p>
