@@ -30,11 +30,11 @@ def index() -> dict:
     return {"Hello": "World"}
 ```
 
-Even in these few lines, several important things are happening. First, we import the `FastAPI` class, which serves as the main entry point to the framework. Think of this class as the orchestrator of your application—through it, you'll define routes, register middleware, and manage how your server handles everything from basic requests to complex exceptions.
+Even in these few lines, several important things are happening. First, we import the `FastAPI` class, which serves as the main entry point to the framework. Think of this class as the orchestrator of your application through it, you'll define routes, register middleware, and manage how your server handles everything from basic requests to complex exceptions.
 
 Next, we create an instance of this class and name it `app`. While you can technically name it anything, `app` is the industry standard and makes your code immediately recognizable to other developers.
 
-Finally, we define our first API route by creating a Python function, `index`, and decorating it with `@app.get("/")`. This decorator tells FastAPI to execute the `index` function whenever someone visits the root URL with an HTTP GET request and return its result—in this case, a simple JSON message.
+Finally, we define our first API route by creating a Python function, `index`, and decorating it with `@app.get("/")`. This decorator tells FastAPI to execute the `index` function whenever someone visits the root URL with an HTTP GET request and return its result in this case, a simple JSON message.
 
 ```python title="Your first API endpoint"
 @app.get("/")
@@ -42,7 +42,7 @@ def index() -> dict:
     return {"Hello": "World"}
 ```
 
-FastAPI makes handling different types of interactions seamless. While we're using `get` here to retrieve data, the `@app` decorator supports all standard HTTP methods—`post`, `put`, `delete`, `patch`, and more—allowing you to build comprehensive, RESTful APIs with ease.
+FastAPI makes handling different types of interactions seamless. While we're using `get` here to retrieve data, the `@app` decorator supports all standard HTTP methods `post`, `put`, `delete`, `patch`, and more allowing you to build comprehensive, RESTful APIs with ease.
 
 ### Running the Application
 
@@ -125,12 +125,14 @@ async def greet(username: str=Path(... ,max_length=100, min_length=2)) -> dict:
 
 The use of `...` specifies that the path parameter is always required. Unlike query parameters, path parameters cannot have default values.
 
-The `Path` function accepts the following arguments:
+The `Path` function accepts the following commonly used arguments:
 
 - `gt, ge, lt, le`: numeric validations for numeric parameters
-- `min_length / max_length`: string validations for string path parameters
-- `title` / `description`: Used in OpenAPI documentation (we'll cover this later)
-- `pattern`: The regex pattern to match against the path parameter 
+- `min_length` / `max_length`: string validations for string path parameters
+- `title` / `description`: Used in OpenAPI documentation
+- `pattern`: Regex pattern to match against the path parameter
+
+For the complete list of parameters, refer to the [Path function API documentation](https://fastapi.tiangolo.com/reference/parameters/#fastapi.Path). 
 
 ### Query Parameters
 
@@ -215,17 +217,19 @@ async def greet(username: str = Query(default="User", min_length=2, max_length=1
    return {"message":f"Hello {username}"}
 ```
 
-The `Query` function lets you add important validations to query parameters. Here are its main arguments: 
+The `Query` function accepts the following commonly used arguments:
 
 - `default`: The default value if the query parameter isn't provided
 - `min_length` / `max_length`: String length validations
 - `le`, `lt`, `ge`, `gt`: Integer value validations
-- `pattern`: A regex pattern to match against the query parameter
+- `pattern`: Regex pattern to match against the query parameter
 - `alias`: An alternative parameter name that can be used instead
+
+For the complete list of parameters, refer to the [Query function API documentation](https://fastapi.tiangolo.com/reference/query/).
 
 ### The Request Body and Pydantic
 
-As your application grows, you'll often need to send complex data structures to the server—for example, when creating a new product or updating a user profile. While you could pass this data through query parameters, it quickly becomes unwieldy. 
+As your application grows, you'll often need to send complex data structures to the server for example, when creating a new product or updating a user profile. While you could pass this data through query parameters, it quickly becomes unwieldy. 
 
 Instead, use a **Request Body**. FastAPI harnesses Pydantic to let you define exactly what your data should look like using simple Python classes.
 
@@ -262,7 +266,7 @@ class ProductSchema(BaseModel):
 
 FastAPI handles the heavy lifting for you. It automatically parses the incoming JSON, validates the data types, and provides you with a clean Python object (`product_data`) to work with inside your function.
 
-If a client sends an invalid request—for example, by omitting the request body—FastAPI automatically catches it.
+If a client sends an invalid request for example, by omitting the request body FastAPI automatically catches it.
 
 ![Making request without request body](./img/2026/send%20request%20body%20without%20body.png)
 
@@ -345,15 +349,14 @@ In this example, we're not defining the request body using a Pydantic model. Ins
 
 We're also using the `embed=True` argument, which tells FastAPI to expect these fields as top-level keys in the request body rather than nested values. This approach is useful when you have multiple individual request body parameters.
 
-The `Body` function accepts the following arguments:
+The `Body` function accepts the following commonly used arguments:
 
-- `default`: a default value if the parameter is not provided
-- `default_factory`: a callable to generate a default value if none is provided
-- `alias`: an alternative name for the field
-- `alias_priority`: priority for resolving aliases
-- `media_type`: the media type (default is `application/json`)
-- `embed`: a boolean; if True, the field is embedded as a top-level key in the request body
-- `json_schema_extra`: additional JSON schema data
+- `default`: A default value if the parameter is not provided
+- `alias`: An alternative name for the field
+- `media_type`: The media type (default is `application/json`)
+- `embed`: If True, the field is embedded as a top-level key in the request body
+
+For the complete list of parameters, refer to the [Body function API documentation](https://fastapi.tiangolo.com/reference/parameters/#fastapi.Body).
 
 ### Handling Form Data
 At this point, we've only been handling requests with JSON data. However, many applications need to accept data from HTML forms, which are encoded as `application/x-www-form-urlencoded`. To handle this, we use the `Form` function, which works similarly to the `Body` function we saw earlier. Unlike `Body`, the `Form` function expects form-encoded data instead of JSON.
@@ -382,40 +385,122 @@ async def create_product2(
 
 It's worth noting that FastAPI does not allow validation of form-encoded data in Pydantic models. Instead, we must manually define validations on the fields as individual parameters in our route handlers.
 
-The `Form` function has the following parameters:
+The `Form` function accepts the following commonly used arguments:
 
-- `default` - Default value if the parameter is not set. Use ... for required, None for optional
-- `default_factory` - Callable to generate the default value dynamically
-- `media_type` - Media type of the body (e.g., application/json)
-- `alias` - Alternative name the client sends
-- `alias_priority` - Priority for alias resolution
-- `validation_alias` - Name used for validation separate from serialization
-- `serialization_alias` - Name used when serializing output
-- `title` - Short title for OpenAPI docs
-- `description` - Human-readable description for OpenAPI docs
-- `gt` - Greater than (numeric validation)
-- `ge` - Greater than or equal (numeric validation)
-- `lt` - Less than (numeric validation)
-- `le` - Less than or equal (numeric validation)
-- `min_length` - Minimum length (string/array)
-- `max_length` - Maximum length (string/array)
-- `pattern` - Regex pattern for string validation
-- `regex` - Alias for pattern
-- `discriminator` - Discriminator for polymorphic schemas
-- `strict` - Enforce strict type checking
-- `multiple_of` - Value must be a multiple of this number
-- `allow_inf_nan` - Allow infinity and NaN values
-- `max_digits` - Maximum number of digits (Decimal)
-- `decimal_places` - Maximum decimal places
-- `example` - Example value for OpenAPI
-- `examples` - Multiple examples for OpenAPI
-- `openapi_examples` - Alias for examples
-- `deprecated` - Mark parameter as deprecated
-- `include_in_schema` - Include in OpenAPI schema
-- `json_schema_extra` - Additional JSON schema data
+- **default** - Default value if the parameter is not set. Use `...` for required fields
+- **min_length** / **max_length** - String length validation
+- **regex** - Regex pattern for string validation
+- **title** - Short title for OpenAPI docs
+- **description** - Human-readable description for OpenAPI docs
+
+For the complete list of parameters, refer to the [Form function API documentation](https://fastapi.tiangolo.com/reference/parameters/#fastapi.Form).
 
 ### Handling Files
+We can also write API endpoints that can handle file uploads using the `multipart/form-data` encoding tyoe. FastAPI provides two approaches for this.
 
+### File Uploads 
+#### The *File* function
+
+For uploading small files which can easily load into memory, FastAPI provides the `File` function which allows us to load the file into memory like show in the example below.
+
+```python title="uploading a file using the File function"
+from fastapi import File
+
+@app.post('/upload_file')
+async def upload_file(file: bytes = File(...)) -> dict:
+   return {"file_size": len(file)}
+```
+
+In the above example, the `File` function exposes the uploaded file as bytes, enabling us to show the amount of bytes the file has using the inbuilt `len` function.
+
+The `File` function accepts the following commonly used arguments:
+
+- `default`: Default value if the file parameter isn't provided
+- `min_length`: Minimum file size in bytes
+- `max_length`: Maximum file size in bytes
+- `title`: Short title for OpenAPI docs
+- `description`: Human-readable description for OpenAPI docs
+
+For the complete list of parameters, refer to the [File function API documentation](https://fastapi.tiangolo.com/reference/parameters/#fastapi.File).
+
+#### The *UploadFile* function
+The *File* function can be just be enough to upload small files because by doing so, they will be loadded in memory, for larger uploads, the `UploadFile` is the way to go. 
+
+The `UploadFile` function works differently from the `File` function. Instead of loading the entire file, it streams it and creates a file like Python object. The `UploadFile` function provides async capabilities making it better than the `File` function fo handling file uploads in FastAPI.
+
+```python title="uploading a file using UploadFile"
+from fastapi import UploadFile
+
+@app.post('/upload_file')
+async def upload_file(file: UploadFile) -> dict:
+    return {
+        "filename": file.filename,
+        "content_type": file.content_type
+    }
+```
+
+When using `UploadFile`, FastAPI provides several attributes:
+
+- **filename**: The name of the uploaded file
+- **content_type**: The MIME type of the file (e.g., `image/png`, `application/pdf`)
+- **file**: A file-like object that can be read and written to
+
+#### Working with UploadFile Contents
+
+To read the file contents, use the `read()` method:
+
+```python title="reading file contents"
+from fastapi import UploadFile
+
+@app.post('/upload_file')
+async def upload_file(file: UploadFile) -> dict:
+    contents = await file.read()
+    return {
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "size": len(contents)
+    }
+```
+
+#### Saving Uploaded Files
+
+A common use case is saving uploaded files to disk:
+
+```python title="saving uploaded files"
+from fastapi import UploadFile
+import shutil
+
+@app.post('/upload_file')
+async def upload_file(file: UploadFile) -> dict:
+    save_path = f"uploads/{file.filename}"
+    
+    with open(save_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    
+    return {"filename": file.filename, "saved_to": save_path}
+```
+
+The `shutil.copyfileobj()` method efficiently streams the file data without loading it entirely into memory, making it suitable for large files.
+
+#### Multiple File Uploads
+
+To accept multiple files, use a list of `UploadFile`:
+
+```python title="uploading multiple files"
+from fastapi import UploadFile
+from typing import List
+
+@app.post('/upload_files')
+async def upload_files(files: List[UploadFile]) -> dict:
+    results = []
+    for file in files:
+        contents = await file.read()
+        results.append({
+            "filename": file.filename,
+            "size": len(contents)
+        })
+    return {"files": results}
+```
 
 ### Understanding Request Headers
 
@@ -426,7 +511,7 @@ Beyond the explicit data we send in the URL or the body, every HTTP request carr
 - **Accept-Language**: The user's preferred language for the response.
 - **Authorization**: (Often used for security tokens, which we will cover later).
 
-FastAPI makes accessing headers just as easy as any other parameter. Use the `Header` function to retrieve specific values—FastAPI automatically maps from HTTP kebab-case (like `User-Agent`) to Python snake_case (`user_agent`).
+FastAPI makes accessing headers just as easy as any other parameter. Use the `Header` function to retrieve specific values, FastAPI automatically maps from HTTP kebab-case (like `User-Agent`) to Python snake_case (`user_agent`).
 
 ```python title="Request Headers"
 # inside main.py
@@ -455,8 +540,86 @@ Making a request to this route reveals the fascinating layer of metadata that tr
 
 ![Response returning headers](./img/2026/get%20request%20headers.png)
 
+### Handling Cookies
+
+Cookies are small pieces of data stored in the browser that help maintain state across requests. FastAPI provides the `Cookie` function to read cookies from incoming requests.
+
+```python title="Reading Cookies"
+from fastapi import Cookie
+
+@app.get("/read_cookies")
+async def read_cookies(session_id: Optional[str] = Cookie(None)) -> dict:
+    return {"session_id": session_id}
+```
+
+FastAPI automatically converts the kebab-case cookie names (like `session-id`) to snake_case Python variables (`session_id`).
+
+#### Setting Cookies
+
+To set cookies in a response, use FastAPI's `Response` class:
+
+```python title="Setting Cookies"
+from fastapi import Response
+
+@app.get("/set_cookies")
+async def set_cookies(response: Response) -> dict:
+    response.set_cookie(key="session_id", value="abc123", httponly=True)
+    return {"message": "Cookie set successfully"}
+```
+
+The `set_cookie` method accepts:
+
+- `key`: The cookie name
+- `value`: The cookie value
+- `httponly`: Prevents JavaScript access (recommended for security)
+- `secure`: Only sends cookie over HTTPS
+- `samesite`: Controls cross-site request behavior (`strict`, `lax`, or `none`)
+- `max_age`: Cookie expiration in seconds
+
+For the complete list of parameters, refer to the [Cookie function API documentation](https://fastapi.tiangolo.com/reference/cookie/).
+
+### The Request Object
+
+Sometimes you need access to the raw request object itself perhaps to read raw body data, access client information, or handle advanced scenarios. FastAPI provides the `Request` object for this purpose.
+
+```python title="Accessing the Request Object"
+from fastapi import Request
+
+@app.get("/request_info")
+async def get_request_info(request: Request) -> dict:
+    return {
+        "url": str(request.url),
+        "method": request.method,
+        "headers": dict(request.headers),
+        "client": request.client.host if request.client else None,
+    }
+```
+
+The `Request` object provides access to:
+
+- `url`: The full URL of the request
+- `method`: The HTTP method (GET, POST, etc.)
+- `headers`: Request headers as a dictionary
+- `query_params`: Query parameters
+- `path_params`: Path parameters
+- `cookies`: Request cookies
+- `client`: Client IP address and port
+- `body()`: Raw request body as bytes
+- `stream()`: Async generator for streaming body data
+
+For the complete list of attributes and methods, refer to the [Request object API documentation](https://fastapi.tiangolo.com/reference/request/).
+
+```python title="Accessing request body"
+from fastapi import Request
+
+@app.post("/raw_body")
+async def get_raw_body(request: Request) -> dict:
+    body = await request.body()
+    return {"body_size": len(body)}
+```
+
 ## Conclusion
 
-In this chapter, we've moved beyond installation and built a functioning web server. We've explored the various ways clients can communicate with our API through path parameters, query strings, request bodies, and headers—and seen how FastAPI uses Python type hints to make this communication safe and reliable.
+In this chapter, we've moved beyond installation and built a functioning web server. We've explored the various ways clients can communicate with our API through path parameters, query strings, request bodies, and headers and seen how FastAPI uses Python type hints to make this communication safe and reliable.
 
 In the next chapter, we'll take these concepts further and build a real-world application: a CRUD (Create, Read, Update, Delete) API for managing a bookstore, using an in-memory database to keep our focus on core web development logic.
