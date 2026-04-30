@@ -167,7 +167,7 @@ We can test this out by making a **GET** request to `http://localhost:8000/membe
 
 ![get members](./img/2026/get%20members%20with%20newly%20added%20data.png)
 
-### Get a member BY ID (HTTP POST)
+### Get a member BY ID (HTTP GET)
 
 ```python title="Get member by ID"
 @app.get("/members/{member_id}", tags=["Members"])
@@ -213,28 +213,8 @@ To validate the endpoint, you can test it in two scenarios. First, submit a requ
 Finally, the delete endpoint:
 
 ```python title="delete member by ID"
-@app.delete(
-    "/members/{member_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Members"]
-)
-def delete_member(member_id: int) -> None:
-    for index, member in enumerate(members):
-        if member.id == member_id:
-            del members[index]
-            return
-    return {"message": "Member not found"}
-```
-
-The delete endpoint is accessed at the `/members/{member_id}` path using the HTTP DELETE method. The route handler accepts the `member_id` path parameter, which identifies the member to delete. The function iterates through the members list to locate the member with the matching ID. Once found, it removes the member from the list. If the member is not found, it returns a "Member not found" response.
-
-
-All the member endpoints will look like this for now.
-
-```python title="all member CRUD endpoints"
-
-# inside main.py
 from enum import Enum
-from typing import Optional
-from fastapi import FastAPI, Header, status
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -289,7 +269,75 @@ def delete_member(member_id: int) -> None:
         if member.id == member_id:
             del members[index]
             return
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Member not found")
+```
+
+The delete endpoint is accessed at the `/members/{member_id}` path using the HTTP DELETE method. The route handler accepts the `member_id` path parameter, which identifies the member to delete. The function iterates through the members list to locate the member with the matching ID. Once found, it removes the member from the list. If the member is not found, it returns a "Member not found" response.
+
+
+All the member endpoints will look like this for now.
+
+```python title="all member CRUD endpoints"
+
+# inside main.py
+from enum import Enum
+from typing import Optional
+from fastapi import FastAPI, Header, HTTPException, status
+from pydantic import BaseModel
+
+app = FastAPI()
+
+members: list["Member"] = []
+
+class MemberStatus(Enum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    SUSPENDED = "suspended"
+    REJECTED = "rejected"
+
+class Member(BaseModel):
+    id: int
+    first_name: str
+    last_name: str
+    address: str
+    phone_number: str
+    national_id_number: str
+    occupation: str
+    status: MemberStatus
+
+@app.get("/members", tags=["Members"])
+def get_members() -> list[Member]:
+    return members
+
+@app.post("/members", status_code=status.HTTP_201_CREATED, tags=["Members"])
+def create_member(member: Member) -> dict:
+    members.append(member)
+    return {"message": "Member created successfully", "member_id": member.id}
+
+@app.get("/members/{member_id}", tags=["Members"])
+def get_member(member_id: int) -> Member | dict:
+    for member in members:
+        if member.id == member_id:
+            return member
     return {"message": "Member not found"}
+
+@app.put("/members/{member_id}", tags=["Members"])
+def update_member(member_id: int, updated_member: Member) -> dict:
+    for index, member in enumerate(members):
+        if member.id == member_id:
+            members[index] = updated_member
+            return {"message": "Member updated successfully", "member": updated_member}
+    return {"message": "Member not found"}
+
+@app.delete(
+    "/members/{member_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Members"]
+)
+def delete_member(member_id: int) -> None:
+    for index, member in enumerate(members):
+        if member.id == member_id:
+            del members[index]
+            return
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Member not found")
 ```
 
 ## Conclusion
