@@ -14,9 +14,20 @@ Welcome to the documentation for the FastAPI Beyond CRUD course.
 This repository contains the source code for the course website.
 
 ## Prerequisites
+
 Before starting, make sure you have the following installed:
 
 - Python 3.10+
+- Git
+- pip
+
+### Verify Installation
+
+```bash
+python --version
+git --version
+pip --version
+```
 
 ## Project Setup
 To set up the project, follow these steps:
@@ -56,6 +67,7 @@ Click the **Fork** button at the top-right corner of the repository page on GitH
      ```bash
      venv\Scripts\activate
      ```
+        > After activation, you should see `(venv)` in your terminal.
 
 6. **Install the required dependencies:**
     ```bash
@@ -66,6 +78,8 @@ Click the **Fork** button at the top-right corner of the repository page on GitH
     ```bash
     mkdocs serve
     ```
+    ### Open in Browser
+
     Once the server starts successfully, open your browser and visit:
 
     ```text
@@ -89,3 +103,30 @@ fastapi-beyond-crud-docs/
 ```
 
 ---
+## Contributing
+
+Contributions are welcome.
+
+Follow these steps:
+
+1. Fork the repository
+2. Create a new branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Make your changes
+4. Commit your changes
+
+```bash
+git commit -m "Added new feature"
+```
+
+5. Push your changes
+
+```bash
+git push origin feature-name
+```
+
+6. Create a Pull Request
