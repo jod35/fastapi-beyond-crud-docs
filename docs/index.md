@@ -18,7 +18,7 @@ I also produce music for fun in my free time using [FL Studio](https://www.image
 
 
 ## Please donate to the project
-I have made this course available for free on my [Youtube channel](https://youtube.com/@SsaliJonathan) and on this website. If you can support me to create more projects like this, please consider donating to my work using the following channelS.
+I have made this course available for free on my [Youtube channel](https://youtube.com/@SsaliJonathan) and on this website. If you can support me to create more projects like this, please consider donating to my work using the following channels.
 
 - [Become a Patron](https://www.patreon.com/jod35)
 - [Become a Youtube channel member](https://www.youtube.com/@SsaliJonathan)

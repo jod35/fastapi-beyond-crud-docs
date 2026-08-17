@@ -1557,39 +1557,37 @@
 <h3 id="query-parameters">Query Parameters</h3>
 <p>Query parameters are the key-value pairs you often see at the end of a URL, following a question mark (<code>?</code>). They are ideal for optional data, such as search filters or pagination settings.</p>
 <div class="highlight"><span class="filename">Query params</span><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># inside main.py</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>   <span class="s2">&quot;Jerry&quot;</span><span class="p">,</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>   <span class="s2">&quot;Joey&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="c1"># .. more imports</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
 <a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">user_list</span> <span class="o">=</span> <span class="p">[</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>   <span class="s2">&quot;Phil&quot;</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="p">]</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/search&#39;</span><span class="p">)</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">search_for_user</span><span class="p">(</span><span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>   <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">user_list</span><span class="p">:</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="k">if</span> <span class="n">username</span> <span class="ow">in</span> <span class="n">user_list</span> <span class="p">:</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="sa">f</span><span class="s2">&quot;details for user </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>    <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;User Not Found&quot;</span><span class="p">}</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>   <span class="s2">&quot;Phil&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>   <span class="s2">&quot;Jerry&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>   <span class="s2">&quot;Joey&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">]</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/search/&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="n">username</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;user details for </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">username</span> <span class="ow">in</span> <span class="n">user_list</span> <span class="k">else</span> <span class="s2">&quot;User not found&quot;</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">}</span>
 </code></pre></div>
 <p>Notice that we didn't include <code>{username}</code> in the route path this time. In FastAPI, any function parameter that isn't part of the path is automatically treated as a query parameter. To use this endpoint, you would navigate to <code>/search?username=Jerry</code>.</p>
-<p><img alt="Searching for a user who exists" src=".././img/2026/query%20param%20present1.png" /></p>
+<p><img alt="Searching for a user who exists" src=".././img/2026/query%20param%20present2.png" /></p>
 <p>If the user isn't found, our logic handles it gracefully:</p>
-<p><img alt="Searching for a user who does not exist" src=".././img/2026/query%20param%20present2png" /></p>
+<p><img alt="Searching for a user who does not exist" src=".././img/2026/not_found.png" /></p>
 <p>However, if you try to call this endpoint without providing a <code>username</code>, FastAPI returns a validation error because we haven't provided a default value, making the parameter required by default.</p>
 <p><img alt="Searching without the search query param" src=".././img/2026/query%20param%20absent.png" /></p>
 <p>To make a parameter truly optional, provide a default value. By using Python's <code>Optional</code> type and assigning a fallback, you ensure your API remains robust even when certain data is missing.</p>
-<div class="highlight"><span class="filename">Optional Query Params</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/search&#39;</span><span class="p">)</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">search_for_user</span><span class="p">(</span><span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Jerry&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>   <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">user_list</span><span class="p">:</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="k">if</span> <span class="n">username</span> <span class="ow">in</span> <span class="n">user_list</span> <span class="p">:</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="sa">f</span><span class="s2">&quot;details for user </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;User Not Found&quot;</span><span class="p">}</span>
+<div class="highlight"><span class="filename">Optional Query Params</span><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># ... more imports here</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># ... some code here</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/search/&quot;</span><span class="p">)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">search</span><span class="p">(</span><span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Jerry&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="sa">f</span><span class="s2">&quot;user details for </span><span class="si">{</span><span class="n">username</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">username</span> <span class="ow">in</span> <span class="n">user_list</span> <span class="k">else</span> <span class="s2">&quot;User not found&quot;</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="p">)</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">message</span><span class="p">}</span>
 </code></pre></div>
 <p>Now, if a request arrives without a query string, the API will simply default to searching for "Jerry."</p>
 <p><img alt="Searching for a user without a query param" src=".././img/2026/query%20param%20present3.png" /></p>
@@ -1622,8 +1620,8 @@
 </ul>
 <p>For the complete list of parameters, refer to the <a href="https://fastapi.tiangolo.com/reference/query/">Query function API documentation</a>.</p>
 <h3 id="the-request-body-and-pydantic">The Request Body and Pydantic</h3>
-<p>As your application grows, you'll often need to send complex data structures to the server for example, when creating a new product or updating a user profile. While you could pass this data through query parameters, it quickly becomes unwieldy. </p>
-<p>Instead, use a <strong>Request Body</strong>. FastAPI harnesses Pydantic to let you define exactly what your data should look like using simple Python classes.</p>
+<p>As your application grows, you'll often need to send complex data structures to the server for example, when creating a new product or updating a user profile. While you could pass this data through query parameters, it quickly becomes difficult to manage. </p>
+<p>Instead, use a <strong>Request Body</strong>. FastAPI uses Pydantic to let you define exactly what your data should look like using simple Python classes.</p>
 <div class="highlight"><span class="filename">Request Body</span><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># inside main.py</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
@@ -1641,6 +1639,8 @@
 <a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>      <span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">price</span><span class="p">,</span>
 <a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>      <span class="s2">&quot;description&quot;</span> <span class="p">:</span> <span class="n">product_data</span><span class="o">.</span><span class="n">description</span> 
 <a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>   <span class="p">}</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>   <span class="k">return</span> <span class="n">new_product</span>
 </code></pre></div>
 <p>In this example, we define a <code>ProductSchema</code> that inherits from Pydantic's <code>BaseModel</code>. This serves as a blueprint: any data sent to the <code>/create_product</code> endpoint <em>must</em> match this structure. </p>
 <div class="highlight"><span class="filename">A simple Pydantic model</span><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
@@ -1774,7 +1774,7 @@
 </ul>
 <p>For the complete list of parameters, refer to the <a href="https://fastapi.tiangolo.com/reference/parameters/#fastapi.File">File function API documentation</a>.</p>
 <h4 id="the-uploadfile-function">The <em>UploadFile</em> function</h4>
-<p>The <em>File</em> function can be just be enough to upload small files because by doing so, they will be loadded in memory, for larger uploads, the <code>UploadFile</code> is the way to go. </p>
+<p>The <em>File</em> function can be just be enough to upload small files because by doing so, they will be loaded in memory, for larger uploads, the <code>UploadFile</code> is the way to go. </p>
 <p>The <code>UploadFile</code> function works differently from the <code>File</code> function. Instead of loading the entire file, it streams it and creates a file like Python object. The <code>UploadFile</code> function provides async capabilities making it better than the <code>File</code> function fo handling file uploads in FastAPI.</p>
 <div class="highlight"><span class="filename">uploading a file using UploadFile</span><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">UploadFile</span>
 <a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>

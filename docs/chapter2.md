@@ -140,30 +140,28 @@ Query parameters are the key-value pairs you often see at the end of a URL, foll
 
 ```python title="Query params"
 # inside main.py
+# .. more imports
+from typing import Optional
 
+user_list = [
+   "Phil",
    "Jerry",
    "Joey",
-user_list = [
-   "Phil"
 ]
 
-@app.get('/search')
-async def search_for_user(username: Optional[str] =None) -> dict:
-   for user in user_list:
-    if username in user_list :
-        return {"message":f"details for user {username}"}
-
-    else:
-        return {"message":"User Not Found"}
+@app.get("/search/")
+def search(username:str) -> dict | None:
+    message = f"user details for {username}" if username in user_list else "User not found"
+    return {"message": message}
 ```
 
 Notice that we didn't include `{username}` in the route path this time. In FastAPI, any function parameter that isn't part of the path is automatically treated as a query parameter. To use this endpoint, you would navigate to `/search?username=Jerry`.
 
-![Searching for a user who exists](./img/2026/query%20param%20present1.png)
+![Searching for a user who exists](./img/2026/query%20param%20present2.png)
 
 If the user isn't found, our logic handles it gracefully:
 
-![Searching for a user who does not exist](./img/2026/query%20param%20present2png)
+![Searching for a user who does not exist](./img/2026/not_found.png)
 
 However, if you try to call this endpoint without providing a `username`, FastAPI returns a validation error because we haven't provided a default value, making the parameter required by default.
 
@@ -172,16 +170,16 @@ However, if you try to call this endpoint without providing a `username`, FastAP
 To make a parameter truly optional, provide a default value. By using Python's `Optional` type and assigning a fallback, you ensure your API remains robust even when certain data is missing.
 
 ```python title="Optional Query Params"
+# ... more imports here
 from typing import Optional
+# ... some code here
 
-@app.get('/search')
-async def search_for_user(username: Optional[str] = "Jerry") -> dict:
-   for user in user_list:
-    if username in user_list :
-        return {"message":f"details for user {username}"}
-
-    else:
-        return {"message":"User Not Found"}
+@app.get("/search/")
+def search(username: Optional[str] = "Jerry") -> dict:
+    message = (
+        f"user details for {username}" if username in user_list else "User not found"
+    )
+    return {"message": message}
 ```
 
 Now, if a request arrives without a query string, the API will simply default to searching for "Jerry."
@@ -229,9 +227,9 @@ For the complete list of parameters, refer to the [Query function API documentat
 
 ### The Request Body and Pydantic
 
-As your application grows, you'll often need to send complex data structures to the server for example, when creating a new product or updating a user profile. While you could pass this data through query parameters, it quickly becomes unwieldy. 
+As your application grows, you'll often need to send complex data structures to the server for example, when creating a new product or updating a user profile. While you could pass this data through query parameters, it quickly becomes difficult to manage. 
 
-Instead, use a **Request Body**. FastAPI harnesses Pydantic to let you define exactly what your data should look like using simple Python classes.
+Instead, use a **Request Body**. FastAPI uses Pydantic to let you define exactly what your data should look like using simple Python classes.
 
 ```python title="Request Body"
 # inside main.py
@@ -251,6 +249,8 @@ async def create_product(product_data:ProductSchema):
       "price": product_data.price,
       "description" : product_data.description 
    }
+
+   return new_product
 ```
 
 In this example, we define a `ProductSchema` that inherits from Pydantic's `BaseModel`. This serves as a blueprint: any data sent to the `/create_product` endpoint *must* match this structure. 
@@ -424,7 +424,7 @@ The `File` function accepts the following commonly used arguments:
 For the complete list of parameters, refer to the [File function API documentation](https://fastapi.tiangolo.com/reference/parameters/#fastapi.File).
 
 #### The *UploadFile* function
-The *File* function can be just be enough to upload small files because by doing so, they will be loadded in memory, for larger uploads, the `UploadFile` is the way to go. 
+The *File* function can be just be enough to upload small files because by doing so, they will be loaded in memory, for larger uploads, the `UploadFile` is the way to go. 
 
 The `UploadFile` function works differently from the `File` function. Instead of loading the entire file, it streams it and creates a file like Python object. The `UploadFile` function provides async capabilities making it better than the `File` function fo handling file uploads in FastAPI.
 
