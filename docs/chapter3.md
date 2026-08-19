@@ -2,11 +2,12 @@
 
 ## Introduction
 
-Having mastered the basics of FastAPI, we are now ready to take a significant step forward by developing a practical application. In this chapter, we will construct a Savings and Credit Cooperative Organization (SACCO) management application. SACCOS are member-owned financial cooperatives that allow groups to pool their resources for collective saving and loan provision, serving as an alternative to conventional banking systems.
+Having covered the fundamentals of FastAPI, we are now ready to take the next step and put what we have learned into practice by building a real-world application.
 
-In our SACCO application, members will have the ability to deposit savings, access loans based on their savings, repay loans with interest, and share in the profits generated from interest income. A vital aspect of such systems is the onboarding process. Our implementation will facilitate multiple groups registering under a single SACCO, with individual members joining specific groups.
+From this point onward, we will develop a RESTful API for a **Simple Microfinance Institution**. The application will model some of the core day-to-day operations of a microfinance institution, including customer management, loan applications, loan approvals, loan disbursements, and repayment collection.
 
-In this chapter, we will lay the groundwork for the onboarding feature by implementing CRUD operations to manage members, marking our first complete CRUD application.
+In this chapter, we will begin laying the foundation for the system by focusing on **customer management**. We will implement the complete set of CRUD operations for managing customers, making this our first fully functional CRUD feature.
+
 
 ## What is CRUD?
 
@@ -32,316 +33,273 @@ CRUD operations are essential for data management and are commonly utilized in a
 
 ## A Simple CRUD API Implementation
 
-Our straightforward CRUD API will feature several endpoints to perform CRUD operations on a basic in-memory database (utilizing Python lists). Below is a list of the endpoints that we will implement in our CRUD API.
+Our CRUD API will feature several endpoints to perform CRUD operations on a basic SQLite database. Below is a list of the endpoints that we will implement in our CRUD API.
 
-| Endpoint             | Method | Description                                  |
-| -------------------- | ------ | -------------------------------------------- |
-| /members             | GET    | Retrieve all members of the SACCO.           |
-| /members             | POST   | Create a new member in the SACCO.            |
-| /members/{member_id} | GET    | Retrieve details of a specific member by ID. |
-| /members/{member_id} | PUT    | Update details of a specific member by ID.   |
-| /members/{member_id} | DELETE | Remove a member from the SACCO by ID.        |
+| Endpoint                 | Method | Description                                    |
+| ------------------------ | ------ | ---------------------------------------------- |
+| /customers               | GET    | List all customers.                            |
+| /customers               | POST   | Create a new customer.                         |
+| /customers/{customer_id} | GET    | Retrieve details of a specific customer by ID. |
+| /customers/{customer_id} | PUT    | Update details of a specific customer by ID.   |
+| /customers/{customer_id} | DELETE | Remove a customer using their ID.              |
 
 The table above outlines various API endpoints, their corresponding HTTP methods, and their functionalities:
 
-1. **`/members` - GET: Retrieve all members**
-        - _Description:_ This endpoint retrieves information about all members registered in the SACCO. When a client sends an HTTP GET request to `/members`, the server responds with details of all members.
+1. **`/customers` - GET: List all customers**
+        - _Description:_ This endpoint retrieves information about all customers registered. When a client sends an HTTP GET request to `/customers`, the server responds with details of all customers.
 
-2. **`/members` - POST: Create a member**
-        - _Description:_ To add a new member to the SACCO, clients can send an HTTP POST request to `/members`. This operation involves creating and storing a new member based on the data provided in the request body.
+2. **`/customers` - POST: Create a customer**
+        - _Description:_ To add a new customer, clients can send an HTTP POST request to `/customers`. This operation involves creating and storing a new customer based on the data provided in the request body.
 
-3. **`/members/{member_id}` - GET: Get a member by ID**
-        - _Description:_ By sending an HTTP GET request to `/members/{member_id}`, clients can retrieve detailed information about a specific member. The `member_id` parameter in the path specifies which member to fetch.
+3. **`/customers/{customer_id}` - GET: Get a customer by ID**
+        - _Description:_ By sending an HTTP GET request to `/customers/{customer_id}`, clients can retrieve detailed information about a specific customer. The `customer_id` parameter in the path specifies which customer to fetch.
 
-4. **`/members/{member_id}` - PUT: Update a member by ID**
-        - _Description:_ To modify the information of a specific member, clients can send an HTTP PUT request to `/members/{member_id}`. The `member_id` parameter identifies the target member, and the request body contains the updated data.
+4. **`/customers/{customer_id}` - PUT: Update a customer by ID**
+        - _Description:_ To modify the information of a specific customer, clients can send an HTTP PUT request to `/customers/{customer_id}`. The `customer_id` parameter identifies the target customer, and the request body contains the updated data.
 
-5. **`/members/{member_id}` - DELETE: Delete a member by ID**
-        - _Description:_ This endpoint allows clients to delete a specific member from the SACCO. By sending an HTTP DELETE request to `/members/{member_id}`, the member identified by `member_id` will be removed from the records.
+5. **`/customers/{customer_id}` - DELETE: Delete a customer by ID**
+        - _Description:_ This endpoint allows clients to delete a specific customer. By sending an HTTP DELETE request to `/customers/{customer_id}`, the customer identified by `member_id` will be removed from the records.
 
-With a clear plan for our simple API in place, we can now proceed to implement our CRUD API by integrating the functionalities outlined above into `main.py`. We will begin by creating simple list to serve as our in-memory database for members.
-
-```python title="In-memory database for members and groups"
-# inside main.py
-
-members = []
-```
-
-After establishing these lists, we will define the data models that will be utilized throughout our application.
-
-```python title="Data models for CRUD endpoints"
-# inside main.py
-# ... additional code here
-from pydantic import BaseModel
-from typing import List, Optional
-from enum import Enum
-
-# additional code here
-members: list["Member"] = []
+With a clear plan for our simple API in place, we can now proceed to implement our CRUD API by integrating the functionalities outlined above into `main.py`. We will begin by creating simple list to serve as our in-memory database for customers.
 
 
-class MemberStatus(Enum):
-    ACTIVE = "active"
-    INACTIVE = "inactive"
-    SUSPENDED = "suspended"
-    REJECTED = "rejected"
+## SQLite
 
+SQLite is a compact, fast, self-contained, and highly reliable SQL database engine with a full set of features. Because it stores data in a single file and requires no server installation or complex configuration, SQLite is an excellent choice for applications where simplicity and portability matter such as mobile apps and other environments where managing a separate database server would be impractical.
 
-class Member(BaseModel):
-    id: int
-    first_name: str
-    last_name: str
-    address: str
-    phone_number: str
-    national_id_number: str
-    occupation: str
-    status: MemberStatus
-```
+If you’re not familiar with SQL (**Structured Query Language**), there’s no need to worry. We’ll learn the language as we build this API. For details on SQL as implemented in SQLite, [see the official documentation](https://sqlite.org/lang.html).
 
-The code above establishes the necessary data models for our endpoints. First, we define the `MemberStatus` enum, which indicates the status of a member in a SACCO, with possible values of `active`, `inactive`, `suspended`, and `rejected`.
+SQLite enjoys broad support across modern programming languages. In Python, the standard library includes the `sqlite3` module, which implements the DB-API interface for interacting with SQLite databases. For Python-specific usage, [see the `sqlite3` documentation](https://docs.python.org/3/library/sqlite3.html).
 
-Next, we introduce the `Member` model, which encapsulates the information we will store about individual group members. 
+### Connecting to a Database
+The very first thing we shall do here is to get rid of all code present in the `main.py` only keeping the `FastAPI` instance we created.
 
-We are making extensive use of [type hints](./type_hints.md) here, as evidenced by the specifications of the types of items stored in our lists.
-
-### Reading All Members (HTTP GET)
-
-This route responds to GET requests made to `/members`, providing a list of all members in the SACCO. It ensures that the response adheres to the `List[Member]` model, guaranteeing consistency with the structure defined by the `Member` model.
-
-```python title="Get all members"
-@app.get("/members", tags=["Members"])
-def get_members() -> list[Member]:
-        return members
-```
-
-FastAPI significantly simplifies the process of returning any JSON serializable object as a response. You should also be able to return Pydantic models as we have done in the example above using `list[Member]`. 
-
-!!! Note
-    JSON (JavaScript Object Notation) serialization involves transforming a data structure or object from a programming language (such as Python, JavaScript, or others) into a JSON-formatted string. This string representation can then be transmitted over a network or stored in a file, subsequently allowing deserialization back into the original data structure.
- 
-In Python, the following data types are natively serializable to JSON Lists, Dictionaries, Strings, Numbers (int, float), Tuples (converted to JSON arrays), Booleans, None (converted to JSON null)
-
-!!! Note
-    Some types like custom objects, datetime objects, and sets are not natively JSON serializable and require custom encoders or conversion before serialization.
-
-This capability enables us to effortlessly respond with a list of member objects (which is currently an empty list of objects) when issuing a `GET` request to `http://localhost:8000/members`, as illustrated below:
-
-![List of Members](./img/2026/empty_list_of_books.png)
-
-### Create a Member (HTTP POST)
-
-```python title="Create a member"
-from fastapi import FastAPI, status
-
-# ...more code here
-
-@app.post("/members", status_code=status.HTTP_201_CREATED, tags=["Members"])
-def create_member(member: Member) -> dict:
-    members.append(member)
-    return {"message": "Member created successfully", "member_id": member.id}
-```
-
-In the code above, we have established a new endpoint accessible via a POST request at `/members`. This time, the route handler is provided with a parameter `member`, which is expected to conform to the `Member` model. We will explore how this functions shortly.
-
-Next, we retrieve the `member` data and add it to our members list using the `append` method of the Python `members` list. Finally, we return a dictionary response indicating that the member has been created successfully.
-
-To test this, we will create a new request to the URL `http://localhost:8000/members` and specify the HTTP method as **POST**. We will then set the request body to JSON using the menu, as illustrated below.
-
-![Creating a post request with a body in RestFox](./img/2026/create%20a%20post%20request%20with%20a%20body.png)
-
-Next, we will make the request to the API with an empty body (an empty dictionary), which will trigger validation errors as defined in the `Member` model.
-
-![Creating a post request with no body](./img/2026/create%20member%20with%20empty%20body.png)
-
-When we provide all the required fields, a successful response message will be returned along with a 201 response status code.
-
-![Successful request with a body having](./img/2026/create%20a%20post%20request%20with%20a%20valid%20member%20body.png)
-
-By default, all endpoints return a 200 status code, but we can customize the response status code by specifying it in the route path decorator, as demonstrated in this case.
-
-```python title="specify response status code"
-@app.post("/members", status_code=status.HTTP_201_CREATED, tags=["Members"])
-```
-
-We can test this out by making a **GET** request to `http://localhost:8000/members/`
-
-![get members](./img/2026/get%20members%20with%20newly%20added%20data.png)
-
-### Get a member BY ID (HTTP GET)
-
-```python title="Get member by ID"
-@app.get("/members/{member_id}", tags=["Members"])
-def get_member(member_id: int) -> Member | dict:
-    for member in members:
-        if member.id == member_id:
-            return member
-    return {"message": "Member not found"}
-```
-
-To retrieve the member by ID, we have created a new endpoint on the `/members/{member_id}` path. Its route handler takes a parameter `member_id` which is an integer and we then loop through all members to find the member with the `member_id`. 
-
-
-
-If we find it, we return it else we return a not found response. Keep in mind that we are storing `Member` objects in the `members` list which is JSON serializable. We are also making use of the return Type to allow FastAPI automatically validate what we return in our response (it has to be a dict or a `Member` object). 
-
-![get member by ID](./img/2026/get%20member%20by%20ID.png)
-
-
-### Update a Member by ID (HTTP PUT)
-```python title="Update a member using their ID"
-@app.put("/members/{member_id}", tags=["Members"])
-def update_member(member_id: int, updated_member: Member) -> dict:
-    for index, member in enumerate(members):
-        if member.id == member_id:
-            members[index] = updated_member
-            return {"message": "Member updated successfully", "member": updated_member}
-    return {"message": "Member not found"}
-```
-
-The update endpoint is accessed via the `/members/{member_id}` path using the HTTP PUT method, which is designed for fully updating an existing resource. The route handler requires two parameters: `member_id` (the identifier of the member to update) and `updated_member` (a `Member` object containing the new data).
-
-The function searches through the members list to find the member matching the provided `member_id`. When a match is found, it replaces the existing member data at that index with the updated information and returns a success message. If no matching member is found, it returns a "Member not found" response.
-
-To validate the endpoint, you can test it in two scenarios. First, submit a request with incomplete data (missing required fields from the `Member` model) to see FastAPI's validation error responses. Second, submit a complete request with all required fields to verify that the member data is successfully updated.
-
-![Error when updating with a missing field](./img/2026/update%20a%20member%20error.png)
-
-![Updating a member with successful response](./img/2026/update%20a%20member%20successful.png)
-
-### Delete a Member by ID (HTTP DELETE)
-
-Finally, the delete endpoint:
-
-```python title="delete member by ID"
-from enum import Enum
-from fastapi import FastAPI, HTTPException, status
-from pydantic import BaseModel
+```python title="current main.py"
+from fastapi import FastAPI
 
 app = FastAPI()
-
-members: list["Member"] = []
-
-class MemberStatus(Enum):
-    ACTIVE = "active"
-    INACTIVE = "inactive"
-    SUSPENDED = "suspended"
-    REJECTED = "rejected"
-
-class Member(BaseModel):
-    id: int
-    first_name: str
-    last_name: str
-    address: str
-    phone_number: str
-    national_id_number: str
-    occupation: str
-    status: MemberStatus
-
-@app.get("/members", tags=["Members"])
-def get_members() -> list[Member]:
-    return members
-
-@app.post("/members", status_code=status.HTTP_201_CREATED, tags=["Members"])
-def create_member(member: Member) -> dict:
-    members.append(member)
-    return {"message": "Member created successfully", "member_id": member.id}
-
-@app.get("/members/{member_id}", tags=["Members"])
-def get_member(member_id: int) -> Member | dict:
-    for member in members:
-        if member.id == member_id:
-            return member
-    return {"message": "Member not found"}
-
-@app.put("/members/{member_id}", tags=["Members"])
-def update_member(member_id: int, updated_member: Member) -> dict:
-    for index, member in enumerate(members):
-        if member.id == member_id:
-            members[index] = updated_member
-            return {"message": "Member updated successfully", "member": updated_member}
-    return {"message": "Member not found"}
-
-@app.delete(
-    "/members/{member_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Members"]
-)
-def delete_member(member_id: int) -> None:
-    for index, member in enumerate(members):
-        if member.id == member_id:
-            del members[index]
-            return
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Member not found")
 ```
 
-The delete endpoint is accessed at the `/members/{member_id}` path using the HTTP DELETE method. The route handler accepts the `member_id` path parameter, which identifies the member to delete. The function iterates through the members list to locate the member with the matching ID. Once found, it removes the member from the list. If the member is not found, it returns a "Member not found" response.
+Current folder structure should look like this. 
+```title="current project structure"
+.
+├── main.py
+├── pyproject.toml
+├── README.md
+└── uv.lock
+```
+
+We shall proceed to create a new file `database.py` add add the following code to it.
+
+```python title="connecting to the database"
+import sqlite3
+
+def get_connection() -> sqlite3.Connection:
+    """provide a connection to the db"""
+    conn = sqlite3.connect("microfinance.sqlite3")
+    conn.row_factory = sqlite3.Row
+    return conn
+```
+
+The `get_connection` function opens a connection to the database file `microfinance.db` (it will be created on first use) and returns the connection object `conn` for later use.
+
+We configure `conn` to return query rows as dictionaries so values can be accessed with `row["column"]`, we'll demonstrate this shortly.
+
+This helper function will provide a reusable database connection that other parts of the application can call.
+
+### Creating the `customers` Table
+
+Next, we'll create a helper function to create our first table in the database.
+
+In a relational database, **tables** are used to organize and store data. A table consists of **rows**, which represent individual records, and **columns**, which represent the different pieces of information, or attributes, that we want to store about those records.
+
+Our goal is to create a table that looks like this:
+
+![customers table](./img/2026/customer's%20table.png)
+
+From the diagram above, we can summarize the structure of our `customers` table as follows:
+
+| Column          | Description                                                                                        |
+| --------------- | -------------------------------------------------------------------------------------------------- |
+| `id`            | A unique number used to identify each customer.                                                    |
+| `first_name`    | The customer's first name.                                                                         |
+| `surname`       | The customer's last name.                                                                          |
+| `date_of_birth` | The date the customer was born.                                                                    |
+| `gender`        | The customer's gender.                                                                             |
+| `email`         | The customer's email address. Each customer must have a different email address.                   |
+| `national_id`   | The customer's national identification number. Each customer must have a different one.            |
+| `phone_number`  | The customer's phone number. Each customer must have a different number.                           |
+| `status`        | Shows whether the customer's account is active or inactive. New customers are inactive by default. |
+| `created_at`    | Records the date and time when the customer's information was first added to the database.         |
+| `updated_at`    | Records the date and time when the customer's information was last updated.                        |
+
+Let's add the following code to our `database.py`:
+
+```python
+def init_db() -> None:
+    """Initialize database by creating table"""
+    conn = get_connection()
+
+    try:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS customers (
+                id INTEGER,
+                first_name VARCHAR(25),
+                surname VARCHAR(25),
+                date_of_birth DATE,
+                gender VARCHAR(10),
+                email VARCHAR(30) UNIQUE,
+                national_id VARCHAR(14) UNIQUE,
+                phone_number VARCHAR(10) UNIQUE,
+                status VARCHAR(10) DEFAULT 'inactive',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY(id)
+            );
+        """)
+
+        conn.commit()
+    finally:
+        conn.close()
+```
+
+#### Understanding the Function
+
+The `init_db()` function is responsible for initializing our database. It uses the `get_connection()` helper we created earlier to establish a connection to our SQLite database file.
+
+Once we have a connection, we use `conn.execute()` to send our SQL statement to SQLite.
+
+The following part:
+
+```sql
+CREATE TABLE IF NOT EXISTS customers
+```
+
+tells SQLite to create a table called `customers` only if that table does not already exist.
+
+This is useful because we can call `init_db()` multiple times without getting an error simply because the table has already been created.
+
+#### Defining the Columns
+
+Inside the `CREATE TABLE` statement, we define the columns that make up our `customers` table:
+
+```text
+id
+first_name
+surname
+date_of_birth
+gender
+email
+national_id
+phone_number
+status
+created_at
+updated_at
+```
+
+For each column, we specify a **data type**. The data type describes the kind of information that the column is intended to hold.
+
+For example:
+
+* `id` is an `INTEGER` because it contains a number.
+* `first_name`, `surname`, `gender`, and `status` use `VARCHAR` because they contain text.
+* `email`, `national_id`, and `phone_number` also use `VARCHAR` because they are stored as text rather than numbers.
+* `date_of_birth` uses `DATE` because it represents a date.
+* `created_at` and `updated_at` use `DATETIME` because they represent both a date and a time.
+
+#### Constraints and Default Values
+
+We also define some rules for our columns.
+
+For example:
+
+```sql
+email VARCHAR(30) UNIQUE
+```
+
+The `UNIQUE` constraint tells SQLite that two customers cannot have the same email address.
+
+We do the same for:
+
+```sql
+national_id VARCHAR(14) UNIQUE
+phone_number VARCHAR(10) UNIQUE
+```
+
+This prevents two customers from being registered with the same national ID or phone number.
+
+For the `status` column, we have:
+
+```sql
+status VARCHAR(10) DEFAULT 'inactive'
+```
+
+This means that if we create a customer without specifying a status, SQLite will automatically set the status to `inactive`.
+
+Finally, we have:
+
+```sql
+created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+```
+
+`created_at` will automatically contain the current date and time when the record is created.
+
+`updated_at` will also initially contain the current date and time. However, **SQLite will not automatically change `updated_at` when the customer is modified**. We will need to update this value ourselves when we update a customer's information.
+
+#### Committing and Cleaning Up
+
+After executing the `CREATE TABLE` statement, we call:
+
+```python
+conn.commit()
+```
+
+This commits the changes to the database.
+
+We also use a `finally` block:
+
+```python
+finally:
+    conn.close()
+```
+
+The `finally` block ensures that the database connection is closed after we're finished, even if something goes wrong while executing the SQL statement.
 
 
-All the member endpoints will look like this for now.
+!!! note
+    Although we write `VARCHAR(25)`, `VARCHAR(30)`, etc., SQLite does not enforce those character limits in the same way databases such as MySQL do. 
+    The numbers are useful for documenting the intended size, but if you need SQLite to enforce a maximum length, you would need an additional constraint such as `CHECK(length(first_name) <= 25)`. We shall skip this for now.
 
-```python title="all member CRUD endpoints"
+#### Creating the table 
+Now that we have created our init_db() function, we need to call it when our application starts. We can do this by importing the function into main.py and calling it just before creating our FastAPI application instance.
 
-# inside main.py
-from enum import Enum
-from typing import Optional
-from fastapi import FastAPI, Header, HTTPException, status
-from pydantic import BaseModel
+```python title="add the init_db function"
+from fastapi import FastAPI
+from database import init_db
+
+init_db()
 
 app = FastAPI()
+```
+When `init_db()` is called, it uses our `get_connection()` helper to connect to `microfinance.sqlite3` and create the `customers` table if it does not already exist.
 
-members: list["Member"] = []
+If the database file does not exist, SQLite will create it automatically when we establish the connection. Our project structure will then look something like this:
 
-class MemberStatus(Enum):
-    ACTIVE = "active"
-    INACTIVE = "inactive"
-    SUSPENDED = "suspended"
-    REJECTED = "rejected"
-
-class Member(BaseModel):
-    id: int
-    first_name: str
-    last_name: str
-    address: str
-    phone_number: str
-    national_id_number: str
-    occupation: str
-    status: MemberStatus
-
-@app.get("/members", tags=["Members"])
-def get_members() -> list[Member]:
-    return members
-
-@app.post("/members", status_code=status.HTTP_201_CREATED, tags=["Members"])
-def create_member(member: Member) -> dict:
-    members.append(member)
-    return {"message": "Member created successfully", "member_id": member.id}
-
-@app.get("/members/{member_id}", tags=["Members"])
-def get_member(member_id: int) -> Member | dict:
-    for member in members:
-        if member.id == member_id:
-            return member
-    return {"message": "Member not found"}
-
-@app.put("/members/{member_id}", tags=["Members"])
-def update_member(member_id: int, updated_member: Member) -> dict:
-    for index, member in enumerate(members):
-        if member.id == member_id:
-            members[index] = updated_member
-            return {"message": "Member updated successfully", "member": updated_member}
-    return {"message": "Member not found"}
-
-@app.delete(
-    "/members/{member_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Members"]
-)
-def delete_member(member_id: int) -> None:
-    for index, member in enumerate(members):
-        if member.id == member_id:
-            del members[index]
-            return
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Member not found")
+```title="current folder structure"
+.
+├── database.py
+├── main.py
+├── microfinance.sqlite3
+├── pyproject.toml
+├── README.md
+└── uv.lock
 ```
 
-## Conclusion
+If we restart the FastAPI server, SQLite will not create another database file. It will simply connect to the existing microfinance.sqlite3 file. Because we used CREATE TABLE IF NOT EXISTS, the customers table will also only be created if it doesn't already exist. This is one of the conveniences of SQLite: the database is just a file in our project directory, so we don't need to run a separate database server for our application.
 
-In this chapter, we successfully implemented a foundational CRUD API for managing SACCO members. This exercise provided practical experience in defining HTTP routes using the FastAPI framework, mapping standard CRUD operations to their appropriate HTTP methods, and using Python type hints to ensure data integrity. While our current implementation relies on a simple in-memory list for storage, it establishes the essential patterns for more complex data management.
+Let us check the database we have created, I am going to be using a tool called [DB Browser For SQLite](https://sqlitebrowser.org/) to inspect our table as well to view the data we have stored in the tables. The following GIF shows how to open the database file in the app.
 
-CRUD operations form the cornerstone of most modern web applications, serving as the interface for core business logic. However, as applications grow in complexity, a single-file structure becomes difficult to maintain. In the next chapter, we will evolve our project by introducing a modular architecture using FastAPI routers, setting the stage for a more scalable and production-ready application.
+
+
+### Implementing the CRUD
